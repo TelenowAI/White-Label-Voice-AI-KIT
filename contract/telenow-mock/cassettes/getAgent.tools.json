@@ -1,0 +1,176 @@
+{
+  "operationId": "getAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k3tools.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "created_at": "2026-11-03T21:52:32.489248Z",
+        "deleted_at": null,
+        "description": null,
+        "fallback_config": null,
+        "id": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+        "is_active": true,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "gpt-5.4-mini",
+        "llm_provider": "openai",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": false
+          },
+          "precallLookups": [
+            {
+              "bearer": "••••3456",
+              "key": "contact_identifier",
+              "kind": "http",
+              "map": {
+                "customer_name": "data.name",
+                "plan": "data.0.plan"
+              },
+              "name": "Who is calling",
+              "request": {
+                "headers": {
+                  "Accept": "application/json"
+                },
+                "method": "GET",
+                "url": "https://example.com/?who={contact_identifier}"
+              }
+            }
+          ],
+          "tools": [
+            {
+              "bearer": "••••1234",
+              "description": "Book a visit when the caller asks for one.",
+              "endpoint": "https://example.com/hooks/book",
+              "handoff": "Let me check that.",
+              "name": "book_visit",
+              "parameters": {
+                "properties": {
+                  "date": {
+                    "description": "The day.",
+                    "type": "string"
+                  },
+                  "people": {
+                    "description": "How many.",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "date"
+                ],
+                "type": "object"
+              },
+              "requiresConfirmation": true,
+              "timeoutSecs": 20
+            },
+            {
+              "description": "Look an order up.",
+              "name": "get_order",
+              "parameters": {
+                "properties": {
+                  "order_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "order_id"
+                ],
+                "type": "object"
+              },
+              "request": {
+                "headers": {
+                  "Accept": "application/json",
+                  "Authorization": "••••5678",
+                  "X-Api-Key": "••••9012",
+                  "X-Tenant": "acme"
+                },
+                "method": "GET",
+                "url": "https://example.com/orders/{order_id}?who={contact_number}"
+              }
+            },
+            {
+              "bearer": "••••234b",
+              "description": "Add a note.",
+              "name": "add_note",
+              "parameters": {
+                "properties": {
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "request": {
+                "body": "{\"text\": \"{note}\", \"meta\": {\"a\": 1}, \"lit\": \"{{x}}\"}",
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "POST",
+                "url": "https://example.com/notes"
+              }
+            },
+            {
+              "description": "Change how loudly you speak when the caller asks — louder, softer, or reset to the normal level.",
+              "kind": "adjust_volume",
+              "name": "adjust_volume"
+            },
+            {
+              "config": {
+                "agents": [
+                  {
+                    "agentId": "7a1f3c52-2b64-4e9d-9a0e-5c3d1f8b6a27",
+                    "label": "Billing",
+                    "mode": "transfer"
+                  }
+                ],
+                "message": "One moment."
+              },
+              "description": "Hand this call to another AI agent when the caller needs a different specialist or department.",
+              "kind": "agent",
+              "name": "handoff_to_agent"
+            }
+          ],
+          "variables": [
+            {
+              "default": "there",
+              "name": "customer_name",
+              "required": false
+            }
+          ]
+        },
+        "name": "Front desk",
+        "org_id": "f5b2ecfe-1a21-4c72-83e2-03ced560e865",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {
+          "maxDuration": 600
+        },
+        "stt_config": null,
+        "stt_provider": "deepgram",
+        "system_prompt": "You are the front desk.",
+        "tags": null,
+        "telephony_config": {
+          "recording": true
+        },
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "openai",
+        "tts_voice": "alloy",
+        "updated_at": "2026-11-03T21:52:32.597742Z",
+        "user_id": "4151720d-5a60-400a-8096-249db628623a"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

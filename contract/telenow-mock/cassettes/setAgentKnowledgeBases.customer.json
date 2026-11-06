@@ -1,0 +1,17 @@
+{
+  "operationId": "setAgentKnowledgeBases",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1knowledge.py); no vendor is reachable there, so text documents failed to embed and the table was indexed; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "PUT",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159/knowledge-bases",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message": "knowledge bases updated",
+      "success": true
+    }
+  }
+}

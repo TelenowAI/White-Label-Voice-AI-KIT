@@ -1,0 +1,24 @@
+{
+  "operationId": "addCallComment",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key and a stand-in carrier that takes the call (contract_k9human.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/calls/5e551011-0000-4000-8000-000000000001/comments",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "body": "Asked for a call back on Friday.",
+        "created_at": "2026-11-04T14:44:25.645338Z",
+        "created_by": "6fdfee3b-87e5-4484-a1ee-6e237dbaa7e3",
+        "id": "b87b3ff5-4b23-47d5-a5b2-38d4b26a6377",
+        "session_id": "5e551011-0000-4000-8000-000000000001"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

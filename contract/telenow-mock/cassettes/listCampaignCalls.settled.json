@@ -1,0 +1,229 @@
+{
+  "operationId": "listCampaignCalls",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k7campaigns.py); people settled in the database with the words the release's finalisers write",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/campaigns/c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f/calls",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "calls": [
+          {
+            "analysis_overrides": null,
+            "attempt": 1,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": null,
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "081e8cb4-02a5-4cd1-9743-243201280fa0",
+            "last_error": "no caller id for this call: agent has no number allocated for inbound and none was selected. Assign a number to the agent on the Numbers page, or pick one on the campaign.",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550108",
+            "scheduled_for": "2026-11-04T10:18:06.764050Z",
+            "session_id": null,
+            "started_at": null,
+            "status": "pending",
+            "user_turns": null,
+            "variables": {
+              "first_name": "Hal",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000008-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 1,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.673858Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": 62,
+            "first_response": null,
+            "id": "dc3d9e4e-fb50-46d0-aebd-6c08e33307a5",
+            "last_error": null,
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550101",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": "95a3acf8-43bb-4de7-8317-08349aebeabf",
+            "started_at": "2026-11-04T09:15:05.673858Z",
+            "status": "completed",
+            "user_turns": 2,
+            "variables": {
+              "first_name": "Ana",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000001-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 2,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.709571Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": 20,
+            "first_response": null,
+            "id": "cac6f934-3426-4a1a-bd41-2c1c2eaf7508",
+            "last_error": null,
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550102",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": "1f6ec663-73b7-479a-8508-8e70b25be638",
+            "started_at": "2026-11-04T09:15:05.709571Z",
+            "status": "completed",
+            "user_turns": 1,
+            "variables": {
+              "first_name": "Ben",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000002-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 2,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.724357Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "181570db-aade-4504-a9ed-e151e60be741",
+            "last_error": "call not answered: no-answer",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550103",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": null,
+            "started_at": "2026-11-04T09:15:05.724357Z",
+            "status": "failed",
+            "user_turns": null,
+            "variables": {
+              "first_name": "Cleo",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000003-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 1,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.738844Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "67a6a865-1ace-4573-bd70-663854f0189a",
+            "last_error": "call not answered: busy",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550104",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": null,
+            "started_at": "2026-11-04T09:15:05.738844Z",
+            "status": "failed",
+            "user_turns": null,
+            "variables": {
+              "first_name": "Dev",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000004-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 1,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.752660Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "45d14a66-857d-4afb-9556-501f09668526",
+            "last_error": "call not answered: machine",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550105",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": null,
+            "started_at": "2026-11-04T09:15:05.752660Z",
+            "status": "failed",
+            "user_turns": null,
+            "variables": {
+              "first_name": "Eve",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000005-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 1,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.766263Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "68e461c9-ceba-49a6-afaf-cd74526582d9",
+            "last_error": "dial timed out",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550106",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": null,
+            "started_at": "2026-11-04T09:15:05.766263Z",
+            "status": "failed",
+            "user_turns": null,
+            "variables": {
+              "first_name": "Fay",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000006-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 1,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": "2026-11-04T09:17:05.780561Z",
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "3b22932c-a6cf-4ea0-bac1-77e930ffa49b",
+            "last_error": "Exotel refused this call because the account has no calling credit left (wallet balance -12.50). Top up your Exotel account. Exotel said: insufficient balance",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550107",
+            "scheduled_for": "2026-11-04T09:18:05.608825Z",
+            "session_id": null,
+            "started_at": "2026-11-04T09:15:05.780561Z",
+            "status": "failed",
+            "user_turns": null,
+            "variables": {
+              "first_name": "Gus",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000007-0000-4000-8000-000000000000"
+            }
+          }
+        ],
+        "failedTotal": 5,
+        "failedUnanswered": 2,
+        "statusCounts": {
+          "completed": 2,
+          "failed": 5,
+          "pending": 1
+        },
+        "total": 8
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

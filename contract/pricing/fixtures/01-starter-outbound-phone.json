@@ -1,0 +1,59 @@
+{
+  "name": "A markup on every component, outbound phone call",
+  "why": "Each non-zero component is its own line, in name order, converted at the rate; zero components (embedding, simulation \u2026) make no line.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.004125",
+        "billedSeconds": null,
+        "amount": "0.49"
+      },
+      {
+        "subject": "component:platformFee",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0158333333",
+        "billedSeconds": null,
+        "amount": "1.87"
+      },
+      {
+        "subject": "component:stt",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0067083333",
+        "billedSeconds": null,
+        "amount": "0.79"
+      },
+      {
+        "subject": "component:telephony",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0266",
+        "billedSeconds": null,
+        "amount": "3.14"
+      },
+      {
+        "subject": "component:tts",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.01584",
+        "billedSeconds": null,
+        "amount": "1.87"
+      }
+    ],
+    "total": "8.16"
+  }
+}

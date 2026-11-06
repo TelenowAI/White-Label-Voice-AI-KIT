@@ -1,0 +1,59 @@
+{
+  "name": "A plan's rules first, then the list it extends",
+  "why": "pro prices llm and outbound telephony; every other component falls back to base.",
+  "plan": "pro",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "pro/llm",
+        "method": "markupPercent",
+        "costUsd": "0.004125",
+        "billedSeconds": null,
+        "amount": "0.40"
+      },
+      {
+        "subject": "component:platformFee",
+        "rule": "base/components",
+        "method": "markupPercent",
+        "costUsd": "0.0158333333",
+        "billedSeconds": null,
+        "amount": "1.73"
+      },
+      {
+        "subject": "component:stt",
+        "rule": "base/components",
+        "method": "markupPercent",
+        "costUsd": "0.0067083333",
+        "billedSeconds": null,
+        "amount": "0.73"
+      },
+      {
+        "subject": "component:telephony",
+        "rule": "pro/lines",
+        "method": "perMinute",
+        "costUsd": "0.0266",
+        "billedSeconds": 120,
+        "amount": "1.50"
+      },
+      {
+        "subject": "component:tts",
+        "rule": "base/components",
+        "method": "markupPercent",
+        "costUsd": "0.01584",
+        "billedSeconds": null,
+        "amount": "1.73"
+      }
+    ],
+    "total": "6.09"
+  }
+}

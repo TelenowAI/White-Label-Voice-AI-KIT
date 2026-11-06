@@ -1,0 +1,52 @@
+{
+  "operationId": "listNumberCalls",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key and a stand-in carrier that takes the call (contract_k9human.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/dial/number-calls",
+    "query": "number=%2B14155550101",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "calls": [
+          {
+            "agentName": "Softphone",
+            "callMode": "manual",
+            "comments": [
+              {
+                "author": "sub-account+6cd732aa5f4449a085c1dd5309ed8955@sub-accounts.invalid",
+                "body": "Asked for a call back on Friday.",
+                "createdAt": "2026-11-04T14:44:25.645338Z",
+                "id": "b87b3ff5-4b23-47d5-a5b2-38d4b26a6377"
+              },
+              {
+                "author": "sub-account+6cd732aa5f4449a085c1dd5309ed8955@sub-accounts.invalid",
+                "body": "Friday morning.",
+                "createdAt": "2026-11-04T14:44:25.656185Z",
+                "id": "78dd06ed-8f63-4a80-888e-fd3a81025072"
+              }
+            ],
+            "disposition": "completed",
+            "durationSec": 95,
+            "endedAt": "2026-11-04T14:44:22.505183Z",
+            "fromNumber": "918045671001",
+            "id": "5e551011-0000-4000-8000-000000000001",
+            "initiatedByEmail": "sub-account+6cd732aa5f4449a085c1dd5309ed8955@sub-accounts.invalid",
+            "phoneNumber": "918045671001",
+            "recordingId": null,
+            "startedAt": "2026-11-04T14:44:22.360906Z",
+            "status": "ended",
+            "toNumber": "+14155550101",
+            "who": "sub-account+6cd732aa5f4449a085c1dd5309ed8955@sub-accounts.invalid"
+          }
+        ],
+        "number": "+14155550101"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

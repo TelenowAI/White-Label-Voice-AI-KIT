@@ -1,0 +1,74 @@
+{
+  "name": "Ties round away from zero",
+  "why": "0.125 \u2192 0.13 and 0.135 \u2192 0.14 with half-up. Written for this case.",
+  "plan": "ties-half-up",
+  "usdRate": "1",
+  "priceLists": [
+    {
+      "id": "ties-half-up",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [
+        {
+          "id": "all",
+          "match": {
+            "item": "component"
+          },
+          "price": {
+            "markupPercent": "0"
+          }
+        },
+        {
+          "id": "fees",
+          "match": {
+            "item": "fee"
+          },
+          "price": {
+            "markupPercent": "0"
+          }
+        }
+      ]
+    }
+  ],
+  "item": {
+    "inline": {
+      "kind": "call",
+      "attributes": {
+        "callType": "agent_voice",
+        "direction": "outbound",
+        "channel": "telephony"
+      },
+      "durationSec": 60,
+      "components": {
+        "llm": "0.125",
+        "stt": "0.135"
+      },
+      "totalUsd": "0.26"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "1",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "ties-half-up/all",
+        "method": "markupPercent",
+        "costUsd": "0.125",
+        "billedSeconds": null,
+        "amount": "0.13"
+      },
+      {
+        "subject": "component:stt",
+        "rule": "ties-half-up/all",
+        "method": "markupPercent",
+        "costUsd": "0.135",
+        "billedSeconds": null,
+        "amount": "0.14"
+      }
+    ],
+    "total": "0.27"
+  }
+}

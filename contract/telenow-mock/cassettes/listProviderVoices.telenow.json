@@ -1,0 +1,673 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/telenow/voices",
+    "query": "model=telenow-v1",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "accent": "indian",
+          "description": "Composed, firm-but-polite Indian-English voice for payment reminders and collections calls.",
+          "gender": "male",
+          "id": "vikram-en-in",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Vikram",
+          "style": "firm professional",
+          "tags": [
+            "collections",
+            "reminder",
+            "firm",
+            "professional"
+          ],
+          "use_case": "collections"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "aarushi-women-hi",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Kyan women"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "kunto-engaging-young-female-voice-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Kunto- Engaging Young Female Voice"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "lisa-women-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "lisa women",
+          "style": "Bright,Crisp,Polished"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "megan-expressive-narrator-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Megan Expressive Narrator",
+          "style": "Bright,Crisp,Polished"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "nandini-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Nandini",
+          "style": "Bright,Crisp,Polished"
+        },
+        {
+          "accent": "american",
+          "description": "Warm, confident American female — great for outbound sales, demos and account management.",
+          "gender": "female",
+          "id": "olivia-en-us",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Olivia",
+          "style": "warm confident",
+          "tags": [
+            "sales",
+            "account-management",
+            "confident",
+            "warm"
+          ],
+          "use_case": "sales"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "rachel-social-media-narrator-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Rachel - Social Media Narrator",
+          "style": "Bright,Crisp,Polished"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "rumika-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "rumika",
+          "style": "Bright,Crisp,Polished"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "sarah-approachable-and-informative-en",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "telenow-v1",
+          "name": "Sarah - Approachable and Informative",
+          "style": "Bright,Crisp,Polished"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "akshita-cute-romantic-ai-girlfriend-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Akshita  Cute & Romantic AI Girlfriend",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Cute & Romantic AI Girlfriend  brings a sweet, warm cuteness"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "anamika-animated-friendly-and-engaging-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Anamika  Animated, Friendly and Engaging",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Animated, Friendly and Engage Animated and Friendly"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "anu-sweet-warm-sdr-voice-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Anu Sweet & Warm SDR Voice",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Sweet & Warm SDR Voice"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "arpita-raw-natural-hinglish-agent-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Arpita Raw & Natural Hinglish Agent",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Raw & Natural Hinglish Agent  Apsara cuts through the noise of over"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "awenshi-p-friendly-kannada-customer-care-kn",
+          "language": "kn",
+          "languages": [
+            "kn"
+          ],
+          "model": "telenow-v1",
+          "name": "Awenshi P Friendly Kannada Customer Care",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Friendly Kannada Customer Care  Empathetic & efficient,"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "bunty-p-smart-friendly-assistant-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Bunty P Smart Friendly Assistant",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Smart Friendly Assistant  Bunty brings a friendly, fun,"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "ca-shrey-confident-finance-support-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "CA Sham - Confident Finance Support",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Confident Finance Support"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "deependra-wise-gujarati-friend-voice-gu",
+          "language": "gu",
+          "languages": [
+            "gu"
+          ],
+          "model": "telenow-v1",
+          "name": "Deependra   Wise Gujarati Friend Voice",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Encouraging and Sarcastic   Conversational, Delhi Accent Wise Gujarati Friend Voice  Grounded, warm and genuinely"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "devi-smooth-polished-commercial-confident-persuasive-attention-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Devi Smooth Polished Commercial  Confident, persuasive & attention",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Smooth Polished Commercial  Confident, persuasive & attention"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "diksha-vibrant-lively-influencer-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Diksha  Vibrant & Lively Influencer",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Vibrant & Lively Influencer  Misha brings the kind of energy"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "gagan-men-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "gagan men"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "hussen-men-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "hussen men",
+          "use_case": "ads and content"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "kalyani-warm-marathi-conversational-mr",
+          "language": "mr",
+          "languages": [
+            "mr"
+          ],
+          "model": "telenow-v1",
+          "name": "Kalyani  Warm Marathi Conversational",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Warm Marathi Conversational  Gentle, natural and instantly welcoming"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "khushi-women-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "khushi women"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "krishna-professional-indian-customer-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Krishna Professional Indian Customer",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Professional Indian Customer"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "manikandan-p-deep-malayalam-narration-ml",
+          "language": "ml",
+          "languages": [
+            "ml"
+          ],
+          "model": "telenow-v1",
+          "name": "Manikandan P  Deep Malayalam Narration",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Deep Malayalam Narration  Expressive, captivating, immersive"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "mushik-men-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "sannu female hindi"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "nayana-expressive-kids-narrator-warm-and-wonderful-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Nayana Expressive kids Narrator  Warm and wonderful",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Expressive kids Narrator  Warm and wonderfully dramatic"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "neel-kumar-expressive-social-media-influencer-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Neel Kumar Expressive Social Media Influencer",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Expressive Social Media Influencer  Neel delivers an energetic, expressive"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "neha-rani-clear-and-confident-clean-hindi-narration-voice-hindi-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Neha Rani Clear and Confident Clean Hindi Narration Voice Hindi",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Expressive Customer Care  Warm, expressive, and genuinely lively"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "pooja-marathi-mr",
+          "language": "mr",
+          "languages": [
+            "mr"
+          ],
+          "model": "telenow-v1",
+          "name": "pooja Marathi",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Clear Marathi Audiobook"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "raja-explosive-and-youthful-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Raja  Explosive and Youthful",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Explosive and Youthful"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "rajiv-polished-professional-customer-care-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Rajiv Polished & Professional Customer care",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Polished & Professional Customer care"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "rani-clear-insurance-sdr-agent-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Rani Clear Insurance SDR Agent",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Clear Insurance SDR Agent  Pronounces car names, IDV values, NCB"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "ranveer-calm-polished-news-steady-professional-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Ranveer  Calm Polished News  Steady, professional",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Calm Polished News  Steady, professional, and built for the pa"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "riya-rao-polished-neutral-and-assured-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Riya Rao Polished, Neutral and Assured",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Polished, Neutral and Assured  – Personal Assistant & Call"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "riya-smooth-intimidating-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Riya Smooth, Intimidating",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Smooth, Intimidating   Cozy Late Night Storyteller"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "rohan-clear-and-confident-clean-hindi-narration-voice-hindi-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Rohan Clear and Confident Clean Hindi Narration Voice Hindi",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Clear and Confident Clean Hindi Narration Voice hindi"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "sahil-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Sahil",
+          "style": "Warm",
+          "use_case": "receptionist"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "shefali-number-fluent-customer-care-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Shefali Number Fluent Customer Care",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Number Fluent Customer Care  Anika delivers warmth and professionalist"
+        },
+        {
+          "id": "shirsti-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Shirsti"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "sia-confident-clear-and-helpful-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Sia - Confident, Clear and Helpful",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Personal AI Assistant Voice Ai"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "simran-bright-automobile-customer-care-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Simran - Bright Automobile Customer Care",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Bright Automobile Customer Care"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "sunny-young-expressive-excited-youthful-interactive-bursting-with-natural-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Sunny  Young, Expressive & Excited  Youthful, interactive, bursting with natural",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Young, Expressive & Excited  Youthful, interactive, bursting with natural"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "swati-p-young-sweet-bengali-female-bn",
+          "language": "bn",
+          "languages": [
+            "bn"
+          ],
+          "model": "telenow-v1",
+          "name": "Swati P Young Sweet Bengali female",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Young Sweet Bengali female  Sweet, warm and naturally endearing"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "tarini-calm-assertive-recovery-agent-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Tarini - Calm & Assertive Recovery Agent",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Calm & Assertive Recovery Agent"
+        },
+        {
+          "accent": "indian",
+          "id": "tranquil-woman-warm-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "Tranquil Woman - Warm"
+        },
+        {
+          "accent": "indian",
+          "description": "Welcoming Marathi bank front-desk voice for reception and phone banking.",
+          "gender": "female",
+          "id": "varsha-mr",
+          "language": "mr",
+          "languages": [
+            "mr"
+          ],
+          "model": "telenow-v1",
+          "name": "Varsha",
+          "style": "warm professional",
+          "tags": [
+            "banking",
+            "receptionist",
+            "front-desk",
+            "warm"
+          ],
+          "use_case": "banking"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "vishal-men-hi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "telenow-v1",
+          "name": "vishal  men",
+          "use_case": "education"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "vithoba-smooth-marathi-storyteller-mr",
+          "language": "mr",
+          "languages": [
+            "mr"
+          ],
+          "model": "telenow-v1",
+          "name": "Vithoba Smooth Marathi Storyteller",
+          "style": "Bright,Crisp,Polished",
+          "use_case": "Smooth Marathi Storyteller  Fluid, warm and effortlessly immersive"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 50
+    }
+  }
+}

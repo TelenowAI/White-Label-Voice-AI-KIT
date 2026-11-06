@@ -1,0 +1,26 @@
+{
+  "operationId": "listAgentsSlim",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/agents",
+    "query": "is_active=true&limit=500&offset=0",
+    "apiKey": "vai_test_viewer"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "agents": [
+        {
+          "created_at": "2026-10-29T10:59:56.323040Z",
+          "description": null,
+          "id": "14691243-767c-4b2d-908e-47564518c45f",
+          "is_active": true,
+          "name": "Contract Agent",
+          "updated_at": "2026-10-29T10:59:56.323040Z"
+        }
+      ],
+      "total": 1
+    }
+  }
+}

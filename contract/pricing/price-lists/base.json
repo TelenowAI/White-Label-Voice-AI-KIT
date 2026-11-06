@@ -1,0 +1,27 @@
+{
+  "id": "base",
+  "currency": "INR",
+  "decimals": 2,
+  "rounding": "half-up",
+  "billingIncrementSeconds": 60,
+  "rules": [
+    {
+      "id": "components",
+      "match": {
+        "item": "component"
+      },
+      "price": {
+        "markupPercent": "30"
+      }
+    },
+    {
+      "id": "fees",
+      "match": {
+        "item": "fee"
+      },
+      "price": {
+        "markupPercent": "30"
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Rounding down",
+  "why": "0.129 \u2192 0.12 when rounding down. Written for this case.",
+  "plan": "round-down",
+  "usdRate": "1",
+  "priceLists": [
+    {
+      "id": "round-down",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "down",
+      "billingIncrementSeconds": 60,
+      "rules": [
+        {
+          "id": "all",
+          "match": {
+            "item": "component"
+          },
+          "price": {
+            "markupPercent": "0"
+          }
+        },
+        {
+          "id": "fees",
+          "match": {
+            "item": "fee"
+          },
+          "price": {
+            "markupPercent": "0"
+          }
+        }
+      ]
+    }
+  ],
+  "item": {
+    "inline": {
+      "kind": "fee",
+      "attributes": {
+        "refKind": "rental"
+      },
+      "costUsd": "0.129"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "1",
+    "lines": [
+      {
+        "subject": "fee:rental",
+        "rule": "round-down/fees",
+        "method": "markupPercent",
+        "costUsd": "0.129",
+        "billedSeconds": null,
+        "amount": "0.12"
+      }
+    ],
+    "total": "0.12"
+  }
+}

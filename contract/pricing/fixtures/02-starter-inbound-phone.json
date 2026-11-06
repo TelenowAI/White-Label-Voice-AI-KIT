@@ -1,0 +1,67 @@
+{
+  "name": "A markup on every component, inbound phone call",
+  "why": "A component the other calls do not have (postCallAnalysis) is priced by the same catch-all rule.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.inbound-phone",
+      "call": "getCallV1.inbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.01378",
+        "billedSeconds": null,
+        "amount": "1.63"
+      },
+      {
+        "subject": "component:platformFee",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.052",
+        "billedSeconds": null,
+        "amount": "6.13"
+      },
+      {
+        "subject": "component:postCallAnalysis",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.00125",
+        "billedSeconds": null,
+        "amount": "0.15"
+      },
+      {
+        "subject": "component:stt",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0221",
+        "billedSeconds": null,
+        "amount": "2.61"
+      },
+      {
+        "subject": "component:telephony",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0442",
+        "billedSeconds": null,
+        "amount": "5.21"
+      },
+      {
+        "subject": "component:tts",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.049632",
+        "billedSeconds": null,
+        "amount": "5.85"
+      }
+    ],
+    "total": "21.58"
+  }
+}

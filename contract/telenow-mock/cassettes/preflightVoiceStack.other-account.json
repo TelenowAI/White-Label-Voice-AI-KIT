@@ -1,0 +1,18 @@
+{
+  "operationId": "preflightVoiceStack",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k13settings.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/preflight",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Agent not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

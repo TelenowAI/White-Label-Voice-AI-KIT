@@ -1,0 +1,18 @@
+{
+  "operationId": "getAgent",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1agents.py); not served by the mock (it answers a later state of the same request)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Agent not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

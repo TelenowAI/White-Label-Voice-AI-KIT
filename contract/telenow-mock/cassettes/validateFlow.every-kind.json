@@ -1,0 +1,34 @@
+{
+  "operationId": "validateFlow",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k6flow.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/flow/validate",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "errors": [],
+        "multiContext": true,
+        "valid": true,
+        "warnings": [
+          {
+            "at": "menu",
+            "code": "keypad_menu_without_a_catch_all",
+            "message": "step 'Main menu' routes keypresses without asking the AI and has no menu line to read out again, so a digit you have not mapped reaches nothing — the call stays here in silence, with no reply and no retry. Write the menu into the step (an unmapped key repeats it), or add an 'Otherwise' exit."
+          },
+          {
+            "at": "tell",
+            "code": "silent_arrival",
+            "message": "the call reaches step 'Tell' from Which without the agent saying anything — that step runs inside the agent's turn, so this step parks and waits for a caller who is waiting for it. Give it a 'Line spoken on arrival'."
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

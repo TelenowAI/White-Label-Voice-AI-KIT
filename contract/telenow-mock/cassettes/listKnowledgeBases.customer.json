@@ -1,0 +1,36 @@
+{
+  "operationId": "listKnowledgeBases",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1knowledge.py); no vendor is reachable there, so text documents failed to embed and the table was indexed; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/knowledge-bases",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "knowledgeBases": [
+          {
+            "app_id": null,
+            "app_kb_key": null,
+            "created_at": "2026-10-30T14:56:33.364255Z",
+            "created_by": "72a47b3f-94f7-46f9-887d-0842ff4f71d2",
+            "deleted_at": null,
+            "description": "What callers ask most",
+            "document_count": 0,
+            "embedding_model": "text-embedding-3-small",
+            "id": "8f3b2c1d-5e6a-4b7c-9d8e-0f1a2b3c4d5e",
+            "name": "Clinic FAQ",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "partner_client_id": null,
+            "updated_at": "2026-10-30T14:56:33.364255Z"
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  }
+}

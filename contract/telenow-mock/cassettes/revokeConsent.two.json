@@ -1,0 +1,20 @@
+{
+  "operationId": "revokeConsent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k8consent.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/consent/%2B14155550102/revoke",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "revoked": 2
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

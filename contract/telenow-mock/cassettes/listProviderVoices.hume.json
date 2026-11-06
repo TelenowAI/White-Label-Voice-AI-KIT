@@ -1,0 +1,515 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/hume/voices",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "neutral",
+          "id": "default",
+          "name": "Auto (Octave generates)"
+        },
+        {
+          "gender": "male",
+          "id": "Colton Rivers",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Colton Rivers",
+          "tags": [
+            "American, Southern, Texas"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Dungeon Master",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Dungeon Master",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Female Meditation Guide",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Female Meditation Guide",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Friendly Troll",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Friendly Troll",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Geraldine Wallace",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Geraldine Wallace",
+          "tags": [
+            "American, Black American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Ghost With Unfinished Business",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Ghost With Unfinished Business",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Imani Carter",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Imani Carter",
+          "tags": [
+            "American, Black American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Lady Elizabeth",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Lady Elizabeth",
+          "tags": [
+            "British, English, Received Pronunciation"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Male Protagonist",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Male Protagonist",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Medieval Peasant Woman",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Medieval Peasant Woman",
+          "tags": [
+            "British, English, Cockney"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Medieval Town Crier",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Medieval Town Crier",
+          "tags": [
+            "British, English, Received Pronunciation"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Mrs. Pembroke",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Mrs. Pembroke",
+          "tags": [
+            "British, English"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Spanish Instructor",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "name": "Spanish Instructor",
+          "tags": [
+            "Mexican"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Daniela",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "name": "Daniela",
+          "tags": [
+            "Latin American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Emma",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "name": "Emma",
+          "tags": [
+            "Latin American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Isabella",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "name": "Isabella",
+          "tags": [
+            "Latin American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Juan",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "name": "Juan",
+          "tags": [
+            "Latin American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Akira",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "name": "Akira"
+        },
+        {
+          "gender": "female",
+          "id": "Fumiko",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "name": "Fumiko"
+        },
+        {
+          "gender": "female",
+          "id": "Aiko",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "name": "Aiko",
+          "tags": [
+            "Casual"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Ken",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "name": "Ken",
+          "tags": [
+            "Formal"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Kana",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "name": "Kana"
+        },
+        {
+          "gender": "female",
+          "id": "Priya",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Priya"
+        },
+        {
+          "gender": "male",
+          "id": "Suresh",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Suresh"
+        },
+        {
+          "gender": "male",
+          "id": "Arjun",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Arjun"
+        },
+        {
+          "gender": "male",
+          "id": "Mika the Musician",
+          "language": "fr",
+          "languages": [
+            "fr"
+          ],
+          "name": "Mika the Musician",
+          "tags": [
+            "France"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Benjamin",
+          "language": "fr",
+          "languages": [
+            "fr"
+          ],
+          "name": "Benjamin",
+          "tags": [
+            "France"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Marie Lafleur",
+          "language": "fr",
+          "languages": [
+            "fr"
+          ],
+          "name": "Marie Lafleur",
+          "tags": [
+            "French (Canadian)"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Anna",
+          "language": "de",
+          "languages": [
+            "de"
+          ],
+          "name": "Anna",
+          "tags": [
+            "Standard"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Leon",
+          "language": "de",
+          "languages": [
+            "de"
+          ],
+          "name": "Leon",
+          "tags": [
+            "Standard"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Bianca",
+          "language": "de",
+          "languages": [
+            "de"
+          ],
+          "name": "Bianca"
+        },
+        {
+          "gender": "male",
+          "id": "Marco il Consulente",
+          "language": "it",
+          "languages": [
+            "it"
+          ],
+          "name": "Marco il Consulente"
+        },
+        {
+          "gender": "female",
+          "id": "Chiara",
+          "language": "it",
+          "languages": [
+            "it"
+          ],
+          "name": "Chiara"
+        },
+        {
+          "gender": "female",
+          "id": "Sofia",
+          "language": "it",
+          "languages": [
+            "it"
+          ],
+          "name": "Sofia"
+        },
+        {
+          "gender": "female",
+          "id": "Soo-Jin",
+          "language": "ko",
+          "languages": [
+            "ko"
+          ],
+          "name": "Soo-Jin"
+        },
+        {
+          "gender": "female",
+          "id": "Jin-Hee",
+          "language": "ko",
+          "languages": [
+            "ko"
+          ],
+          "name": "Jin-Hee"
+        },
+        {
+          "gender": "male",
+          "id": "Jae-Hyun the Director",
+          "language": "ko",
+          "languages": [
+            "ko"
+          ],
+          "name": "Jae-Hyun the Director"
+        },
+        {
+          "gender": "female",
+          "id": "A Voz do Silêncio",
+          "language": "pt",
+          "languages": [
+            "pt"
+          ],
+          "name": "A Voz do Silêncio",
+          "tags": [
+            "Portugal"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "A Viajante de Alma",
+          "language": "pt",
+          "languages": [
+            "pt"
+          ],
+          "name": "A Viajante de Alma",
+          "tags": [
+            "Portugal"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "Cronista do Cotidiano",
+          "language": "pt",
+          "languages": [
+            "pt"
+          ],
+          "name": "Cronista do Cotidiano",
+          "tags": [
+            "Portugal"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "Anastasia",
+          "language": "ru",
+          "languages": [
+            "ru"
+          ],
+          "name": "Anastasia"
+        },
+        {
+          "gender": "male",
+          "id": "Ivan",
+          "language": "ru",
+          "languages": [
+            "ru"
+          ],
+          "name": "Ivan"
+        },
+        {
+          "gender": "male",
+          "id": "Dmitri",
+          "language": "ru",
+          "languages": [
+            "ru"
+          ],
+          "name": "Dmitri"
+        },
+        {
+          "gender": "male",
+          "id": "Karim",
+          "language": "ar",
+          "languages": [
+            "ar"
+          ],
+          "name": "Karim"
+        },
+        {
+          "gender": "female",
+          "id": "Layla, Arabic Philosopher",
+          "language": "ar",
+          "languages": [
+            "ar"
+          ],
+          "name": "Layla, Arabic Philosopher"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 46
+    }
+  }
+}

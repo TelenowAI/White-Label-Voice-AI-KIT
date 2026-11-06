@@ -1,0 +1,40 @@
+{
+  "operationId": "getCampaignResultsV1",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1campaigns.py); the caller id was bought through a STAND-IN carrier (teleone_stub.py) and every call failed there (nothing is dialled from the box); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/campaigns/c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f/results",
+    "query": "since=2026-10-30T16%3A19%3A51.000Z",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "since"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "nextCursor": "2026-10-30T16:20:53.460445Z_714a19d1-3369-46e6-ba7d-f4ce70f72e47",
+      "nextSince": "2026-10-30T16:20:53.460445+00:00",
+      "results": [
+        {
+          "attempt": 1,
+          "callId": "3e41445a-5b5e-4aa0-a2c9-659e5cae80bb",
+          "completedAt": "2026-10-30T16:20:53.455996+00:00",
+          "id": "a0000002-0000-4000-8000-000000000000",
+          "outcome": "failed",
+          "phone": "+14155550102",
+          "source": "push|kit"
+        },
+        {
+          "attempt": 1,
+          "callId": "714a19d1-3369-46e6-ba7d-f4ce70f72e47",
+          "completedAt": "2026-10-30T16:20:53.460445+00:00",
+          "id": "a0000001-0000-4000-8000-000000000000",
+          "outcome": "failed",
+          "phone": "+14155550101",
+          "source": "push|kit"
+        }
+      ]
+    }
+  }
+}

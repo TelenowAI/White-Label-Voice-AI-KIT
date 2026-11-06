@@ -1,0 +1,27 @@
+{
+  "name": "A ledger entry that is not a charge",
+  "why": "A payment (entryType payment) is not a fee. Written for this case: no recorded ledger holds a payment.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "ledgerEntry": {
+      "id": "00000000-0000-4000-8000-000000000017",
+      "entryType": "payment",
+      "amountUsd": "50.0000000000",
+      "balanceAfterUsd": "90.0000000000",
+      "refKind": "manual",
+      "refId": null,
+      "fxCurrency": null,
+      "fxRate": null,
+      "fxAmount": null,
+      "note": "Top-up",
+      "createdBy": "system",
+      "createdAt": "2026-10-29T17:00:00Z",
+      "sourceOrgId": null
+    }
+  },
+  "expect": {
+    "error": "not_a_charge",
+    "subject": "fee"
+  }
+}

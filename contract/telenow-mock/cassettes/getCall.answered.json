@@ -1,0 +1,127 @@
+{
+  "operationId": "getCall",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/calls/700e33e4-1bb0-48ba-8c19-5e7f66546249",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "agent_audible_count": null,
+        "agent_id": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+        "agent_name": "Front desk",
+        "answered_by": "human",
+        "artifacts": {
+          "analysis": true,
+          "cost": false,
+          "latency": false,
+          "recording": true,
+          "trace": false
+        },
+        "audio_gap_count": null,
+        "call_mode": "agent",
+        "call_sid": "CAkit5107d73f23719d01657b76517385",
+        "caller_memory": null,
+        "channel": "telephony",
+        "charge_usd": null,
+        "completeness": {
+          "analysis": "present",
+          "metrics": "pending",
+          "recording": "present",
+          "transcript": "present"
+        },
+        "content_purged_at": null,
+        "created_at": "2026-10-30T11:38:57.162299Z",
+        "direction": "inbound",
+        "disposition": "completed",
+        "duration_sec": 50,
+        "end_time": "2026-10-30T11:36:47.196795Z",
+        "flow_ms_avg": null,
+        "from_number": "+14155550123",
+        "id": "700e33e4-1bb0-48ba-8c19-5e7f66546249",
+        "initiated_by": null,
+        "initiated_by_api_key": null,
+        "initiated_by_email": null,
+        "initiated_by_name": null,
+        "initiated_via": null,
+        "lead": null,
+        "llm_cached_tokens": 0,
+        "llm_completion_tokens": 0,
+        "llm_ms_avg": null,
+        "llm_prompt_tokens": 0,
+        "llm_total_tokens": 0,
+        "net_rtt_ms_avg": null,
+        "objectives_state": null,
+        "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+        "participants": {},
+        "phone_number": "+14155550100",
+        "post_call": [
+          {
+            "at": "2026-10-30T11:38:57.167985+00:00",
+            "error": null,
+            "model": "openai/gpt-4o-mini",
+            "status": "done",
+            "type": "post_call.analysis"
+          }
+        ],
+        "recording_id": "be7b5cfe-9021-45fe-9429-ebe30ee48f83",
+        "recordings": [
+          {
+            "channel": "phone",
+            "created_at": "2026-10-30T11:38:57.180691Z",
+            "duration_sec": null,
+            "id": "be7b5cfe-9021-45fe-9429-ebe30ee48f83",
+            "source": null
+          }
+        ],
+        "resp_ms_avg": null,
+        "resp_ms_max": null,
+        "resp_samples": null,
+        "source": null,
+        "stack": [],
+        "start_time": "2026-10-30T11:35:57.162299Z",
+        "status": "ended",
+        "stt_ms_avg": null,
+        "to_number": "+14155550100",
+        "transcript": [
+          {
+            "agent_id": null,
+            "at": "2026-10-30T11:36:07.165887Z",
+            "role": "assistant",
+            "text": "Acme Dental, how can I help?"
+          },
+          {
+            "agent_id": null,
+            "at": "2026-10-30T11:36:17.165887Z",
+            "role": "user",
+            "text": "I would like a cleaning next Tuesday."
+          },
+          {
+            "agent_id": null,
+            "at": "2026-10-30T11:36:27.165887Z",
+            "role": "assistant",
+            "text": "Tuesday at 10 am is free. Shall I book it?"
+          },
+          {
+            "agent_id": null,
+            "at": "2026-10-30T11:36:37.165887Z",
+            "role": "user",
+            "text": "Yes please."
+          }
+        ],
+        "tts_ms_avg": null,
+        "turn_hold_ms_avg": null,
+        "updated_at": "2026-10-30T11:38:57.196795Z",
+        "user_id": null,
+        "variables": null,
+        "voiceStackIncidents": [],
+        "wrapup_disposition": null
+      },
+      "success": true
+    }
+  }
+}

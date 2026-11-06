@@ -1,0 +1,95 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k13settings.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/sarvam/voices",
+    "query": "model=bulbul:v2",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "anushka",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Anushka"
+        },
+        {
+          "gender": "female",
+          "id": "manisha",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Manisha"
+        },
+        {
+          "gender": "female",
+          "id": "vidya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Vidya"
+        },
+        {
+          "gender": "female",
+          "id": "arya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Arya"
+        },
+        {
+          "gender": "male",
+          "id": "abhilash",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Abhilash"
+        },
+        {
+          "gender": "male",
+          "id": "karun",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Karun"
+        },
+        {
+          "gender": "male",
+          "id": "hitesh",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v2",
+          "name": "Hitesh"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 7
+    }
+  },
+  "serve": false
+}

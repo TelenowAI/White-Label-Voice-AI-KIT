@@ -1,0 +1,17 @@
+{
+  "operationId": "whoAmI",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "query": "",
+    "apiKey": "vai_test_revoked"
+  },
+  "response": {
+    "status": 401,
+    "body": {
+      "error": "Invalid or revoked API key",
+      "success": false
+    }
+  }
+}

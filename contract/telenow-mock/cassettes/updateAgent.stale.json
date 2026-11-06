@@ -1,0 +1,20 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k1settings.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 409,
+    "body": {
+      "code": "agent_version_conflict",
+      "currentVersion": 3,
+      "error": "This agent was changed after this edit was made (it is now at version 3). Nothing was saved: reload the agent and make the change again.",
+      "success": false
+    }
+  },
+  "serve": false
+}

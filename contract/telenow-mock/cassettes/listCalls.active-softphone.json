@@ -1,0 +1,76 @@
+{
+  "operationId": "listCalls",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key, a stand-in carrier that takes the call and a stand-in media relay playing its sound (contract_k10listen.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/calls",
+    "query": "status=active",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "calls": [
+          {
+            "agent_audible_count": null,
+            "agent_id": "2d2a6734-af46-445d-b6a6-64fe064735e9",
+            "agent_name": "Softphone",
+            "answered_by": null,
+            "artifacts": {
+              "analysis": false,
+              "cost": false,
+              "latency": false,
+              "recording": false,
+              "trace": false
+            },
+            "audio_gap_count": null,
+            "call_mode": "manual",
+            "call_sid": "fc7bc377-ac3d-4765-83c2-1332c0710804",
+            "caller_memory": null,
+            "channel": "softphone",
+            "charge_usd": null,
+            "content_purged_at": null,
+            "created_at": "2026-11-04T16:39:28.186506Z",
+            "direction": "outbound",
+            "disposition": null,
+            "duration_sec": null,
+            "end_time": null,
+            "flow_ms_avg": null,
+            "from_number": "918045671001",
+            "id": "5e551011-0000-4000-8000-000000000003",
+            "initiated_by": "5720f5fb-ad88-45e2-bd98-a221b1601fa6",
+            "initiated_by_api_key": null,
+            "initiated_by_email": "sub-account+57987ce2d04b46698aa6347944c5e3ca@sub-accounts.invalid",
+            "initiated_by_name": "Sub-account service identity",
+            "initiated_via": "user",
+            "lead": null,
+            "llm_ms_avg": null,
+            "net_rtt_ms_avg": null,
+            "objectives_state": null,
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "918045671001",
+            "recording_id": null,
+            "resp_ms_avg": null,
+            "resp_ms_max": null,
+            "resp_samples": null,
+            "source": null,
+            "start_time": "2026-11-04T16:39:28.186506Z",
+            "status": "active",
+            "stt_ms_avg": null,
+            "to_number": "+14155550101",
+            "tts_ms_avg": null,
+            "turn_hold_ms_avg": null,
+            "updated_at": "2026-11-04T16:39:28.203546Z",
+            "user_id": "5720f5fb-ad88-45e2-bd98-a221b1601fa6",
+            "variables": null,
+            "wrapup_disposition": null
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

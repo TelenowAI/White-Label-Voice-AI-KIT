@@ -1,0 +1,21 @@
+{
+  "operationId": "whoAmI",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1customers.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "key_id": "ebc456c6-95cf-4eaf-a69f-0d662866df04",
+      "key_name": "contract admin",
+      "key_role": "admin",
+      "org_id": "e9d83440-d03a-45e9-9b7b-d6808e96fd65",
+      "org_name": "Kit k1cust",
+      "parent_org_id": null
+    }
+  }
+}

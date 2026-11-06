@@ -1,0 +1,17 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1agents.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/40a60fb5-8ae4-480b-90ba-40700d1c7b6d",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Agent not found or access denied",
+      "success": false
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "A ledger charge with no refKind",
+  "why": "A catch-all fee rule still prices it; the line's subject has nothing after the colon. Written for this case.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "ledgerEntry": {
+      "id": "00000000-0000-4000-8000-000000000034",
+      "entryType": "charge",
+      "amountUsd": "-0.5000000000",
+      "balanceAfterUsd": "39.5000000000",
+      "refKind": null,
+      "refId": null,
+      "fxCurrency": null,
+      "fxRate": null,
+      "fxAmount": null,
+      "note": "Manual charge",
+      "createdBy": "staff",
+      "createdAt": "2026-10-29T17:00:00Z",
+      "sourceOrgId": null
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "fee:",
+        "rule": "starter/fees",
+        "method": "markupPercent",
+        "costUsd": "0.5",
+        "billedSeconds": null,
+        "amount": "58.98"
+      }
+    ],
+    "total": "58.98"
+  }
+}

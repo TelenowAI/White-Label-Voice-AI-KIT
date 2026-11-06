@@ -1,0 +1,23 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/customtts/voices",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [],
+      "hasMore": false,
+      "offered": true,
+      "origin": "none",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 0
+    }
+  }
+}

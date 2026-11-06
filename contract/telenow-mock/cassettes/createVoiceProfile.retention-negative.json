@@ -1,0 +1,18 @@
+{
+  "operationId": "createVoiceProfile",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine that takes clones (tts_stub_k12.py), fake provider keys and every other outbound HTTP request sent to a dead local proxy (contract_k12voices.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/8ff3cc19-c117-503b-be70-0dfdf86abd1d/voices",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "retention_days must be >= 0",
+      "success": false
+    }
+  },
+  "serve": false
+}

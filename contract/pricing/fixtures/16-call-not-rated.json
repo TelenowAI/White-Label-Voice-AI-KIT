@@ -1,0 +1,16 @@
+{
+  "name": "A call Telenow has not rated yet",
+  "why": "Telenow answers null until the call is settled; there is nothing to price.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.not-rated",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "error": "not_rated",
+    "subject": "call"
+  }
+}

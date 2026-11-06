@@ -1,0 +1,25 @@
+{
+  "operationId": "validateFlow",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k6flow.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/flow/validate",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "errors": [
+          "not a flow graph: invalid type: string \"v1\", expected u32"
+        ],
+        "multiContext": false,
+        "valid": false,
+        "warnings": []
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

@@ -1,0 +1,18 @@
+{
+  "operationId": "releaseNumber",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1numbers.py); the carrier was a STAND-IN speaking Plivo's API (teleone_stub.py, TELEONE_API_BASE), so no number was bought anywhere; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/voice/numbers/03da86f7-7935-46eb-bd54-e0c1b8c6006b",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Phone number not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

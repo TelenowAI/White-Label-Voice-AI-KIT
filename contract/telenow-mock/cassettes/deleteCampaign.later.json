@@ -1,0 +1,22 @@
+{
+  "operationId": "deleteCampaign",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1campaigns.py); the caller id was bought through a STAND-IN carrier (teleone_stub.py) and every call failed there (nothing is dialled from the box); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/campaigns/c0ffee00-2a2b-4c3d-8e4f-5a6b7c8d9e0f",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "deleted": true,
+        "priorStatus": "cancelled",
+        "stopped": false
+      },
+      "message": "campaign deleted",
+      "success": true
+    }
+  }
+}

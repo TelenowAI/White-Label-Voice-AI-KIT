@@ -1,0 +1,27 @@
+{
+  "name": "All in per minute, outbound phone call",
+  "why": "A call rule prices the whole call; 95 s bills as 2 started minutes.",
+  "plan": "per-minute",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "call",
+        "rule": "per-minute/outbound-phone",
+        "method": "perMinute",
+        "costUsd": "0.0691066666",
+        "billedSeconds": 120,
+        "amount": "7.00"
+      }
+    ],
+    "total": "7.00"
+  }
+}

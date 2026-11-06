@@ -1,0 +1,15 @@
+# Dependencies and builds
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Laravel (its own rules are in laravel/.gitignore)
+laravel/vendor/
+laravel/.env
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.log

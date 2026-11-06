@@ -1,0 +1,25 @@
+{
+  "operationId": "initWebCall",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key and a stand-in carrier that takes the call (contract_k9human.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/init-web-call",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 429,
+    "body": {
+      "active": 2,
+      "cap": 2,
+      "error": "This number is already on its limit of 2 simultaneous calls (2 live). Retry in about 120s, or ask your platform admin to raise the per-number limit.",
+      "medianCallSecs": 120,
+      "position": 1,
+      "reason": "number_at_capacity",
+      "retryAfter": 120,
+      "scope": "number",
+      "success": false
+    }
+  },
+  "serve": false
+}

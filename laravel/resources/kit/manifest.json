@@ -1,0 +1,686 @@
+{
+  "version": 1,
+  "resources": {
+    "agents": {
+      "table": "agents",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "createAgent",
+          "objectAt": "data",
+          "body": {
+            "sessionConfig": {}
+          }
+        },
+        "update": {
+          "operationId": "updateAgent",
+          "objectAt": "data",
+          "mergeBlobs": [
+            "metadata",
+            "session_config",
+            "telephony_config",
+            "llm_config",
+            "stt_config",
+            "tts_config",
+            "s2s_config",
+            "tags"
+          ]
+        },
+        "delete": {
+          "operationId": "deleteAgent"
+        },
+        "read": {
+          "operationId": "getAgent",
+          "objectAt": "data"
+        }
+      },
+      "kitIdSlot": "metadata.kitId",
+      "fields": [
+        {
+          "column": "name",
+          "telenow": "name",
+          "write": "name"
+        },
+        {
+          "column": "description",
+          "telenow": "description",
+          "write": "description"
+        },
+        {
+          "column": "system_prompt",
+          "telenow": "system_prompt",
+          "write": "systemPrompt"
+        },
+        {
+          "column": "is_active",
+          "telenow": "is_active",
+          "write": "isActive",
+          "on": [
+            "update"
+          ]
+        },
+        {
+          "column": "llm_provider",
+          "telenow": "llm_provider",
+          "write": "llmProvider"
+        },
+        {
+          "column": "llm_model",
+          "telenow": "llm_model",
+          "write": "llmModel"
+        },
+        {
+          "column": "stt_provider",
+          "telenow": "stt_provider",
+          "write": "sttProvider"
+        },
+        {
+          "column": "tts_provider",
+          "telenow": "tts_provider",
+          "write": "ttsProvider"
+        },
+        {
+          "column": "tts_voice",
+          "telenow": "tts_voice",
+          "write": "ttsVoice"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "drift-check",
+        "operationId": "getAgent"
+      },
+      "permission": "agents.manage",
+      "neverStored": [
+        "llm_config.api_key",
+        "stt_config.api_key",
+        "tts_config.api_key"
+      ]
+    },
+    "calls": {
+      "table": "calls",
+      "writer": "telenow",
+      "telenow": {
+        "read": {
+          "operationId": "getCall",
+          "objectAt": "data"
+        }
+      },
+      "extraReads": [
+        {
+          "operationId": "getCallAnalysis",
+          "objectAt": "data",
+          "column": "analysis",
+          "whenPresent": "analysis"
+        }
+      ],
+      "kitIdSlot": null,
+      "fields": [
+        {
+          "column": "status",
+          "telenow": "status"
+        },
+        {
+          "column": "outcome",
+          "telenow": "disposition"
+        },
+        {
+          "column": "direction",
+          "telenow": "direction"
+        },
+        {
+          "column": "channel",
+          "telenow": "channel"
+        },
+        {
+          "column": "from_number",
+          "telenow": "from_number"
+        },
+        {
+          "column": "to_number",
+          "telenow": "to_number"
+        },
+        {
+          "column": "started_at",
+          "telenow": "start_time"
+        },
+        {
+          "column": "ended_at",
+          "telenow": "end_time"
+        },
+        {
+          "column": "duration_sec",
+          "telenow": "duration_sec"
+        },
+        {
+          "column": "answered_by",
+          "telenow": "answered_by"
+        },
+        {
+          "column": "telenow_updated_at",
+          "telenow": "updated_at"
+        },
+        {
+          "column": "transcript",
+          "telenow": "transcript"
+        },
+        {
+          "column": "recordings",
+          "telenow": "recordings"
+        },
+        {
+          "column": "completeness",
+          "telenow": "completeness"
+        }
+      ],
+      "events": [
+        "call.completed"
+      ],
+      "backfill": {
+        "mode": "changed-since",
+        "operationId": "listCalls",
+        "startParameter": "updatedAfter",
+        "cursorParameter": "cursor"
+      },
+      "permission": "calls.read",
+      "neverStored": [
+        "charge_usd"
+      ]
+    },
+    "dnc": {
+      "table": "dnc_entries",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "addDnc",
+          "objectAt": "data"
+        },
+        "delete": {
+          "operationId": "removeDnc"
+        },
+        "read": {
+          "operationId": "listDnc",
+          "objectAt": "data.entries"
+        }
+      },
+      "kitIdSlot": null,
+      "fields": [
+        {
+          "column": "phone_number",
+          "telenow": "phone_number",
+          "write": "phoneNumber",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "reason",
+          "telenow": "reason",
+          "write": "reason",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "source",
+          "telenow": "source"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "changed-since",
+        "operationId": "listDnc",
+        "startParameter": "updatedAfter",
+        "cursorParameter": "cursor"
+      },
+      "permission": "dnc.manage",
+      "neverStored": [
+        "created_by"
+      ]
+    },
+    "consent": {
+      "table": "consent_records",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "recordConsent",
+          "objectAt": "data"
+        },
+        "read": {
+          "operationId": "getConsentHistory",
+          "objectAt": "data.records"
+        }
+      },
+      "kitIdSlot": "evidence.kitId",
+      "fields": [
+        {
+          "column": "phone_number",
+          "telenow": "phone_number",
+          "write": "phone_number",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "consent_type",
+          "telenow": "consent_type",
+          "write": "consent_type",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "scope",
+          "telenow": "scope",
+          "write": "scope",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "source",
+          "telenow": "source",
+          "write": "source",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "disclosure_text",
+          "telenow": "disclosure_text",
+          "write": "disclosure_text",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "disclosure_version",
+          "telenow": "disclosure_version",
+          "write": "disclosure_version",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "captured_at",
+          "telenow": "captured_at",
+          "write": "captured_at",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "expires_at",
+          "telenow": "expires_at",
+          "write": "expires_at",
+          "on": [
+            "create"
+          ]
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "per-row",
+        "operationId": "getConsentHistory"
+      },
+      "permission": "consent.manage",
+      "neverStored": [
+        "created_by",
+        "evidence"
+      ]
+    },
+    "knowledge_bases": {
+      "table": "knowledge_bases",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "createKnowledgeBase",
+          "objectAt": "data"
+        },
+        "delete": {
+          "operationId": "deleteKnowledgeBase"
+        },
+        "read": {
+          "operationId": "getKnowledgeBase",
+          "objectAt": "data"
+        }
+      },
+      "kitIdSlot": null,
+      "fields": [
+        {
+          "column": "name",
+          "telenow": "name",
+          "write": "name"
+        },
+        {
+          "column": "description",
+          "telenow": "description",
+          "write": "description"
+        },
+        {
+          "column": "telenow_updated_at",
+          "telenow": "updated_at"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "full",
+        "operationId": "listKnowledgeBases"
+      },
+      "permission": "knowledge.manage",
+      "neverStored": [
+        "created_by",
+        "embedding_model",
+        "app_id",
+        "app_kb_key",
+        "partner_client_id"
+      ]
+    },
+    "knowledge_documents": {
+      "table": "knowledge_documents",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "addKnowledgeText",
+          "objectAt": "data"
+        },
+        "delete": {
+          "operationId": "deleteKnowledgeDocument"
+        },
+        "read": {
+          "operationId": "listKnowledgeDocuments",
+          "objectAt": "data.documents"
+        }
+      },
+      "kitIdSlot": null,
+      "fields": [
+        {
+          "column": "title",
+          "telenow": "title",
+          "write": "title",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "source_type",
+          "telenow": "source_type"
+        },
+        {
+          "column": "source_uri",
+          "telenow": "source_uri"
+        },
+        {
+          "column": "status",
+          "telenow": "status"
+        },
+        {
+          "column": "char_count",
+          "telenow": "char_count"
+        },
+        {
+          "column": "telenow_updated_at",
+          "telenow": "updated_at"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "changed-since",
+        "operationId": "listKnowledgeDocuments",
+        "startParameter": "updatedAfter"
+      },
+      "permission": "knowledge.manage",
+      "neverStored": [
+        "error"
+      ]
+    },
+    "campaigns": {
+      "table": "campaigns",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "createCampaign",
+          "objectAt": "data"
+        },
+        "delete": {
+          "operationId": "deleteCampaign"
+        },
+        "read": {
+          "operationId": "getCampaign",
+          "objectAt": "data"
+        },
+        "update": {
+          "operationId": "setCampaignSchedule",
+          "objectAt": "data"
+        }
+      },
+      "kitIdSlot": null,
+      "fields": [
+        {
+          "column": "name",
+          "telenow": "name",
+          "write": "name",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "concurrency",
+          "telenow": "concurrency",
+          "write": "concurrency",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "start_time_local",
+          "telenow": "start_time_local",
+          "write": "startTimeLocal",
+          "on": [
+            "create",
+            "update"
+          ]
+        },
+        {
+          "column": "end_time_local",
+          "telenow": "end_time_local",
+          "write": "endTimeLocal",
+          "on": [
+            "create",
+            "update"
+          ]
+        },
+        {
+          "column": "timezone",
+          "telenow": "timezone",
+          "write": "timezone",
+          "on": [
+            "create",
+            "update"
+          ]
+        },
+        {
+          "column": "max_attempts",
+          "telenow": "max_attempts",
+          "write": "maxAttempts",
+          "on": [
+            "create",
+            "update"
+          ]
+        },
+        {
+          "column": "retry_on_no_answer",
+          "telenow": "retry_on_no_answer",
+          "write": "retryOnNoAnswer",
+          "on": [
+            "create",
+            "update"
+          ]
+        },
+        {
+          "column": "retry_backoff_secs",
+          "telenow": "retry_backoff_secs",
+          "write": "retryBackoffSecs",
+          "on": [
+            "create",
+            "update"
+          ]
+        },
+        {
+          "column": "status",
+          "telenow": "status"
+        },
+        {
+          "column": "total_targets",
+          "telenow": "total_targets"
+        },
+        {
+          "column": "completed_targets",
+          "telenow": "completed_targets"
+        },
+        {
+          "column": "failed_targets",
+          "telenow": "failed_targets"
+        },
+        {
+          "column": "dial_block",
+          "telenow": "dial_block"
+        },
+        {
+          "column": "started_at",
+          "telenow": "started_at"
+        },
+        {
+          "column": "completed_at",
+          "telenow": "completed_at"
+        },
+        {
+          "column": "telenow_updated_at",
+          "telenow": "updated_at"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "per-row",
+        "operationId": "getCampaign"
+      },
+      "permission": "campaigns.manage",
+      "neverStored": [
+        "created_by",
+        "app_meta",
+        "queue_key",
+        "partner_client_id"
+      ]
+    },
+    "campaign_targets": {
+      "table": "campaign_targets",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "pushCampaignTargetsV1"
+        },
+        "read": {
+          "operationId": "listCampaignCalls",
+          "objectAt": "data.calls"
+        }
+      },
+      "kitIdSlot": "variables.source_row",
+      "fields": [
+        {
+          "column": "phone_number",
+          "telenow": "phone_number",
+          "write": "phoneNumber"
+        },
+        {
+          "column": "variables",
+          "telenow": "variables",
+          "write": "variables"
+        },
+        {
+          "column": "attempt",
+          "telenow": "attempt"
+        },
+        {
+          "column": "completed_at",
+          "telenow": "completed_at"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "changed-since",
+        "operationId": "getCampaignResultsV1",
+        "startParameter": "since",
+        "cursorParameter": "cursor"
+      },
+      "permission": "campaigns.manage",
+      "neverStored": [
+        "analysis_overrides",
+        "dtmf_digits",
+        "dtmf_choices"
+      ]
+    },
+    "numbers": {
+      "table": "phone_numbers",
+      "writer": "kit",
+      "telenow": {
+        "create": {
+          "operationId": "purchaseNumber",
+          "objectAt": "data.number"
+        },
+        "delete": {
+          "operationId": "releaseNumber"
+        },
+        "read": {
+          "operationId": "getNumber",
+          "objectAt": "data"
+        }
+      },
+      "kitIdSlot": null,
+      "fields": [
+        {
+          "column": "e164",
+          "telenow": "e164",
+          "write": "number",
+          "on": [
+            "create"
+          ]
+        },
+        {
+          "column": "country",
+          "telenow": "country_iso"
+        },
+        {
+          "column": "region",
+          "telenow": "region"
+        },
+        {
+          "column": "number_type",
+          "telenow": "number_type"
+        },
+        {
+          "column": "next_renewal_at",
+          "telenow": "next_renewal_at"
+        },
+        {
+          "column": "released_at",
+          "telenow": "released_at"
+        },
+        {
+          "column": "telenow_updated_at",
+          "telenow": "updated_at"
+        }
+      ],
+      "events": [],
+      "backfill": {
+        "mode": "changed-since",
+        "operationId": "listNumbers",
+        "startParameter": "updatedAfter"
+      },
+      "permission": "numbers.manage",
+      "neverStored": [
+        "provider_data",
+        "user_id"
+      ]
+    }
+  }
+}

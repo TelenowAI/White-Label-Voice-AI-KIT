@@ -1,0 +1,18 @@
+{
+  "operationId": "createHook",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/hooks",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "webhook url rejected: scheme `http` not allowed — use https://",
+      "success": false
+    }
+  },
+  "serve": false
+}

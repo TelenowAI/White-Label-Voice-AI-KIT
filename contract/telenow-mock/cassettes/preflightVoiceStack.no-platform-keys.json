@@ -1,0 +1,48 @@
+{
+  "operationId": "preflightVoiceStack",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k13settings.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/preflight",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "analysisModel": null,
+        "persisted": true,
+        "reports": [
+          {
+            "advice": "The platform has no deepgram credential configured — add your own deepgram API key (BYOK) in the agent's settings, or contact support.",
+            "attribution": "platform",
+            "component": "stt",
+            "error": "no platform key configured for deepgram",
+            "keySource": "platform",
+            "provider": "deepgram",
+            "status": "failed"
+          },
+          {
+            "advice": "No automated check for this provider yet — test with a real call.",
+            "component": "tts",
+            "keySource": "platform",
+            "provider": "telenow",
+            "status": "skipped"
+          },
+          {
+            "advice": "The platform has no openai credential configured — add your own openai API key (BYOK) in the agent's settings, or contact support.",
+            "attribution": "platform",
+            "component": "llm",
+            "error": "no platform key configured for openai",
+            "keySource": "platform",
+            "provider": "openai",
+            "status": "failed"
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

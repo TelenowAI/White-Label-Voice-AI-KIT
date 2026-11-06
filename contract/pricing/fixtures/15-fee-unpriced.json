@@ -1,0 +1,16 @@
+{
+  "name": "A fee no rule prices is refused",
+  "why": "mixed has no fee rule.",
+  "plan": "mixed",
+  "usdRate": "84.25",
+  "item": {
+    "fee": {
+      "ledger": "listLedger.number-fees",
+      "refKind": "rental"
+    }
+  },
+  "expect": {
+    "error": "unpriced_fee",
+    "subject": "fee:rental"
+  }
+}

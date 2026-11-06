@@ -1,0 +1,24 @@
+{
+  "operationId": "listLedger",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1numbers.py); the carrier was a STAND-IN speaking Plivo's API (teleone_stub.py, TELEONE_API_BASE), so no number was bought anywhere; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/billing/ledger",
+    "query": "cursor=2026-10-30T13%3A50%3A03.567325Z_b533a7b5-2187-406c-b88e-7495b4fa595a",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "cursor"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [],
+        "limit": 50,
+        "nextCursor": "2026-10-30T13:50:03.567325Z_b533a7b5-2187-406c-b88e-7495b4fa595a"
+      },
+      "success": true
+    }
+  }
+}

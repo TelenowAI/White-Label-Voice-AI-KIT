@@ -1,0 +1,79 @@
+{
+  "name": "A currency billed in whole units",
+  "why": "decimals 0: each line is a whole number, with no point.",
+  "plan": "whole-units",
+  "usdRate": "152.4",
+  "priceLists": [
+    {
+      "id": "whole-units",
+      "currency": "JPY",
+      "decimals": 0,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [
+        {
+          "id": "all",
+          "match": {
+            "item": "component"
+          },
+          "price": {
+            "markupPercent": "40"
+          }
+        }
+      ]
+    }
+  ],
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "JPY",
+    "usdRate": "152.4",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "whole-units/all",
+        "method": "markupPercent",
+        "costUsd": "0.004125",
+        "billedSeconds": null,
+        "amount": "1"
+      },
+      {
+        "subject": "component:platformFee",
+        "rule": "whole-units/all",
+        "method": "markupPercent",
+        "costUsd": "0.0158333333",
+        "billedSeconds": null,
+        "amount": "3"
+      },
+      {
+        "subject": "component:stt",
+        "rule": "whole-units/all",
+        "method": "markupPercent",
+        "costUsd": "0.0067083333",
+        "billedSeconds": null,
+        "amount": "1"
+      },
+      {
+        "subject": "component:telephony",
+        "rule": "whole-units/all",
+        "method": "markupPercent",
+        "costUsd": "0.0266",
+        "billedSeconds": null,
+        "amount": "6"
+      },
+      {
+        "subject": "component:tts",
+        "rule": "whole-units/all",
+        "method": "markupPercent",
+        "costUsd": "0.01584",
+        "billedSeconds": null,
+        "amount": "3"
+      }
+    ],
+    "total": "14"
+  }
+}

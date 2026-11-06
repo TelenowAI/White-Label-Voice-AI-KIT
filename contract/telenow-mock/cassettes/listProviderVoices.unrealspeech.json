@@ -1,0 +1,204 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/unrealspeech/voices",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "af",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Default (af)",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "af_bella",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Bella",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "af_sarah",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Sarah",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "af_nicole",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Nicole",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "af_sky",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Sky",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "am_adam",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Adam",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "am_michael",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Michael",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "bf_emma",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Emma",
+          "tags": [
+            "British"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "bf_isabella",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Isabella",
+          "tags": [
+            "British"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "bm_george",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "George",
+          "tags": [
+            "British"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "bm_lewis",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Lewis",
+          "tags": [
+            "British"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "hf_alpha",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Alpha",
+          "tags": [
+            "Indian"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "hf_beta",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Beta",
+          "tags": [
+            "Indian"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "hm_omega",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Omega",
+          "tags": [
+            "Indian"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "hm_psi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Psi",
+          "tags": [
+            "Indian"
+          ]
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 15
+    }
+  }
+}

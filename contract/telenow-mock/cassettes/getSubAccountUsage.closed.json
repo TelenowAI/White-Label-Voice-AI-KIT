@@ -1,0 +1,31 @@
+{
+  "operationId": "getSubAccountUsage",
+  "recorded": "2026-11-02, Telenow fe7bbd2's binary (with T2.13, which does not touch this) on the build server, throwaway database (contract_k1close.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/sub-accounts/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/usage",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "activeCalls": 0,
+      "billableSeconds": 0,
+      "calls": 0,
+      "from": "2026-10-31T18:30:00Z",
+      "limits": {
+        "maxConcurrentCalls": null,
+        "monthlySpendLimitUsd": null,
+        "totalSpendLimitUsd": null
+      },
+      "monthToDateSpendUsd": 5.25,
+      "spendUsd": 5.25,
+      "status": "closed",
+      "subAccountId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+      "to": "2026-11-02T19:31:05.075893539Z",
+      "totalSpendUsd": 5.25
+    }
+  },
+  "serve": false
+}

@@ -1,0 +1,20 @@
+{
+  "operationId": "createAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine that takes clones (tts_stub_k12.py), fake provider keys and every other outbound HTTP request sent to a dead local proxy (contract_k12voices.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "code": "agent_foreign_reference",
+      "error": "`ttsVoice` names something that is not this organization's. Choose one of this organization's own, or remove it.",
+      "path": "ttsVoice",
+      "success": false
+    }
+  },
+  "serve": false
+}

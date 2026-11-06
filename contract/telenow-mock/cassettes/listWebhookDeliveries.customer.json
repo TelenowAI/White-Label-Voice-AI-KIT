@@ -1,0 +1,72 @@
+{
+  "operationId": "listWebhookDeliveries",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k4hooks.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/f5b2ecfe-1a21-4c72-83e2-03ced560e865/webhooks/3c1e8d7a-4f2b-4a6c-9d10-7b5e2f8c1a44/deliveries",
+    "query": "limit=5",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "deliveries": [
+          {
+            "attempt": 1,
+            "created_at": "2026-11-04T05:39:00.309577Z",
+            "delivery_kind": "test",
+            "endpoint_id": "3c1e8d7a-4f2b-4a6c-9d10-7b5e2f8c1a44",
+            "error": "transport: error sending request for url (https://example.com/hooks/calls)",
+            "error_kind": "connection_refused",
+            "event_type": "call.completed",
+            "id": "9a7f2c64-1b3d-4e8f-a2c5-6d0e4b7f3a91",
+            "next_attempt_at": "2026-11-04T05:39:10.338825Z",
+            "org_id": "f5b2ecfe-1a21-4c72-83e2-03ced560e865",
+            "payload": {
+              "agentId": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+              "analysis": null,
+              "answeredBy": null,
+              "attempt": 1,
+              "billableSecs": null,
+              "callSid": "CA00000000000000000000000000000001",
+              "campaignId": "00000000-0000-4000-8000-000000000006",
+              "campaignTargetId": "00000000-0000-4000-8000-000000000007",
+              "channel": "telephony",
+              "direction": "outbound",
+              "disposition": "no-answer",
+              "durationSecs": 0,
+              "endReason": null,
+              "endTime": "2026-01-01T12:00:31Z",
+              "event": "call.completed",
+              "fromNumber": "+14155550100",
+              "identifier": "sample-customer-42",
+              "occurredAt": "2026-11-04T05:39:00.309Z",
+              "orgId": "f5b2ecfe-1a21-4c72-83e2-03ced560e865",
+              "outcome": "no-answer",
+              "sessionId": "00000000-0000-4000-8000-000000000001",
+              "startTime": "2026-01-01T12:00:00Z",
+              "status": "ended",
+              "toNumber": "+14155550123",
+              "variables": {
+                "customer_name": "Sample Customer"
+              },
+              "webhookDelivery": {
+                "kind": "test",
+                "sentAt": "2026-11-04T05:39:00.309Z"
+              }
+            },
+            "replay_of": null,
+            "response_body": null,
+            "response_status": null,
+            "status": "failed",
+            "updated_at": "2026-11-04T05:39:00.339229Z"
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

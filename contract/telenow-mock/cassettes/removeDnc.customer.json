@@ -1,0 +1,17 @@
+{
+  "operationId": "removeDnc",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1dnc.py; the opt-out row seeded as the call engine writes it); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/dnc/d68bca9c-df6a-4de1-a3d8-c228578b6351",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message": "dnc entry removed",
+      "success": true
+    }
+  }
+}

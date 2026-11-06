@@ -1,0 +1,21 @@
+{
+  "operationId": "getCampaignResultsV1",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1campaigns.py); the caller id was bought through a STAND-IN carrier (teleone_stub.py) and every call failed there (nothing is dialled from the box); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/campaigns/c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f/results",
+    "query": "cursor=2026-10-30T16%3A20%3A53.460445Z_714a19d1-3369-46e6-ba7d-f4ce70f72e47",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "cursor"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "nextCursor": null,
+      "nextSince": null,
+      "results": []
+    }
+  }
+}

@@ -1,0 +1,435 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k13settings.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/telenow/voices",
+    "query": "model=kokoro",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "af_alloy",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Alloy (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_aoede",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Aoede (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_bella",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Bella (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_heart",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Heart (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_jessica",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Jessica (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_kore",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Kore (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_nicole",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Nicole (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_nova",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Nova (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_sarah",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Sarah (US female)"
+        },
+        {
+          "gender": "female",
+          "id": "af_sky",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Sky (US female)"
+        },
+        {
+          "gender": "male",
+          "id": "am_adam",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Adam (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_echo",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Echo (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_eric",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Eric (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_fenrir",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Fenrir (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_liam",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Liam (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_michael",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Michael (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_onyx",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Onyx (US male)"
+        },
+        {
+          "gender": "male",
+          "id": "am_puck",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Puck (US male)"
+        },
+        {
+          "gender": "female",
+          "id": "bf_alice",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Alice (UK female)"
+        },
+        {
+          "gender": "female",
+          "id": "bf_emma",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Emma (UK female)"
+        },
+        {
+          "gender": "female",
+          "id": "bf_isabella",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Isabella (UK female)"
+        },
+        {
+          "gender": "female",
+          "id": "bf_lily",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Lily (UK female)"
+        },
+        {
+          "gender": "male",
+          "id": "bm_daniel",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Daniel (UK male)"
+        },
+        {
+          "gender": "male",
+          "id": "bm_fable",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Fable (UK male)"
+        },
+        {
+          "gender": "male",
+          "id": "bm_george",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "George (UK male)"
+        },
+        {
+          "gender": "male",
+          "id": "bm_lewis",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "kokoro",
+          "name": "Lewis (UK male)"
+        },
+        {
+          "gender": "female",
+          "id": "ef_dora",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "model": "kokoro",
+          "name": "Dora (Spanish female)"
+        },
+        {
+          "gender": "male",
+          "id": "em_alex",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "model": "kokoro",
+          "name": "Alex (Spanish male)"
+        },
+        {
+          "gender": "female",
+          "id": "ff_siwis",
+          "language": "fr",
+          "languages": [
+            "fr"
+          ],
+          "model": "kokoro",
+          "name": "Siwis (French female)"
+        },
+        {
+          "gender": "female",
+          "id": "hf_alpha",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "kokoro",
+          "name": "Alpha (Hindi female)"
+        },
+        {
+          "gender": "female",
+          "id": "hf_beta",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "kokoro",
+          "name": "Beta (Hindi female)"
+        },
+        {
+          "gender": "male",
+          "id": "hm_omega",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "kokoro",
+          "name": "Omega (Hindi male)"
+        },
+        {
+          "gender": "male",
+          "id": "hm_psi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "kokoro",
+          "name": "Psi (Hindi male)"
+        },
+        {
+          "gender": "female",
+          "id": "if_sara",
+          "language": "it",
+          "languages": [
+            "it"
+          ],
+          "model": "kokoro",
+          "name": "Sara (Italian female)"
+        },
+        {
+          "gender": "male",
+          "id": "im_nicola",
+          "language": "it",
+          "languages": [
+            "it"
+          ],
+          "model": "kokoro",
+          "name": "Nicola (Italian male)"
+        },
+        {
+          "gender": "female",
+          "id": "jf_alpha",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "model": "kokoro",
+          "name": "Alpha (Japanese female)"
+        },
+        {
+          "gender": "male",
+          "id": "jm_kumo",
+          "language": "ja",
+          "languages": [
+            "ja"
+          ],
+          "model": "kokoro",
+          "name": "Kumo (Japanese male)"
+        },
+        {
+          "gender": "female",
+          "id": "pf_dora",
+          "language": "pt",
+          "languages": [
+            "pt"
+          ],
+          "model": "kokoro",
+          "name": "Dora (Portuguese female)"
+        },
+        {
+          "gender": "male",
+          "id": "pm_alex",
+          "language": "pt",
+          "languages": [
+            "pt"
+          ],
+          "model": "kokoro",
+          "name": "Alex (Portuguese male)"
+        },
+        {
+          "gender": "female",
+          "id": "zf_xiaobei",
+          "language": "zh",
+          "languages": [
+            "zh"
+          ],
+          "model": "kokoro",
+          "name": "Xiaobei (Mandarin female)"
+        },
+        {
+          "gender": "male",
+          "id": "zm_yunjian",
+          "language": "zh",
+          "languages": [
+            "zh"
+          ],
+          "model": "kokoro",
+          "name": "Yunjian (Mandarin male)"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 41
+    }
+  },
+  "serve": false
+}

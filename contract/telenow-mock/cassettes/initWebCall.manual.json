@@ -1,0 +1,26 @@
+{
+  "operationId": "initWebCall",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key and a stand-in carrier that takes the call (contract_k9human.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/init-web-call",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "callId": "ed7c3ebc-d3b8-46b7-89ce-578bf56eefd8",
+        "callMode": "manual",
+        "fromNumber": "918045671001",
+        "sessionId": "5e551011-0000-4000-8000-000000000001",
+        "status": "active",
+        "toNumber": "+14155550101",
+        "websocketUrl": "ws://127.0.0.1:39897/ws/web-agent"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

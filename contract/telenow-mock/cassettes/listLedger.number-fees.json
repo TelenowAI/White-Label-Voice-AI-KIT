@@ -1,0 +1,52 @@
+{
+  "operationId": "listLedger",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database; the charge and fee amounts were seeded (contract/pricing/README.md)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/1f975cc3-85c9-4fbf-ad68-769e17d6d84d/billing/ledger",
+    "query": "updatedAfter=2020-01-01T00:00:00Z&limit=50",
+    "apiKey": "vai_test_pricing_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "amountUsd": "-1.0000000000",
+            "balanceAfterUsd": "39.0000000000",
+            "createdAt": "2026-10-29T17:28:06.968970Z",
+            "createdBy": "system",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "3b063167-6215-4e7d-9ef1-a534d430ca12",
+            "note": "Number setup +14155550188",
+            "refId": "e0e80284-87ca-443b-a67c-70dc8f42195a",
+            "refKind": "number_setup",
+            "sourceOrgId": "eb32be63-e8af-43ed-b25d-ad60455cca94"
+          },
+          {
+            "amountUsd": "-1.1500000000",
+            "balanceAfterUsd": "37.8500000000",
+            "createdAt": "2026-10-29T17:29:06.968970Z",
+            "createdBy": "system",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "43e08895-ea51-47c7-b328-09aee627f031",
+            "note": "Number rent +14155550188",
+            "refId": "569a9c26-c3b1-45fa-a7ab-c109900c84e5",
+            "refKind": "rental",
+            "sourceOrgId": "eb32be63-e8af-43ed-b25d-ad60455cca94"
+          }
+        ],
+        "limit": 50,
+        "nextCursor": "2026-10-29T17:29:06.968970Z_43e08895-ea51-47c7-b328-09aee627f031"
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "operationId": "getConsentHistory",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k8consent.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/consent/%2B14155550102",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "records": [
+          {
+            "captured_at": "2026-11-04T10:30:12.564595Z",
+            "consent_type": "express_oral",
+            "created_at": "2026-11-04T10:30:12.564595Z",
+            "created_by": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+            "disclosure_text": null,
+            "disclosure_version": null,
+            "evidence": {
+              "server": {
+                "apiKeyId": "f543b4ec-5ec8-437c-87bc-679ee6b4f051",
+                "forwardedFor": null,
+                "peer": "127.0.0.1",
+                "recordedByUser": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+                "recordedVia": "api",
+                "userAgent": "Python-urllib/3.9"
+              }
+            },
+            "expires_at": null,
+            "id": "72b6bb83-32e3-4f86-8995-93be9c2beb8b",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550102",
+            "revoke_note": null,
+            "revoke_source": null,
+            "revoked_at": null,
+            "scope": "marketing",
+            "source": "verbal_recorded"
+          },
+          {
+            "captured_at": "2026-11-04T10:30:12.470190Z",
+            "consent_type": "express_oral",
+            "created_at": "2026-11-04T10:30:12.470190Z",
+            "created_by": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+            "disclosure_text": null,
+            "disclosure_version": null,
+            "evidence": {
+              "server": {
+                "apiKeyId": "f543b4ec-5ec8-437c-87bc-679ee6b4f051",
+                "forwardedFor": null,
+                "peer": "127.0.0.1",
+                "recordedByUser": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+                "recordedVia": "api",
+                "userAgent": "Python-urllib/3.9"
+              }
+            },
+            "expires_at": null,
+            "id": "fedd31bd-bf70-478a-aa65-029c39b2cb85",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550102",
+            "revoke_note": null,
+            "revoke_source": null,
+            "revoked_at": null,
+            "scope": "marketing",
+            "source": "verbal_recorded"
+          }
+        ],
+        "total": 2
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

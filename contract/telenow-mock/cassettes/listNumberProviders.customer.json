@@ -1,0 +1,30 @@
+{
+  "operationId": "listNumberProviders",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1numbers.py); the carrier was a STAND-IN speaking Plivo's API (teleone_stub.py, TELEONE_API_BASE), so no number was bought anywhere; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/voice/numbers/providers",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "default": "teleone",
+        "providers": [
+          {
+            "capabilities": {
+              "supports_compliance": false,
+              "supports_integration": true,
+              "supports_messaging": false
+            },
+            "id": "teleone",
+            "isDefault": true
+          }
+        ]
+      },
+      "success": true
+    }
+  }
+}

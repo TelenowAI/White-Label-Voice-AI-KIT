@@ -1,0 +1,81 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/openai/voices",
+    "query": "model=tts-1",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "neutral",
+          "id": "alloy",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Alloy"
+        },
+        {
+          "gender": "male",
+          "id": "echo",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Echo"
+        },
+        {
+          "gender": "neutral",
+          "id": "fable",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Fable"
+        },
+        {
+          "gender": "male",
+          "id": "onyx",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Onyx"
+        },
+        {
+          "gender": "female",
+          "id": "nova",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Nova"
+        },
+        {
+          "gender": "female",
+          "id": "shimmer",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Shimmer"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 6
+    }
+  }
+}

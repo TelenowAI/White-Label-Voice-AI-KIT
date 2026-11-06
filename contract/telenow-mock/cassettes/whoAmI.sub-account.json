@@ -1,0 +1,21 @@
+{
+  "operationId": "whoAmI",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "query": "",
+    "apiKey": "vai_test_sub_account"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "key_id": "70dd4ade-eeee-414d-bd54-de17bd4820ec",
+      "key_name": "Sub-account key",
+      "key_role": "admin",
+      "org_id": "ab9dc046-35de-4553-8e3a-418abc037e82",
+      "org_name": "Wizard customer",
+      "parent_org_id": "dc817856-bc10-4037-85ed-2fc56b28f5f9"
+    }
+  }
+}

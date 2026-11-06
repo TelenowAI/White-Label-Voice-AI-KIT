@@ -1,0 +1,78 @@
+{
+  "operationId": "listCampaignCalls",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1campaigns.py); the caller id was bought through a STAND-IN carrier (teleone_stub.py) and every call failed there (nothing is dialled from the box); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/campaigns/c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f/calls",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "calls": [
+          {
+            "analysis_overrides": null,
+            "attempt": 0,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": null,
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "714a19d1-3369-46e6-ba7d-f4ce70f72e47",
+            "last_error": null,
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550101",
+            "scheduled_for": "2026-10-30T16:20:52.085152Z",
+            "session_id": null,
+            "started_at": null,
+            "status": "pending",
+            "user_turns": null,
+            "variables": {
+              "appointment": "cleaning",
+              "first_name": "Ana",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000001-0000-4000-8000-000000000000"
+            }
+          },
+          {
+            "analysis_overrides": null,
+            "attempt": 0,
+            "campaign_id": "c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f",
+            "completed_at": null,
+            "dtmf_choices": null,
+            "dtmf_digits": null,
+            "duration_sec": null,
+            "first_response": null,
+            "id": "3e41445a-5b5e-4aa0-a2c9-659e5cae80bb",
+            "last_error": null,
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550102",
+            "scheduled_for": "2026-10-30T16:20:52.085152Z",
+            "session_id": null,
+            "started_at": null,
+            "status": "pending",
+            "user_turns": null,
+            "variables": {
+              "appointment": "check-up",
+              "first_name": "Ben",
+              "source_kind": "push",
+              "source_ref": "push|kit",
+              "source_row": "a0000002-0000-4000-8000-000000000000"
+            }
+          }
+        ],
+        "failedTotal": 0,
+        "failedUnanswered": 0,
+        "statusCounts": {
+          "pending": 2
+        },
+        "total": 2
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "operationId": "initWebCall",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key and a stand-in carrier that takes the call (contract_k9human.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/init-web-call",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "fromNumber is required for manual mode",
+      "success": false
+    }
+  },
+  "serve": false
+}

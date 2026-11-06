@@ -1,0 +1,27 @@
+{
+  "name": "Number rent at a fixed price",
+  "why": "A fixed price is the amount as written, whatever Telenow charged.",
+  "plan": "per-minute",
+  "usdRate": "84.25",
+  "item": {
+    "fee": {
+      "ledger": "listLedger.number-fees",
+      "refKind": "rental"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "fee:rental",
+        "rule": "per-minute/number-rent",
+        "method": "fixed",
+        "costUsd": "1.15",
+        "billedSeconds": null,
+        "amount": "150.00"
+      }
+    ],
+    "total": "150.00"
+  }
+}

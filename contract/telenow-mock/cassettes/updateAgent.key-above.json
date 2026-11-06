@@ -1,0 +1,18 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k3tools.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "`metadata.precallLookups[0].bearer` holds a masked key this agent does not hold there: the key was removed, or the provider, URL or tool it is sent to changed. Paste the key itself, or leave the field out to remove it",
+      "success": false
+    }
+  },
+  "serve": false
+}

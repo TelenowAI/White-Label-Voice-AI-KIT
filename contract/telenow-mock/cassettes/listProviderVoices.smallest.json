@@ -1,0 +1,6429 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/smallest/voices",
+    "query": "model=lightning_v3.1_pro",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "accent": "german",
+          "gender": "male",
+          "id": "ben",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ben"
+        },
+        {
+          "accent": "norwegian",
+          "gender": "male",
+          "id": "kristian",
+          "language": "no",
+          "languages": [
+            "no",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kristian"
+        },
+        {
+          "accent": "polish",
+          "gender": "female",
+          "id": "joanna",
+          "language": "pl",
+          "languages": [
+            "pl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Joanna"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "tabitha",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tabitha"
+        },
+        {
+          "accent": "castilian-standard",
+          "gender": "female",
+          "id": "irene",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Irene"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "ximena",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ximena"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "gael",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Gael"
+        },
+        {
+          "accent": "castilian-standard",
+          "gender": "female",
+          "id": "candela",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Candela"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "carla",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Carla"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "pablo",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Pablo"
+        },
+        {
+          "id": "kimberly",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kimberly"
+        },
+        {
+          "accent": "castilian-standard",
+          "gender": "male",
+          "id": "marco",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Marco"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "valeria",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Valeria"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "chelsea",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Chelsea"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "dante",
+          "language": "es",
+          "languages": [
+            "es",
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Dante"
+        },
+        {
+          "accent": "arabic",
+          "gender": "female",
+          "id": "layla",
+          "language": "ar",
+          "languages": [
+            "ar",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Layla"
+        },
+        {
+          "accent": "arabic",
+          "gender": "male",
+          "id": "adam",
+          "language": "ar",
+          "languages": [
+            "ar",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Adam"
+        },
+        {
+          "accent": "chinese",
+          "gender": "male",
+          "id": "dylan",
+          "language": "zh",
+          "languages": [
+            "zh",
+            "en",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Dylan"
+        },
+        {
+          "accent": "chinese",
+          "gender": "female",
+          "id": "hazel",
+          "language": "zh",
+          "languages": [
+            "zh",
+            "en",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Hazel"
+        },
+        {
+          "accent": "indonesian",
+          "gender": "male",
+          "id": "bryce",
+          "language": "id",
+          "languages": [
+            "id",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Bryce"
+        },
+        {
+          "accent": "chinese",
+          "gender": "female",
+          "id": "vivian",
+          "language": "zh",
+          "languages": [
+            "zh",
+            "en",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Vivian"
+        },
+        {
+          "accent": "indonesian",
+          "gender": "female",
+          "id": "nora",
+          "language": "id",
+          "languages": [
+            "id",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Nora"
+        },
+        {
+          "accent": "chinese",
+          "gender": "male",
+          "id": "silas",
+          "language": "zh",
+          "languages": [
+            "zh",
+            "en",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Silas"
+        },
+        {
+          "accent": "japanese",
+          "gender": "female",
+          "id": "daisy",
+          "language": "ja",
+          "languages": [
+            "ja",
+            "en",
+            "zh",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Daisy"
+        },
+        {
+          "accent": "malay",
+          "gender": "male",
+          "id": "roman",
+          "language": "ms",
+          "languages": [
+            "ms",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Roman"
+        },
+        {
+          "accent": "chinese",
+          "gender": "male",
+          "id": "eli",
+          "language": "zh",
+          "languages": [
+            "zh",
+            "en",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Eli"
+        },
+        {
+          "accent": "malay",
+          "gender": "female",
+          "id": "sasha",
+          "language": "ms",
+          "languages": [
+            "ms",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sasha"
+        },
+        {
+          "accent": "japanese",
+          "gender": "female",
+          "id": "mila",
+          "language": "ja",
+          "languages": [
+            "ja",
+            "en",
+            "zh",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mila"
+        },
+        {
+          "accent": "indonesian",
+          "gender": "male",
+          "id": "miles",
+          "language": "id",
+          "languages": [
+            "id",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Miles"
+        },
+        {
+          "accent": "indonesian",
+          "gender": "male",
+          "id": "cole",
+          "language": "id",
+          "languages": [
+            "id",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Cole"
+        },
+        {
+          "accent": "japanese",
+          "gender": "female",
+          "id": "aria",
+          "language": "ja",
+          "languages": [
+            "ja",
+            "en",
+            "zh",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aria"
+        },
+        {
+          "accent": "japanese",
+          "gender": "male",
+          "id": "jasper",
+          "language": "ja",
+          "languages": [
+            "ja",
+            "en",
+            "zh",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Jasper"
+        },
+        {
+          "accent": "korean",
+          "gender": "female",
+          "id": "june",
+          "language": "ko",
+          "languages": [
+            "ko",
+            "en",
+            "zh",
+            "ja",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "June"
+        },
+        {
+          "accent": "turkish",
+          "gender": "male",
+          "id": "beau",
+          "language": "tr",
+          "languages": [
+            "tr",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Beau"
+        },
+        {
+          "accent": "turkish",
+          "gender": "male",
+          "id": "wes",
+          "language": "tr",
+          "languages": [
+            "tr",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Wes"
+        },
+        {
+          "accent": "vietnamese",
+          "gender": "male",
+          "id": "kai",
+          "language": "vi",
+          "languages": [
+            "vi",
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kai"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "manasi",
+          "language": "mr",
+          "languages": [
+            "mr",
+            "en",
+            "hi",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Manasi"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "mrunal",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mrunal"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "mandar",
+          "language": "mr",
+          "languages": [
+            "mr",
+            "en",
+            "hi",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mandar"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "ketaki",
+          "language": "mr",
+          "languages": [
+            "mr",
+            "en",
+            "hi",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ketaki"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "sravani",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sravani"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "tejaswini",
+          "language": "mr",
+          "languages": [
+            "mr",
+            "en",
+            "hi",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tejaswini"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "tamilselvi",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tamilselvi"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "sreenath",
+          "language": "ml",
+          "languages": [
+            "ml",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sreenath"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "spoorthi",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Spoorthi"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "mathan",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mathan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "tamizh",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tamizh"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "barath",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Barath"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "malar",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Malar"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "jasleen",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Jasleen"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "ankita",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ankita"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "vishnu",
+          "language": "ml",
+          "languages": [
+            "ml",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Vishnu"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "naveen",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Naveen"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "dinesh",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Dinesh"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "sahana",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sahana"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "aravindan",
+          "language": "ml",
+          "languages": [
+            "ml",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aravindan"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "sasmita",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sasmita"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "subrat",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Subrat"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "unni",
+          "language": "ml",
+          "languages": [
+            "ml",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Unni"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "prabhu",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Prabhu"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "kavin",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kavin"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "ezhil",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ezhil"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "rashmi",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rashmi"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "kishore",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kishore"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "varsha",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Varsha"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "nila",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Nila"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "smruti",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Smruti"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "rafael",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rafael"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "carolina",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Carolina"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "natalia",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Natalia"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "sakthi",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sakthi"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "sofia",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sofia"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "oscar",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Oscar"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "parvathy",
+          "language": "ml",
+          "languages": [
+            "ml",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Parvathy"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "murugan",
+          "language": "ta",
+          "languages": [
+            "ta",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Murugan"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "regina",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Regina"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "isabela",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Isabela"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "alejandra",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Alejandra"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "female",
+          "id": "julieta",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Julieta"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "rakshith",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rakshith"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "rajdeep",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rajdeep"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "lakshmi",
+          "language": "ml",
+          "languages": [
+            "ml",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Lakshmi"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "manmeet",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Manmeet"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "adrian",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Adrian"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "hugo",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Hugo"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "ivan",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ivan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "charan",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Charan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "rakesh",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rakesh"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "gagandeep",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Gagandeep"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "lorenzo",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Lorenzo"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "cesar",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Cesar"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "swathi",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Swathi"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "maximiliano",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Maximiliano"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "grant",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Grant"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "dean",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Dean"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "sasank",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sasank"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "manohar",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Manohar"
+        },
+        {
+          "accent": "mexican-latin-american",
+          "gender": "male",
+          "id": "arturo",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Arturo"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "tucker",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tucker"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "mit",
+          "language": "gu",
+          "languages": [
+            "gu",
+            "en",
+            "hi",
+            "mr",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mit"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "bhaskar",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Bhaskar"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "piper",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Piper"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "gopal",
+          "language": "te",
+          "languages": [
+            "te",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Gopal"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "tanmoy",
+          "language": "bn",
+          "languages": [
+            "bn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tanmoy"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "yogesh",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Yogesh"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "gowtham",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Gowtham"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "tejinder",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tejinder"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "arghya",
+          "language": "bn",
+          "languages": [
+            "bn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Arghya"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "shankar",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Shankar"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "basava",
+          "language": "kn",
+          "languages": [
+            "kn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Basava"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "jignesh",
+          "language": "gu",
+          "languages": [
+            "gu",
+            "en",
+            "hi",
+            "mr",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Jignesh"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "debasish",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Debasish"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "sambit",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sambit"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "pratik",
+          "language": "or",
+          "languages": [
+            "or",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Pratik"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "indranil",
+          "language": "bn",
+          "languages": [
+            "bn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Indranil"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "krupa",
+          "language": "gu",
+          "languages": [
+            "gu",
+            "en",
+            "hi",
+            "mr",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Krupa"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "keval",
+          "language": "gu",
+          "languages": [
+            "gu",
+            "en",
+            "hi",
+            "mr",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Keval"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "riddhi",
+          "language": "gu",
+          "languages": [
+            "gu",
+            "en",
+            "hi",
+            "mr",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Riddhi"
+        },
+        {
+          "accent": "european",
+          "gender": "male",
+          "id": "francisco",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Francisco"
+        },
+        {
+          "accent": "german",
+          "gender": "female",
+          "id": "petra",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Petra"
+        },
+        {
+          "accent": "german",
+          "gender": "male",
+          "id": "max",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Max"
+        },
+        {
+          "accent": "german",
+          "gender": "male",
+          "id": "markus",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Markus"
+        },
+        {
+          "accent": "greek",
+          "gender": "male",
+          "id": "dimitris",
+          "language": "el",
+          "languages": [
+            "el",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Dimitris"
+        },
+        {
+          "accent": "greek",
+          "gender": "female",
+          "id": "katerina",
+          "language": "el",
+          "languages": [
+            "el",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Katerina"
+        },
+        {
+          "accent": "french",
+          "gender": "female",
+          "id": "elise",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Élise"
+        },
+        {
+          "accent": "russian",
+          "gender": "male",
+          "id": "nikolai",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Nikolai"
+        },
+        {
+          "accent": "french",
+          "gender": "female",
+          "id": "manon",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Manon"
+        },
+        {
+          "accent": "italian",
+          "gender": "female",
+          "id": "silvia",
+          "language": "it",
+          "languages": [
+            "it",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Silvia"
+        },
+        {
+          "accent": "italian",
+          "gender": "female",
+          "id": "concetta",
+          "language": "it",
+          "languages": [
+            "it",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Concetta"
+        },
+        {
+          "accent": "italian",
+          "gender": "male",
+          "id": "luca",
+          "language": "it",
+          "languages": [
+            "it",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Luca"
+        },
+        {
+          "accent": "brazilian",
+          "gender": "male",
+          "id": "thiago",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Thiago"
+        },
+        {
+          "accent": "russian",
+          "gender": "female",
+          "id": "irina",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Irina"
+        },
+        {
+          "accent": "russian",
+          "gender": "male",
+          "id": "andrei",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Andrei"
+        },
+        {
+          "accent": "greek",
+          "gender": "male",
+          "id": "vasilis",
+          "language": "el",
+          "languages": [
+            "el",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Vasilis"
+        },
+        {
+          "accent": "russian",
+          "gender": "male",
+          "id": "maksim",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Maksim"
+        },
+        {
+          "accent": "finnish",
+          "gender": "male",
+          "id": "mika",
+          "language": "fi",
+          "languages": [
+            "fi",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mika"
+        },
+        {
+          "accent": "finnish",
+          "gender": "male",
+          "id": "matti",
+          "language": "fi",
+          "languages": [
+            "fi",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Matti"
+        },
+        {
+          "accent": "polish",
+          "gender": "female",
+          "id": "ewa",
+          "language": "pl",
+          "languages": [
+            "pl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ewa"
+        },
+        {
+          "accent": "finnish",
+          "gender": "female",
+          "id": "helmi",
+          "language": "fi",
+          "languages": [
+            "fi",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Helmi"
+        },
+        {
+          "accent": "finnish",
+          "gender": "female",
+          "id": "venla",
+          "language": "fi",
+          "languages": [
+            "fi",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Venla"
+        },
+        {
+          "accent": "finnish",
+          "gender": "male",
+          "id": "timo",
+          "language": "fi",
+          "languages": [
+            "fi",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Timo"
+        },
+        {
+          "accent": "norwegian",
+          "gender": "male",
+          "id": "espen",
+          "language": "no",
+          "languages": [
+            "no",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Espen"
+        },
+        {
+          "accent": "norwegian",
+          "gender": "female",
+          "id": "solveig",
+          "language": "no",
+          "languages": [
+            "no",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Solveig"
+        },
+        {
+          "accent": "polish",
+          "gender": "male",
+          "id": "tomasz",
+          "language": "pl",
+          "languages": [
+            "pl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tomasz"
+        },
+        {
+          "accent": "finnish",
+          "gender": "female",
+          "id": "aino",
+          "language": "fi",
+          "languages": [
+            "fi",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aino"
+        },
+        {
+          "accent": "norwegian",
+          "gender": "female",
+          "id": "marit",
+          "language": "no",
+          "languages": [
+            "no",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Marit"
+        },
+        {
+          "accent": "polish",
+          "gender": "male",
+          "id": "jakub",
+          "language": "pl",
+          "languages": [
+            "pl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Jakub"
+        },
+        {
+          "accent": "swedish",
+          "gender": "female",
+          "id": "astrid",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Astrid"
+        },
+        {
+          "accent": "swedish",
+          "gender": "female",
+          "id": "ebba",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ebba"
+        },
+        {
+          "accent": "swedish",
+          "gender": "female",
+          "id": "saga",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Saga"
+        },
+        {
+          "accent": "swedish",
+          "gender": "female",
+          "id": "alva",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Alva"
+        },
+        {
+          "accent": "dutch",
+          "gender": "female",
+          "id": "sanne",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sanne"
+        },
+        {
+          "accent": "swedish",
+          "gender": "male",
+          "id": "erik",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Erik"
+        },
+        {
+          "accent": "dutch",
+          "gender": "male",
+          "id": "daan",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Daan"
+        },
+        {
+          "accent": "swedish",
+          "gender": "male",
+          "id": "anton",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Anton"
+        },
+        {
+          "accent": "dutch",
+          "gender": "male",
+          "id": "lars",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Lars"
+        },
+        {
+          "accent": "swedish",
+          "gender": "male",
+          "id": "nils",
+          "language": "sv",
+          "languages": [
+            "sv",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Nils"
+        },
+        {
+          "accent": "dutch",
+          "gender": "female",
+          "id": "femke",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Femke"
+        },
+        {
+          "accent": "dutch",
+          "gender": "male",
+          "id": "bram",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Bram"
+        },
+        {
+          "accent": "dutch",
+          "gender": "female",
+          "id": "fenna",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Fenna"
+        },
+        {
+          "accent": "dutch",
+          "gender": "male",
+          "id": "stijn",
+          "language": "nl",
+          "languages": [
+            "nl",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Stijn"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "nolan",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Nolan"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "spencer",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Spencer"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "kelsey",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kelsey"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "callum",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Callum"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "bethany",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Bethany"
+        },
+        {
+          "accent": "castilian-standard",
+          "gender": "female",
+          "id": "claudia",
+          "language": "es",
+          "languages": [
+            "es",
+            "en",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Claudia"
+        },
+        {
+          "accent": "russian",
+          "gender": "female",
+          "id": "olga",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Olga"
+        },
+        {
+          "accent": "brazilian",
+          "gender": "male",
+          "id": "gustavo",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Gustavo"
+        },
+        {
+          "accent": "brazilian",
+          "gender": "female",
+          "id": "leticia",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Letícia"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "ishita",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ishita"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "misha",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Misha"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "suri",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Suri"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "pari",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Pari"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "reeva",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Reeva"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "aashi",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aashi"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "tanya",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tanya"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "shaan",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Shaan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "ansh",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ansh"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "kian",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kian"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "atharva",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Atharva"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "ishaan",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ishaan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "aryan",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aryan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "aayan",
+          "language": "en",
+          "languages": [
+            "en",
+            "hi"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aayan"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "rajib",
+          "language": "bn",
+          "languages": [
+            "bn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rajib"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "subhro",
+          "language": "bn",
+          "languages": [
+            "bn",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "punjabi",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Subhro"
+        },
+        {
+          "accent": "brazilian",
+          "gender": "male",
+          "id": "bruno",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Bruno"
+        },
+        {
+          "accent": "italian",
+          "gender": "male",
+          "id": "davide",
+          "language": "it",
+          "languages": [
+            "it",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Davide"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "zariya",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Zariya"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "vyom",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Vyom"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "reyansh",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Reyansh"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "zoravar",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Zoravar"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "elowen",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Elowen"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "caspian",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Caspian"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "autumn",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Autumn"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "leah",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Leah"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "leo",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Leo"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "amrit",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Amrit"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "brooks",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Brooks"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "asher",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Asher"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "maverick",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Maverick"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "willow",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Willow"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "hunter",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Hunter"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "wesley",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Wesley"
+        },
+        {
+          "accent": "latin-american",
+          "gender": "male",
+          "id": "mateo",
+          "language": "es",
+          "languages": [
+            "es",
+            "en",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mateo"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "mishka",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Mishka"
+        },
+        {
+          "accent": "russian",
+          "gender": "female",
+          "id": "ekaterina",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ekaterina"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "benedict",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Benedict"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "austin",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Austin"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "jenna",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Jenna"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "rupert",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rupert"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "winston",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Winston"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "ottilie",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ottilie"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "seraphina",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Seraphina"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "kate",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kate"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "arabella",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Arabella"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "kaitlyn",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kaitlyn"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "henry",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Henry"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "molly",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Molly"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "tushar",
+          "language": "mr",
+          "languages": [
+            "mr",
+            "en",
+            "hi",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Tushar"
+        },
+        {
+          "accent": "brazilian",
+          "gender": "female",
+          "id": "juliana",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Juliana"
+        },
+        {
+          "accent": "french",
+          "gender": "female",
+          "id": "juliette",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Juliette"
+        },
+        {
+          "accent": "french",
+          "gender": "male",
+          "id": "nicolas",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Nicolas"
+        },
+        {
+          "accent": "latin-american",
+          "gender": "female",
+          "id": "martina",
+          "language": "es",
+          "languages": [
+            "es",
+            "en",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Martina"
+        },
+        {
+          "accent": "german",
+          "gender": "male",
+          "id": "finn",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Finn"
+        },
+        {
+          "accent": "french",
+          "gender": "female",
+          "id": "amelie",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Amélie"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "ahan",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ahan"
+        },
+        {
+          "accent": "russian",
+          "gender": "female",
+          "id": "anastasia",
+          "language": "ru",
+          "languages": [
+            "ru",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Anastasia"
+        },
+        {
+          "accent": "european",
+          "gender": "female",
+          "id": "catarina",
+          "language": "pt",
+          "languages": [
+            "pt",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Catarina"
+        },
+        {
+          "accent": "french",
+          "gender": "male",
+          "id": "maxime",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Maxime"
+        },
+        {
+          "accent": "latin-american",
+          "gender": "male",
+          "id": "gabriel",
+          "language": "es",
+          "languages": [
+            "es",
+            "en",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Gabriel"
+        },
+        {
+          "accent": "italian",
+          "gender": "female",
+          "id": "arianna",
+          "language": "it",
+          "languages": [
+            "it",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Arianna"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "sukhdeep",
+          "language": "punjabi",
+          "languages": [
+            "punjabi",
+            "en",
+            "hi",
+            "mr",
+            "gu",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sukhdeep"
+        },
+        {
+          "accent": "french",
+          "gender": "male",
+          "id": "louis",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Louis"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "blake",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Blake"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "amelia",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Amelia"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "ruby",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ruby"
+        },
+        {
+          "accent": "german",
+          "gender": "female",
+          "id": "lea",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Lea"
+        },
+        {
+          "accent": "german",
+          "gender": "female",
+          "id": "hanna",
+          "language": "de",
+          "languages": [
+            "de",
+            "en",
+            "es",
+            "fr",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Hanna"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "finley",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Finley"
+        },
+        {
+          "accent": "italian",
+          "gender": "male",
+          "id": "leonardo",
+          "language": "it",
+          "languages": [
+            "it",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Leonardo"
+        },
+        {
+          "accent": "greek",
+          "gender": "female",
+          "id": "athina",
+          "language": "el",
+          "languages": [
+            "el",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Athina"
+        },
+        {
+          "accent": "greek",
+          "gender": "female",
+          "id": "dimitra",
+          "language": "el",
+          "languages": [
+            "el",
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Dimitra"
+        },
+        {
+          "accent": "french",
+          "gender": "male",
+          "id": "raphael",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Raphaël"
+        },
+        {
+          "accent": "french",
+          "gender": "female",
+          "id": "lucie",
+          "language": "fr",
+          "languages": [
+            "fr",
+            "en",
+            "es",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Lucie"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "meher",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Meher"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "inaaya",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Inaaya"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "cressida",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Cressida"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "aarini",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aarini"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "colton",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Colton"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "cormac",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Cormac"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "everett",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Everett"
+        },
+        {
+          "accent": "indian",
+          "gender": "male",
+          "id": "aviraj",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Aviraj"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "savannah",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Savannah"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "skylar",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Skylar"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "saira",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Saira"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "kareena",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kareena"
+        },
+        {
+          "accent": "indian",
+          "gender": "female",
+          "id": "rhea",
+          "language": "hi",
+          "languages": [
+            "hi",
+            "en",
+            "mr",
+            "gu",
+            "punjabi",
+            "bn",
+            "or",
+            "ta",
+            "te",
+            "kn",
+            "ml"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Rhea"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "reagan",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Reagan"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "kennedy",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Kennedy"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "sierra",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sierra"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "luke",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Luke"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "fiona",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Fiona"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "jack",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Jack"
+        },
+        {
+          "accent": "american",
+          "gender": "female",
+          "id": "zoe",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Zoe"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "ellie",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Ellie"
+        },
+        {
+          "accent": "british",
+          "gender": "female",
+          "id": "sophie",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sophie"
+        },
+        {
+          "accent": "british",
+          "gender": "male",
+          "id": "sam",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Sam"
+        },
+        {
+          "accent": "american",
+          "gender": "male",
+          "id": "owen",
+          "language": "en",
+          "languages": [
+            "en",
+            "es",
+            "fr",
+            "de",
+            "it",
+            "nl",
+            "sv",
+            "pt",
+            "pl",
+            "ru",
+            "el",
+            "fi",
+            "no",
+            "zh",
+            "ja",
+            "ko",
+            "id",
+            "ms",
+            "vi",
+            "tr",
+            "ar"
+          ],
+          "models": [
+            "lightning_v3.1_pro"
+          ],
+          "name": "Owen"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "synced",
+      "page": 0,
+      "source": "live",
+      "success": true,
+      "totalCount": 269
+    }
+  }
+}

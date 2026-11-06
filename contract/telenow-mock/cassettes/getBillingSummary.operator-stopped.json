@@ -1,0 +1,79 @@
+{
+  "operationId": "getBillingSummary",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/41270901-987a-4953-8a69-ddd74ff7b0c2/billing/summary",
+    "query": "",
+    "apiKey": "vai_test_operator_stopped"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "account": {
+          "balanceUsd": "0",
+          "browserConcurrency": null,
+          "chatFeeMode": null,
+          "chatTurnBlockTurns": null,
+          "chatTurnBlockUsd": null,
+          "feePerMinUsdOverride": null,
+          "feePercentOverride": null,
+          "mode": "prepaid",
+          "monthlySpendLimitUsd": null,
+          "orgId": "41270901-987a-4953-8a69-ddd74ff7b0c2",
+          "softphoneFeePerMinUsdOverride": null,
+          "suspended": false,
+          "telephonyConcurrencyPerNumber": null
+        },
+        "billedToParent": false,
+        "breakdown": {
+          "adjustmentUsd": "0",
+          "agentCallsUsd": "0",
+          "appAi": [],
+          "calls": 0,
+          "chatUsd": "0",
+          "fdeRechargeUsd": "0",
+          "manualUsd": "0",
+          "platformAiUsd": "0",
+          "platformFeeUsd": "0",
+          "postCallAnalysisUsd": "0",
+          "rentalUsd": "0",
+          "setupUsd": "0",
+          "simulationUsd": "0",
+          "totalUsd": "0"
+        },
+        "concurrencyLimits": {
+          "browser": 50,
+          "telephonyPerNumber": 2
+        },
+        "creditRateInr": 95.0,
+        "dues": null,
+        "gateway": {
+          "razorpayKeyId": null
+        },
+        "numberCreditsUsd": 0.0,
+        "payableNative": "0",
+        "payableUsd": "0",
+        "perDay": [],
+        "periodStart": "2026-09-30T18:30:00Z",
+        "spendState": {
+          "balanceUsd": "0",
+          "canSpend": false,
+          "headroomUsd": "0",
+          "lowThresholdUsd": null,
+          "mode": "prepaid",
+          "monthlySpendLimitUsd": null,
+          "periodSpendUsd": "0",
+          "periodStart": "2026-09-30T18:30:00Z",
+          "state": "stopped",
+          "stoppedBy": "out_of_credit"
+        },
+        "walletCurrency": "INR",
+        "walletNative": "0",
+        "walletRate": "95.000000"
+      },
+      "success": true
+    }
+  }
+}

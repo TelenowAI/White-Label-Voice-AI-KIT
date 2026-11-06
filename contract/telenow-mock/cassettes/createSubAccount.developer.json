@@ -1,0 +1,17 @@
+{
+  "operationId": "createSubAccount",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1customers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/sub-accounts",
+    "query": "",
+    "apiKey": "vai_test_developer"
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": "this API key's role (developer) cannot do this \u2014 requires one of: owner, admin",
+      "success": false
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://voice-kit.dev/contract/pricing/price-list.schema.json",
+  "title": "A price list",
+  "description": "One plan's prices: rules tried in order, then the rules of the list it extends (README.md). Stored as data; nothing about providers, components or prices is in the engine.",
+  "type": "object",
+  "required": [
+    "id",
+    "currency",
+    "decimals",
+    "rounding",
+    "billingIncrementSeconds",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "extends": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "The fallback list, tried after this one."
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 code of the currency the operator bills in."
+    },
+    "decimals": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8,
+      "description": "Each line is rounded to this many places."
+    },
+    "rounding": {
+      "enum": [
+        "half-up",
+        "half-even",
+        "up",
+        "down"
+      ]
+    },
+    "billingIncrementSeconds": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "A per-minute price bills each started increment."
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/rule"
+      }
+    }
+  },
+  "definitions": {
+    "nonNegative": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      ]
+    },
+    "markup": {
+      "type": "object",
+      "required": [
+        "markupPercent"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "markupPercent": {
+          "$ref": "#/definitions/markupDecimal",
+          "description": "Telenow's charge × (100 + p) / 100; p ≥ −100."
+        }
+      }
+    },
+    "perMinute": {
+      "type": "object",
+      "required": [
+        "perMinute"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "perMinute": {
+          "$ref": "#/definitions/nonNegative",
+          "description": "Per billed minute, in the list's currency."
+        }
+      }
+    },
+    "fixed": {
+      "type": "object",
+      "required": [
+        "fixed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "fixed": {
+          "$ref": "#/definitions/nonNegative",
+          "description": "This much, in the list's currency."
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "match",
+        "price"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "match": {
+          "type": "object",
+          "required": [
+            "item"
+          ],
+          "properties": {
+            "item": {
+              "enum": [
+                "call",
+                "component",
+                "fee"
+              ]
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/value"
+          }
+        },
+        "price": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "match": {
+                "properties": {
+                  "item": {
+                    "const": "fee"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "price": {
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/markup"
+                  },
+                  {
+                    "$ref": "#/definitions/fixed"
+                  }
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "price": {
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/markup"
+                  },
+                  {
+                    "$ref": "#/definitions/perMinute"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "markupDecimal": {
+      "type": "string",
+      "pattern": "^(-(100(\\.0+)?|[1-9]?[0-9](\\.[0-9]+)?)|(0|[1-9][0-9]*)(\\.[0-9]+)?)$",
+      "description": "A percentage, not below −100."
+    }
+  }
+}

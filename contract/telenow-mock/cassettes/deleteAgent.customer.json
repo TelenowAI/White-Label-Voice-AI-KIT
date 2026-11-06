@@ -1,0 +1,17 @@
+{
+  "operationId": "deleteAgent",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1agents.py)",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message": "Agent deleted successfully",
+      "success": true
+    }
+  }
+}

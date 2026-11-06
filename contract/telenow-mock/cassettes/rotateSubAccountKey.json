@@ -1,0 +1,25 @@
+{
+  "operationId": "rotateSubAccountKey",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1customers.py); the keys Telenow minted are replaced by placeholders (they belonged to the dropped database)",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/sub-accounts/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/keys",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "apiKey": {
+        "createdAt": "2026-10-29T17:56:12.379996Z",
+        "id": "9665b5d3-11fd-47ec-a841-8fae704f7196",
+        "key": "vai_test_customer_acme_rotated",
+        "lastFour": "ated",
+        "name": "voice-kit customer",
+        "role": "admin"
+      },
+      "revokedKeys": 1,
+      "subAccountId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da"
+    }
+  }
+}

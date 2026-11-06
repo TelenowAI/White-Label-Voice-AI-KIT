@@ -1,0 +1,27 @@
+{
+  "id": "wholesale-usd",
+  "currency": "USD",
+  "decimals": 4,
+  "rounding": "half-even",
+  "billingIncrementSeconds": 60,
+  "rules": [
+    {
+      "id": "calls",
+      "match": {
+        "item": "call"
+      },
+      "price": {
+        "markupPercent": "20"
+      }
+    },
+    {
+      "id": "fees",
+      "match": {
+        "item": "fee"
+      },
+      "price": {
+        "markupPercent": "20"
+      }
+    }
+  ]
+}

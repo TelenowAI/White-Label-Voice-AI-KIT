@@ -1,0 +1,64 @@
+{
+  "id": "per-minute",
+  "currency": "INR",
+  "decimals": 2,
+  "rounding": "half-up",
+  "billingIncrementSeconds": 60,
+  "rules": [
+    {
+      "id": "outbound-phone",
+      "match": {
+        "item": "call",
+        "channel": "telephony",
+        "direction": "outbound"
+      },
+      "price": {
+        "perMinute": "3.50"
+      }
+    },
+    {
+      "id": "inbound-phone",
+      "match": {
+        "item": "call",
+        "channel": "telephony",
+        "direction": "inbound"
+      },
+      "price": {
+        "perMinute": "2.00"
+      }
+    },
+    {
+      "id": "browser",
+      "match": {
+        "item": "call",
+        "channel": [
+          "web_call",
+          "web_chat"
+        ]
+      },
+      "price": {
+        "perMinute": "1.20"
+      }
+    },
+    {
+      "id": "number-rent",
+      "match": {
+        "item": "fee",
+        "refKind": "rental"
+      },
+      "price": {
+        "fixed": "150.00"
+      }
+    },
+    {
+      "id": "number-setup",
+      "match": {
+        "item": "fee",
+        "refKind": "number_setup"
+      },
+      "price": {
+        "fixed": "0"
+      }
+    }
+  ]
+}

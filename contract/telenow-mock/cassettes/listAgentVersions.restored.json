@@ -1,0 +1,120 @@
+{
+  "operationId": "listAgentVersions",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k5versions.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159/versions",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "versions": [
+          {
+            "createdAt": "2026-11-04T07:00:39.622957Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "restore of v7",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 11
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.587537Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "restore of v5",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 10
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.531565Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk",
+            "note": "restore of v1",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 9
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.453175Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 8
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.415815Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 7
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.359484Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 6
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.321486Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 5
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.284934Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 4
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.254099Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 3
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.201969Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk 2",
+            "note": "update",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 2
+          },
+          {
+            "createdAt": "2026-11-04T07:00:39.094926Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk",
+            "note": "created",
+            "savedByEmail": "sub-account+4dd331faaa404815a577171612b2a8a3@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 1
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

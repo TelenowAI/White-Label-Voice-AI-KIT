@@ -1,0 +1,629 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/gnani/voices",
+    "query": "model=timbre-v2.5",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "description": "Friendly voice for playful conversations.",
+          "gender": "female",
+          "id": "Nalini",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Nalini",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Clear, measured voice for corporate use.",
+          "gender": "male",
+          "id": "Deepak",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Deepak",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Firm voice for customer support.",
+          "gender": "female",
+          "id": "Kaveri",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Kaveri",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Natural voice for bilingual conversations.",
+          "gender": "female",
+          "id": "Poorvi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Poorvi",
+          "style": "conversational",
+          "tags": [
+            "conversational",
+            "hinglish"
+          ]
+        },
+        {
+          "description": "Clear, composed virtual assistant.",
+          "gender": "female",
+          "id": "Ambuja",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Ambuja",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Polished, refined, smooth corporate voice.",
+          "gender": "female",
+          "id": "Asmita",
+          "language": "ta",
+          "languages": [
+            "ta"
+          ],
+          "name": "Asmita",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Friendly voice for customer support.",
+          "gender": "female",
+          "id": "Bhavna",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Bhavna",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Steady, even-paced professional voice.",
+          "gender": "female",
+          "id": "Brinda",
+          "language": "ta",
+          "languages": [
+            "ta"
+          ],
+          "name": "Brinda",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Mature voice for customer care.",
+          "gender": "female",
+          "id": "Chitra",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Chitra",
+          "style": "warm, empathetic",
+          "tags": [
+            "warm",
+            "empathetic"
+          ]
+        },
+        {
+          "description": "Authoritative voice for customer support.",
+          "gender": "female",
+          "id": "Devika",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Devika",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Casual, relatable voice for conversations.",
+          "gender": "male",
+          "id": "Dhruva",
+          "language": "bn",
+          "languages": [
+            "bn"
+          ],
+          "name": "Dhruva",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Youthful, clear voice for narration.",
+          "gender": "female",
+          "id": "Falak",
+          "language": "gu",
+          "languages": [
+            "gu"
+          ],
+          "name": "Falak",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Warm voice with natural storytelling.",
+          "gender": "male",
+          "id": "Girish",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Girish",
+          "style": "expressive, energetic",
+          "tags": [
+            "expressive",
+            "energetic"
+          ]
+        },
+        {
+          "description": "Confident voice for demos.",
+          "gender": "male",
+          "id": "Hemraj",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Hemraj",
+          "style": "confident, authoritative",
+          "tags": [
+            "confident",
+            "authoritative"
+          ]
+        },
+        {
+          "description": "Clear voice for instructions and narration.",
+          "gender": "male",
+          "id": "Ishaan",
+          "language": "mr",
+          "languages": [
+            "mr"
+          ],
+          "name": "Ishaan",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Expressive voice for storytelling.",
+          "gender": "male",
+          "id": "Jalaj",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Jalaj",
+          "style": "expressive, energetic",
+          "tags": [
+            "expressive",
+            "energetic"
+          ]
+        },
+        {
+          "description": "Friendly, approachable everyday voice.",
+          "gender": "female",
+          "id": "Jwala",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Jwala",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Firm, articulate voice for presentations.",
+          "gender": "male",
+          "id": "Kavin",
+          "language": "kn",
+          "languages": [
+            "kn"
+          ],
+          "name": "Kavin",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Soft-spoken voice for casual conversations.",
+          "gender": "female",
+          "id": "Kirra",
+          "language": "bn",
+          "languages": [
+            "bn"
+          ],
+          "name": "Kirra",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Soft, empathetic voice for care and support.",
+          "gender": "female",
+          "id": "Lavanya",
+          "language": "te",
+          "languages": [
+            "te"
+          ],
+          "name": "Lavanya",
+          "style": "warm, empathetic",
+          "tags": [
+            "warm",
+            "empathetic"
+          ]
+        },
+        {
+          "description": "Gentle, reassuring voice for comfort and trust.",
+          "gender": "female",
+          "id": "Lehara",
+          "language": "te",
+          "languages": [
+            "te"
+          ],
+          "name": "Lehara",
+          "style": "warm, empathetic",
+          "tags": [
+            "warm",
+            "empathetic"
+          ]
+        },
+        {
+          "description": "Expressive voice for commercials and promotions.",
+          "gender": "female",
+          "id": "Mehuli",
+          "language": "pa",
+          "languages": [
+            "pa"
+          ],
+          "name": "Mehuli",
+          "style": "expressive, energetic",
+          "tags": [
+            "expressive",
+            "energetic"
+          ]
+        },
+        {
+          "description": "Warm voice for everyday conversations.",
+          "gender": "female",
+          "id": "Noopur",
+          "language": "ta",
+          "languages": [
+            "ta"
+          ],
+          "name": "Noopur",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Energetic voice for customer support.",
+          "gender": "male",
+          "id": "Omkar",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Omkar",
+          "style": "confident, authoritative",
+          "tags": [
+            "confident",
+            "authoritative"
+          ]
+        },
+        {
+          "description": "Friendly voice for customer support.",
+          "gender": "male",
+          "id": "Pranav",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Pranav",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Bright voice for greetings and support.",
+          "gender": "female",
+          "id": "Reshma",
+          "language": "ml",
+          "languages": [
+            "ml"
+          ],
+          "name": "Reshma",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Easygoing voice for casual conversations.",
+          "gender": "male",
+          "id": "Riyaan",
+          "language": "ml",
+          "languages": [
+            "ml"
+          ],
+          "name": "Riyaan",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Grounded, knowledgeable, professional voice.",
+          "gender": "male",
+          "id": "Roopesh",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Roopesh",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Lively voice for ads and promotions.",
+          "gender": "female",
+          "id": "Saanvi",
+          "language": "kn",
+          "languages": [
+            "kn"
+          ],
+          "name": "Saanvi",
+          "style": "expressive, energetic",
+          "tags": [
+            "expressive",
+            "energetic"
+          ]
+        },
+        {
+          "description": "Warm, conversational voice.",
+          "gender": "male",
+          "id": "Shlok",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Shlok",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Calm, soothing voice with confidence.",
+          "gender": "female",
+          "id": "Suhana",
+          "language": "te",
+          "languages": [
+            "te"
+          ],
+          "name": "Suhana",
+          "style": "warm, empathetic",
+          "tags": [
+            "warm",
+            "empathetic"
+          ]
+        },
+        {
+          "description": "Warm, approachable voice for guidance.",
+          "gender": "female",
+          "id": "Trisha",
+          "language": "ta",
+          "languages": [
+            "ta"
+          ],
+          "name": "Trisha",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Upbeat, articulate voice with maturity.",
+          "gender": "female",
+          "id": "Trupti",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "name": "Trupti",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Refined voice for formal announcements.",
+          "gender": "female",
+          "id": "Urmila",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Urmila",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Clear, natural voice for everyday use.",
+          "gender": "female",
+          "id": "Varuni",
+          "language": "te",
+          "languages": [
+            "te"
+          ],
+          "name": "Varuni",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Crisp, articulate voice for information.",
+          "gender": "female",
+          "id": "Vedika",
+          "language": "ta",
+          "languages": [
+            "ta"
+          ],
+          "name": "Vedika",
+          "style": "professional",
+          "tags": [
+            "professional"
+          ]
+        },
+        {
+          "description": "Friendly voice for casual conversations.",
+          "gender": "male",
+          "id": "Veera",
+          "language": "gu",
+          "languages": [
+            "gu"
+          ],
+          "name": "Veera",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Warm, genuine conversational voice.",
+          "gender": "male",
+          "id": "Vikrant",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Vikrant",
+          "style": "conversational",
+          "tags": [
+            "conversational"
+          ]
+        },
+        {
+          "description": "Gentle, reassuring voice for comfort.",
+          "gender": "female",
+          "id": "Yashvi",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "name": "Yashvi",
+          "style": "warm, empathetic",
+          "tags": [
+            "warm",
+            "empathetic"
+          ]
+        },
+        {
+          "description": "Warm, welcoming voice that puts listeners at ease.",
+          "gender": "female",
+          "id": "Yukti",
+          "language": "te",
+          "languages": [
+            "te"
+          ],
+          "name": "Yukti",
+          "style": "friendly",
+          "tags": [
+            "friendly"
+          ]
+        },
+        {
+          "description": "Energetic voice for sales and casual chat.",
+          "gender": "female",
+          "id": "Zahira",
+          "language": "mr",
+          "languages": [
+            "mr"
+          ],
+          "name": "Zahira",
+          "style": "expressive, energetic",
+          "tags": [
+            "expressive",
+            "energetic"
+          ]
+        },
+        {
+          "description": "Soft, caring voice for empathetic conversations.",
+          "gender": "male",
+          "id": "Zayan",
+          "language": "pa",
+          "languages": [
+            "pa"
+          ],
+          "name": "Zayan",
+          "style": "warm, empathetic",
+          "tags": [
+            "warm",
+            "empathetic"
+          ]
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 42
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "operationId": "listDnc",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k8consent.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/dnc",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "call_content_available": false,
+            "created_at": "2026-11-04T10:30:12.763802Z",
+            "created_by": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+            "id": "a3f6d6da-738d-4a48-960d-8f591ae596fa",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550102",
+            "reason": "Asked by email",
+            "session_id": null,
+            "source": "opt_out"
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

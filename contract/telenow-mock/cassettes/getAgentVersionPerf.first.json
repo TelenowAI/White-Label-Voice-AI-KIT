@@ -1,0 +1,36 @@
+{
+  "operationId": "getAgentVersionPerf",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k5versions.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159/versions/1/perf",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "current": {
+          "answeredRate": null,
+          "avgDurationSec": null,
+          "avgLlmMs": null,
+          "avgRespMs": null,
+          "avgScore": null,
+          "avgSttMs": null,
+          "avgTtsMs": null,
+          "calls": 0,
+          "fromTs": "2026-11-04T07:00:39.094926Z",
+          "sentimentNegative": 0,
+          "sentimentNeutral": 0,
+          "sentimentPositive": 0,
+          "toTs": "2026-11-04T07:00:39.201969Z",
+          "totalChargeUsd": 0.0
+        },
+        "previous": null
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

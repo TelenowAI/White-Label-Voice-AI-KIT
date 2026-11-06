@@ -1,0 +1,33 @@
+{
+  "operationId": "getAgentDefaults",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1agents.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agent-defaults",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "country": "IN",
+        "countrySource": "org.country",
+        "demoted": [
+          "stt 'sarvam' dropped: SARVAM_API_KEY is not set",
+          "tts 'smallest' dropped: SMALLEST_API_KEY is not set"
+        ],
+        "enabled": true,
+        "llmModel": "gpt-5.4-mini",
+        "llmProvider": "openai",
+        "source": "platform",
+        "sttConfig": {},
+        "sttProvider": "",
+        "ttsConfig": {},
+        "ttsProvider": "",
+        "ttsVoice": ""
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "operationId": "cloneVoice",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine that takes clones (tts_stub_k12.py), fake provider keys and every other outbound HTTP request sent to a dead local proxy (contract_k12voices.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/d4da8473-4ef7-58d2-a89f-d18be72af18f/voices/e53f6400-7f60-5dbf-8e5a-bda488232150/clone",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": "platform voice-clone limit reached (50). Remove an unused clone, or use your own provider API key (BYOK).",
+      "success": false
+    }
+  },
+  "serve": false
+}

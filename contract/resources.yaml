@@ -1,0 +1,247 @@
+# The resource manifest: each Telenow-backed resource the kit keeps in its own database (plan §3.8). Its format is
+# resources.schema.json. Every Telenow operationId, field and event named here is checked by contract/tests against
+# Telenow's released API document (telenow/openapi.yaml), so a manifest that names something Telenow does not have
+# fails before any backend runs it.
+version: 1
+resources:
+  agents:
+    table: agents
+    writer: kit
+    telenow:
+      # Telenow's create needs `sessionConfig` (services/agent.rs CreateAgentData; not in its document).
+      create: { operationId: createAgent, objectAt: data, body: { sessionConfig: {} } }
+      update:
+        operationId: updateAgent
+        objectAt: data
+        # Telenow replaces these whole when they are sent, and its own jobs write `metadata`: the engine
+        # re-reads the agent and changes only the keys the customer edited (plan §3.8 a.5).
+        mergeBlobs: [metadata, session_config, telephony_config, llm_config, stt_config, tts_config, s2s_config, tags]
+      delete: { operationId: deleteAgent }
+      read: { operationId: getAgent, objectAt: data }
+    kitIdSlot: metadata.kitId
+    # Read snake_case, written camelCase (recorded: contract_k1agents.py).
+    fields:
+      - { column: name, telenow: name, write: name }
+      - { column: description, telenow: description, write: description }
+      - { column: system_prompt, telenow: system_prompt, write: systemPrompt }
+      - { column: is_active, telenow: is_active, write: isActive, on: [update] }
+      - { column: llm_provider, telenow: llm_provider, write: llmProvider }
+      - { column: llm_model, telenow: llm_model, write: llmModel }
+      - { column: stt_provider, telenow: stt_provider, write: sttProvider }
+      - { column: tts_provider, telenow: tts_provider, write: ttsProvider }
+      - { column: tts_voice, telenow: tts_voice, write: ttsVoice }
+    # Agents are written by the kit; Telenow sends no agent events. A daily check compares a fresh read with the
+    # stored snapshot (Telenow's own jobs change `metadata`).
+    events: []
+    backfill: { mode: drift-check, operationId: getAgent }
+    permission: agents.manage
+    # Provider keys live inside the *_config blobs; the kit stores the blobs it sends, never a key Telenow returns.
+    neverStored: [llm_config.api_key, stt_config.api_key, tts_config.api_key]
+  calls:
+    table: calls
+    writer: telenow
+    telenow:
+      read: { operationId: getCall, objectAt: data }
+    # A call's analysis has its own operation (recorded: contract_k1calls.py).
+    extraReads:
+      - { operationId: getCallAnalysis, objectAt: data, column: analysis, whenPresent: analysis }
+    # A call placed from the browser is kept by Telenow's own session id the moment it is placed (App\Kit\Softphone), so no kit id travels with one;
+    # who placed it, its wrap-up, notes and follow-ups are the kit's own columns and tables, never Telenow's.
+    kitIdSlot: null
+    fields:
+      - { column: status, telenow: status }
+      - { column: outcome, telenow: disposition }
+      - { column: direction, telenow: direction }
+      - { column: channel, telenow: channel }
+      - { column: from_number, telenow: from_number }
+      - { column: to_number, telenow: to_number }
+      - { column: started_at, telenow: start_time }
+      - { column: ended_at, telenow: end_time }
+      - { column: duration_sec, telenow: duration_sec }
+      - { column: answered_by, telenow: answered_by }
+      - { column: telenow_updated_at, telenow: updated_at }
+      - { column: transcript, telenow: transcript }
+      - { column: recordings, telenow: recordings }
+      - { column: completeness, telenow: completeness }
+    # `call.completed`: one per finished call, whatever its outcome (unanswered included). It names the call; the kit
+    # then reads the call itself. The feed (every call created or changed, oldest change first) covers any event
+    # missed while the kit was away.
+    events: [call.completed]
+    backfill: { mode: changed-since, operationId: listCalls, startParameter: updatedAfter, cursorParameter: cursor }
+    permission: calls.read
+    # What Telenow charged the operator for the call: the operator's own cost, never a customer's business.
+    neverStored: [charge_usd]
+  dnc:
+    table: dnc_entries
+    writer: kit
+    telenow:
+      # Adding a number already on the list answers its entry, with the new reason (recorded: contract_k1dnc.py).
+      create: { operationId: addDnc, objectAt: data }
+      delete: { operationId: removeDnc }
+      # Telenow has no read of one entry: its list, whose rows are entries (in feed mode, changes).
+      read: { operationId: listDnc, objectAt: data.entries }
+    kitIdSlot: null
+    fields:
+      - { column: phone_number, telenow: phone_number, write: phoneNumber, on: [create] }
+      - { column: reason, telenow: reason, write: reason, on: [create] }
+      - { column: source, telenow: source }
+    # Telenow sends no DNC events. Its own entries (a caller's opt-out during a call) and every removal, deletions
+    # included, come through the feed.
+    events: []
+    backfill: { mode: changed-since, operationId: listDnc, startParameter: updatedAfter, cursorParameter: cursor }
+    permission: dnc.manage
+    # Telenow's user who added it: a person of the operator's, never the customer's business.
+    neverStored: [created_by]
+  consent:
+    table: consent_records
+    writer: kit
+    telenow:
+      # Recorded with a sub-account's own key (contract_k8consent.py). It keeps the same one twice and has no idempotency key, so the kit's id travels in the evidence and a try after a lost answer looks for it first.
+      create: { operationId: recordConsent, objectAt: data }
+      # Telenow has no list of them, only one number's.
+      read: { operationId: getConsentHistory, objectAt: data.records }
+    kitIdSlot: evidence.kitId
+    fields:
+      - { column: phone_number, telenow: phone_number, write: phone_number, on: [create] }
+      - { column: consent_type, telenow: consent_type, write: consent_type, on: [create] }
+      - { column: scope, telenow: scope, write: scope, on: [create] }
+      - { column: source, telenow: source, write: source, on: [create] }
+      - { column: disclosure_text, telenow: disclosure_text, write: disclosure_text, on: [create] }
+      - { column: disclosure_version, telenow: disclosure_version, write: disclosure_version, on: [create] }
+      - { column: captured_at, telenow: captured_at, write: captured_at, on: [create] }
+      - { column: expires_at, telenow: expires_at, write: expires_at, on: [create] }
+    # Only the kit writes them with a customer's key: the page reads the kit's copy.
+    events: []
+    backfill: { mode: per-row, operationId: getConsentHistory }
+    permission: consent.manage
+    # Telenow's own idea of who recorded it, from where: the operator's server and key, never the customer's business.
+    neverStored: [created_by, evidence]
+  knowledge_bases:
+    table: knowledge_bases
+    writer: kit
+    telenow:
+      # Recorded with a sub-account's own key (contract_k1knowledge.py). Deleting a base detaches it from every agent.
+      create: { operationId: createKnowledgeBase, objectAt: data }
+      delete: { operationId: deleteKnowledgeBase }
+      read: { operationId: getKnowledgeBase, objectAt: data }
+    # Telenow has no slot for the kit's id on a base (T2.18): the kit keeps the mapping.
+    kitIdSlot: null
+    fields:
+      - { column: name, telenow: name, write: name }
+      - { column: description, telenow: description, write: description }
+      - { column: telenow_updated_at, telenow: updated_at }
+    events: []
+    # No feed of bases: the whole list, compared (a base deleted at Telenow goes).
+    backfill: { mode: full, operationId: listKnowledgeBases }
+    permission: knowledge.manage
+    # Telenow's user who made it (the operator's), the vendor's embedding model, and its app links.
+    neverStored: [created_by, embedding_model, app_id, app_kb_key, partner_client_id]
+  knowledge_documents:
+    table: knowledge_documents
+    writer: kit
+    telenow:
+      # Text is added as here; a file (uploadKnowledgeFile, multipart) and a web page (addKnowledgeUrl, fetched when
+      # it is added) answer the same document. Telenow embeds text in the background (a table is indexed at once), so
+      # a document's status moves on after it is made: the feed brings it.
+      create: { operationId: addKnowledgeText, objectAt: data }
+      delete: { operationId: deleteKnowledgeDocument }
+      # Read through the base's documents (in feed mode, changes with `deleted_at`).
+      read: { operationId: listKnowledgeDocuments, objectAt: data.documents }
+    kitIdSlot: null
+    fields:
+      - { column: title, telenow: title, write: title, on: [create] }
+      - { column: source_type, telenow: source_type }
+      - { column: source_uri, telenow: source_uri }
+      - { column: status, telenow: status }
+      - { column: char_count, telenow: char_count }
+      - { column: telenow_updated_at, telenow: updated_at }
+    events: []
+    backfill: { mode: changed-since, operationId: listKnowledgeDocuments, startParameter: updatedAfter }
+    permission: knowledge.manage
+    # Telenow's own error text names the vendor's address: the customer reads the kit's words for a failed document
+    # instead. (The text itself is not in the rows read; the create's answer carries it, and no column takes it.)
+    neverStored: [error]
+  campaigns:
+    table: campaigns
+    writer: kit
+    telenow:
+      # Made as a draft with the customer's own key (recorded: contract_k1campaigns.py). The agent, the caller id and
+      # voicemail detection travel beside the mapped fields (Telenow reads "voicemail" back as "true"); started, paused,
+      # cancelled by their own operations (startCampaign, pauseCampaign, cancelCampaign).
+      create: { operationId: createCampaign, objectAt: data }
+      delete: { operationId: deleteCampaign }
+      read: { operationId: getCampaign, objectAt: data }
+      # A change after it is made (recorded: contract_k7campaigns.py). The window is always replaced, the rest clamped without saying, so every field goes each time; how many at once has its own operation.
+      update: { operationId: setCampaignSchedule, objectAt: data }
+    # Telenow has no slot for the kit's id on a campaign (T2.18): the kit keeps the mapping.
+    kitIdSlot: null
+    fields:
+      - { column: name, telenow: name, write: name, on: [create] }
+      - { column: concurrency, telenow: concurrency, write: concurrency, on: [create] }
+      - { column: start_time_local, telenow: start_time_local, write: startTimeLocal, on: [create, update] }
+      - { column: end_time_local, telenow: end_time_local, write: endTimeLocal, on: [create, update] }
+      - { column: timezone, telenow: timezone, write: timezone, on: [create, update] }
+      - { column: max_attempts, telenow: max_attempts, write: maxAttempts, on: [create, update] }
+      - { column: retry_on_no_answer, telenow: retry_on_no_answer, write: retryOnNoAnswer, on: [create, update] }
+      - { column: retry_backoff_secs, telenow: retry_backoff_secs, write: retryBackoffSecs, on: [create, update] }
+      - { column: status, telenow: status }
+      - { column: total_targets, telenow: total_targets }
+      - { column: completed_targets, telenow: completed_targets }
+      - { column: failed_targets, telenow: failed_targets }
+      - { column: dial_block, telenow: dial_block }
+      - { column: started_at, telenow: started_at }
+      - { column: completed_at, telenow: completed_at }
+      - { column: telenow_updated_at, telenow: updated_at }
+    # Telenow sends no campaign events (T2.15): each unfinished campaign is read again.
+    events: []
+    backfill: { mode: per-row, operationId: getCampaign }
+    permission: campaigns.manage
+    # Telenow's user who made it (the operator's), its app links and queue.
+    neverStored: [created_by, app_meta, queue_key, partner_client_id]
+  campaign_targets:
+    table: campaign_targets
+    writer: kit
+    telenow:
+      # Pushed with the kit's own id (a duplicate id is skipped), so a push can be sent again safely.
+      create: { operationId: pushCampaignTargetsV1 }
+      read: { operationId: listCampaignCalls, objectAt: data.calls }
+    # The kit's id comes back in the target's variables (and as `id` on its result).
+    kitIdSlot: variables.source_row
+    fields:
+      - { column: phone_number, telenow: phone_number, write: phoneNumber }
+      - { column: variables, telenow: variables, write: variables }
+      - { column: attempt, telenow: attempt }
+      - { column: completed_at, telenow: completed_at }
+    events: []
+    # How each call went: the results feed, finished targets only, with the kit's ids.
+    backfill: { mode: changed-since, operationId: getCampaignResultsV1, startParameter: since, cursorParameter: cursor }
+    permission: campaigns.manage
+    # Telenow's analysis tweaks and keypad input on the row; the outcome comes from the results feed.
+    neverStored: [analysis_overrides, dtmf_digits, dtmf_choices]
+  numbers:
+    table: phone_numbers
+    writer: kit
+    telenow:
+      # Bought with the customer's own key; the listing's provider and prices travel beside the number (`extras`,
+      # what searchNumbers showed). Recorded against a stand-in carrier (contract_k1numbers.py, teleone_stub.py).
+      create: { operationId: purchaseNumber, objectAt: data.number }
+      delete: { operationId: releaseNumber }
+      read: { operationId: getNumber, objectAt: data }
+    kitIdSlot: null
+    # Telenow keeps a carrier's number as the carrier writes it (`918045671001`, no +) and the carrier's country name in
+    # `country_iso` ("India"): kept as Telenow has them.
+    fields:
+      - { column: e164, telenow: e164, write: number, on: [create] }
+      - { column: country, telenow: country_iso }
+      - { column: region, telenow: region }
+      - { column: number_type, telenow: number_type }
+      - { column: next_renewal_at, telenow: next_renewal_at }
+      - { column: released_at, telenow: released_at }
+      - { column: telenow_updated_at, telenow: updated_at }
+    # Number fees reach the kit through the ledger (rental, number_setup), not through events.
+    events: []
+    # Every number changed after an instant, released ones too (no cursor: the kit keeps the newest updated_at seen).
+    backfill: { mode: changed-since, operationId: listNumbers, startParameter: updatedAfter }
+    permission: numbers.manage
+    # The carrier's own record, and Telenow's user who bought it.
+    neverStored: [provider_data, user_id]

@@ -1,0 +1,18 @@
+{
+  "operationId": "listNumbers",
+  "recorded": "2026-11-02, Telenow fe7bbd2's binary (with T2.13, which does not touch this) on the build server, throwaway database (contract_k1close.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/voice/numbers",
+    "query": "",
+    "apiKey": "vai_test_revoked"
+  },
+  "response": {
+    "status": 401,
+    "body": {
+      "error": "Invalid or revoked API key",
+      "success": false
+    }
+  },
+  "serve": false
+}

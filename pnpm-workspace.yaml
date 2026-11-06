@@ -1,0 +1,5 @@
+# The kit's JavaScript packages: the console and the contract (its tests and the Telenow mock).
+# The Laravel backend has its own Composer project in laravel/.
+packages:
+  - console
+  - contract

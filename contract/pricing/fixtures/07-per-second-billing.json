@@ -1,0 +1,48 @@
+{
+  "name": "Per-minute price billed by the second",
+  "why": "With billingIncrementSeconds 1, 95 s is 95/60 of a minute, kept exact until the line is rounded.",
+  "plan": "by-the-second",
+  "usdRate": "84.25",
+  "priceLists": [
+    {
+      "id": "by-the-second",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 1,
+      "rules": [
+        {
+          "id": "outbound-phone",
+          "match": {
+            "item": "call",
+            "direction": "outbound"
+          },
+          "price": {
+            "perMinute": "3.50"
+          }
+        }
+      ]
+    }
+  ],
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "call",
+        "rule": "by-the-second/outbound-phone",
+        "method": "perMinute",
+        "costUsd": "0.0691066666",
+        "billedSeconds": 95,
+        "amount": "5.54"
+      }
+    ],
+    "total": "5.54"
+  }
+}

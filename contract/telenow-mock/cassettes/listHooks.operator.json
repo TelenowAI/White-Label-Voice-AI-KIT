@@ -1,0 +1,33 @@
+{
+  "operationId": "listHooks",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/hooks",
+    "query": "source=voice-kit",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "source"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "hooks": [
+        {
+          "agent_id": null,
+          "created_at": "2026-10-30T11:38:57.132073Z",
+          "events": [
+            "call.completed"
+          ],
+          "id": "90424480-a5da-4e4e-bf6f-b179c292f067",
+          "include_recording": false,
+          "include_transcript": false,
+          "source": "voice-kit",
+          "target_url": "https://kit.example.com/api/kit/telenow/events"
+        }
+      ],
+      "total": 1
+    }
+  }
+}

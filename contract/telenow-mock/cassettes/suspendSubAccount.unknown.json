@@ -1,0 +1,17 @@
+{
+  "operationId": "suspendSubAccount",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1customers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/sub-accounts/199a3202-be9b-4d30-bb53-194bf12d47d6/suspend",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "sub-account not found",
+      "success": false
+    }
+  }
+}

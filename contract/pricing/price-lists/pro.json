@@ -1,0 +1,31 @@
+{
+  "id": "pro",
+  "extends": "base",
+  "currency": "INR",
+  "decimals": 2,
+  "rounding": "half-up",
+  "billingIncrementSeconds": 60,
+  "rules": [
+    {
+      "id": "llm",
+      "match": {
+        "item": "component",
+        "component": "llm"
+      },
+      "price": {
+        "markupPercent": "15"
+      }
+    },
+    {
+      "id": "lines",
+      "match": {
+        "item": "component",
+        "component": "telephony",
+        "direction": "outbound"
+      },
+      "price": {
+        "perMinute": "0.75"
+      }
+    }
+  ]
+}

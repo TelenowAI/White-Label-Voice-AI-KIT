@@ -1,0 +1,22 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k6flow.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "code": "prompt_sections_malformed",
+      "error": "The prompt's conditional sections do not open and close properly, so the agent was not saved. Each {#if …} needs its own {/if} in the same field:\n- node tell (Tell) prompt: Line 1: `{#if` is never closed — add `{/if}` where the section should end. (column 6)",
+      "problems": [
+        "node tell (Tell) prompt: Line 1: `{#if` is never closed — add `{/if}` where the section should end. (column 6)"
+      ],
+      "success": false
+    }
+  },
+  "serve": false
+}

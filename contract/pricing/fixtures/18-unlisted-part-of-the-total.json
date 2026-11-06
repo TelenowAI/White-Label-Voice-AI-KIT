@@ -1,0 +1,53 @@
+{
+  "name": "Telenow's total holds a charge its answer does not list",
+  "why": "The total is more than the listed components (a feature surcharge is in the total but not in the answer): the difference is priced as `unlisted`. Written for this case.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "inline": {
+      "kind": "call",
+      "attributes": {
+        "callType": "agent_voice",
+        "direction": "outbound",
+        "channel": "telephony"
+      },
+      "durationSec": 95,
+      "components": {
+        "llm": "0.0041250000",
+        "telephony": "0.0266000000"
+      },
+      "totalUsd": "0.0412250000"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.004125",
+        "billedSeconds": null,
+        "amount": "0.49"
+      },
+      {
+        "subject": "component:telephony",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0266",
+        "billedSeconds": null,
+        "amount": "3.14"
+      },
+      {
+        "subject": "component:unlisted",
+        "rule": "starter/everything",
+        "method": "markupPercent",
+        "costUsd": "0.0105",
+        "billedSeconds": null,
+        "amount": "1.24"
+      }
+    ],
+    "total": "4.87"
+  }
+}

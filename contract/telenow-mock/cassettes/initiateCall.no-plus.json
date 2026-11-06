@@ -1,0 +1,24 @@
+{
+  "operationId": "initiateCall",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key, a stand-in carrier that takes the dial, fake provider keys and every outbound HTTP request sent to a dead local proxy (contract_k11agentcall.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/initiate-call",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "callId": "de94b37b-188d-4a49-8ed8-2cd4da940eac",
+        "callStatus": "ringing",
+        "phoneNumber": "14155550132",
+        "sessionId": "36323fc6-0de0-482b-9b7d-8fb14ff19e5c",
+        "status": "active"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

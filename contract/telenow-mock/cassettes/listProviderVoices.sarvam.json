@@ -1,0 +1,407 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/sarvam/voices",
+    "query": "model=bulbul%3Av3",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "male",
+          "id": "shubh",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Shubh"
+        },
+        {
+          "gender": "female",
+          "id": "ritu",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Ritu"
+        },
+        {
+          "gender": "female",
+          "id": "priya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Priya"
+        },
+        {
+          "gender": "male",
+          "id": "aditya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Aditya"
+        },
+        {
+          "gender": "female",
+          "id": "neha",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Neha"
+        },
+        {
+          "gender": "male",
+          "id": "rahul",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Rahul"
+        },
+        {
+          "gender": "female",
+          "id": "pooja",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Pooja"
+        },
+        {
+          "gender": "male",
+          "id": "rohan",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Rohan"
+        },
+        {
+          "gender": "female",
+          "id": "simran",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Simran"
+        },
+        {
+          "gender": "female",
+          "id": "kavya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Kavya"
+        },
+        {
+          "gender": "male",
+          "id": "amit",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Amit"
+        },
+        {
+          "gender": "male",
+          "id": "dev",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Dev"
+        },
+        {
+          "gender": "female",
+          "id": "ishita",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Ishita"
+        },
+        {
+          "gender": "female",
+          "id": "shreya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Shreya"
+        },
+        {
+          "gender": "male",
+          "id": "ratan",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Ratan"
+        },
+        {
+          "gender": "male",
+          "id": "varun",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Varun"
+        },
+        {
+          "gender": "male",
+          "id": "manan",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Manan"
+        },
+        {
+          "gender": "male",
+          "id": "sumit",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Sumit"
+        },
+        {
+          "gender": "female",
+          "id": "roopa",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Roopa"
+        },
+        {
+          "gender": "male",
+          "id": "kabir",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Kabir"
+        },
+        {
+          "gender": "male",
+          "id": "aayan",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Aayan"
+        },
+        {
+          "gender": "male",
+          "id": "ashutosh",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Ashutosh"
+        },
+        {
+          "gender": "male",
+          "id": "advait",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Advait"
+        },
+        {
+          "gender": "male",
+          "id": "anand",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Anand"
+        },
+        {
+          "gender": "female",
+          "id": "tanya",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Tanya"
+        },
+        {
+          "gender": "male",
+          "id": "tarun",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Tarun"
+        },
+        {
+          "gender": "male",
+          "id": "sunny",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Sunny"
+        },
+        {
+          "gender": "male",
+          "id": "mani",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Mani"
+        },
+        {
+          "gender": "male",
+          "id": "gokul",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Gokul"
+        },
+        {
+          "gender": "male",
+          "id": "vijay",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Vijay"
+        },
+        {
+          "gender": "female",
+          "id": "shruti",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Shruti"
+        },
+        {
+          "gender": "female",
+          "id": "suhani",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Suhani"
+        },
+        {
+          "gender": "male",
+          "id": "mohit",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Mohit"
+        },
+        {
+          "gender": "female",
+          "id": "kavitha",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Kavitha"
+        },
+        {
+          "gender": "male",
+          "id": "rehan",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Rehan"
+        },
+        {
+          "gender": "male",
+          "id": "soham",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Soham"
+        },
+        {
+          "gender": "female",
+          "id": "rupali",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Rupali"
+        },
+        {
+          "gender": "female",
+          "id": "niharika",
+          "language": "hi-IN",
+          "languages": [
+            "hi-IN"
+          ],
+          "model": "bulbul:v3",
+          "name": "Niharika"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 38
+    }
+  }
+}

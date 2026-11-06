@@ -1,0 +1,42 @@
+{
+  "operationId": "getCallCost",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database; the charge and fee amounts were seeded (contract/pricing/README.md)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/1f975cc3-85c9-4fbf-ad68-769e17d6d84d/calls/f39a4d07-88a3-4e75-81e4-e235c2f62267/cost",
+    "query": "",
+    "apiKey": "vai_test_pricing_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "breakdown": {
+          "events": [
+            {
+              "characters": 1360,
+              "chargeUsd": "0.00816",
+              "kind": "tts"
+            }
+          ]
+        },
+        "callType": "agent_voice",
+        "embeddingUsd": "0",
+        "hasEstimates": false,
+        "llmUsd": "0.0019800000",
+        "orgId": "1f975cc3-85c9-4fbf-ad68-769e17d6d84d",
+        "platformAiUsd": "0",
+        "platformFeeUsd": "0.0078333333",
+        "postCallAnalysisUsd": "0",
+        "ratedAt": "2026-10-29T17:38:06.967631Z",
+        "sessionId": "f39a4d07-88a3-4e75-81e4-e235c2f62267",
+        "simulationUsd": "0",
+        "sttUsd": "0.0033291667",
+        "telephonyUsd": "0",
+        "totalChargeUsd": "0.0213025000",
+        "ttsUsd": "0.0081600000"
+      },
+      "success": true
+    }
+  }
+}

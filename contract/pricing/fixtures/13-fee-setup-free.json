@@ -1,0 +1,27 @@
+{
+  "name": "Number setup given free",
+  "why": "A fixed price of 0 is a line of 0.00, so the fee still shows on the customer's bill.",
+  "plan": "per-minute",
+  "usdRate": "84.25",
+  "item": {
+    "fee": {
+      "ledger": "listLedger.number-fees",
+      "refKind": "number_setup"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "fee:number_setup",
+        "rule": "per-minute/number-setup",
+        "method": "fixed",
+        "costUsd": "1",
+        "billedSeconds": null,
+        "amount": "0.00"
+      }
+    ],
+    "total": "0.00"
+  }
+}

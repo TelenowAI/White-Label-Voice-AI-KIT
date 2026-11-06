@@ -1,0 +1,82 @@
+/*
+ * The default theme's style sheet (resources/views/theme): mobile first, in the brand's colours — each colour role is a
+ * CSS variable `--kit-<role>` the layout sets from the brand (config('kit.brand.colors') and Admin → Brand). A child
+ * theme adds its own sheet in `theme::partials.head` or replaces the layout.
+ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--kit-text, #111827);
+  background: var(--kit-background, #ffffff);
+  overflow-wrap: anywhere;
+}
+img { max-width: 100%; height: auto; }
+a { color: var(--kit-primary, #4f46e5); }
+h1, h2, h3 { line-height: 1.25; margin: 0 0 0.6em; }
+h1 { font-size: clamp(1.8rem, 6vw, 3rem); }
+h2 { font-size: clamp(1.4rem, 4.5vw, 2rem); }
+h3 { font-size: 1.15rem; }
+p, ul, dl { margin: 0 0 1em; }
+.muted, small { color: var(--kit-muted, #6b7280); }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 8px; background: var(--kit-background, #fff); padding: 8px; z-index: 10; }
+
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 16px; }
+.narrow { max-width: 46rem; }
+
+.button {
+  display: inline-block;
+  padding: 0.65em 1.2em;
+  border-radius: 8px;
+  background: var(--kit-primary, #4f46e5);
+  color: var(--kit-primary-contrast, #ffffff);
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid var(--kit-primary, #4f46e5);
+}
+.button.secondary { background: transparent; color: var(--kit-primary, #4f46e5); }
+.button:focus-visible, a:focus-visible { outline: 3px solid var(--kit-primary, #4f46e5); outline-offset: 2px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.site-header { border-bottom: 1px solid var(--kit-surface, #f6f7f9); }
+.header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-top: 12px; padding-bottom: 12px; }
+.brand { font-weight: 700; font-size: 1.2rem; color: var(--kit-text, #111827); text-decoration: none; }
+.brand img { max-height: 40px; display: block; }
+.site-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.site-nav a { text-decoration: none; padding: 6px 0; }
+.site-nav .button { padding: 0.45em 0.9em; }
+
+.hero { padding: 40px 0; background: var(--kit-surface, #f6f7f9); }
+.hero-row { display: grid; gap: 24px; align-items: center; }
+.hero-image { border-radius: 12px; }
+
+.band { padding: 40px 0; }
+.band.alt { background: var(--kit-surface, #f6f7f9); }
+.cta { text-align: center; }
+.cta .actions { justify-content: center; }
+
+.cards { list-style: none; padding: 0; display: grid; gap: 16px; }
+.card { background: var(--kit-background, #ffffff); border: 1px solid var(--kit-surface, #f6f7f9); border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+.plan .headline { font-weight: 600; }
+.prices { margin: 0 0 1em; }
+.prices div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--kit-surface, #f6f7f9); }
+.prices dt { margin: 0; }
+.prices dd { margin: 0; font-weight: 600; text-align: right; }
+
+.legal h2 { margin-top: 1.4em; }
+
+.site-footer { border-top: 1px solid var(--kit-surface, #f6f7f9); padding: 20px 0; font-size: 0.9rem; }
+.footer-row { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+.footer-row nav { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+
+@media (min-width: 48rem) {
+  .hero { padding: 72px 0; }
+  .hero-row { grid-template-columns: 1fr 1fr; }
+  .band { padding: 64px 0; }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
+}

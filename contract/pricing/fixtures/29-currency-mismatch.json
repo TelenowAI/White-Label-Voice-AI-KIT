@@ -1,0 +1,27 @@
+{
+  "name": "A fallback in another currency",
+  "why": "A plan in USD cannot fall back to an INR list: refused, naming the fallback.",
+  "plan": "usd-over-inr",
+  "usdRate": "1",
+  "priceLists": [
+    {
+      "id": "usd-over-inr",
+      "currency": "USD",
+      "decimals": 4,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [],
+      "extends": "base"
+    }
+  ],
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "error": "currency_mismatch",
+    "subject": "base"
+  }
+}

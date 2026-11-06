@@ -1,0 +1,20 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k6flow.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "code": "agent_foreign_reference",
+      "error": "`metadata.flow.nodes[2].config.agents[0].agentId` names something that is not this organization's. Choose one of this organization's own, or remove it.",
+      "path": "metadata.flow.nodes[2].config.agents[0].agentId",
+      "success": false
+    }
+  },
+  "serve": false
+}

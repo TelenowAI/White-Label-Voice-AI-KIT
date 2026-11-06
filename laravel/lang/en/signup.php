@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * Signing up — with an email, a phone or a sign-in provider — and sign-in links (App\Kit\Signup, SignupController,
+ * SignInLinkController, Admin\SignupsController, SignupStep): the public form's labels, what each step answers, and the
+ * words Admin → Sign-ups answers with.
+ */
+return [
+    'form' => [
+        'name' => 'Your name',
+        'email' => 'Work email',
+        'password' => 'Password',
+        'password_help' => 'At least :min characters.',
+        'accountName' => 'Company or account name',
+        'accountName_help' => 'You can invite your team to it later.',
+        'phone' => 'Mobile number',
+        'phone_help' => 'Start with + and your country code. We send you a code to confirm it, and you sign in with a code each time.',
+        'terms' => 'I agree to the terms (version :version)',
+        'terms_name' => 'Terms',
+    ],
+    'closed' => 'Sign-ups are closed. Ask for an invite instead.',
+    'domain_not_allowed' => 'Sign-ups from this address are not open. Use your work email, or ask for an invite.',
+    'check_email' => 'Check your email: we sent a link to confirm your address.',
+    'check_email_code' => 'Check your email: we sent a code to confirm your address. Enter it to finish signing up.',
+    'no_email_codes' => 'Confirming with an emailed code is not available here. Sign up again.',
+    'email_code_on_its_way' => 'If a customer account uses that address, a code is on its way.',
+    'email_codes_unavailable' => 'Emailed sign-in codes are not available. Sign in another way.',
+    'check_phone' => 'We are sending a code to :phone. Enter it to finish signing up.',
+    'no_phone_signups' => 'Signing up with a phone is not available here. Sign up with your email instead.',
+    'offer_gone' => 'This sign-up is no longer open. Start again with your sign-in provider, or sign up with your email.',
+    'link_gone' => 'This link no longer works. Sign up again, or sign in.',
+    'waiting' => 'Thanks, your address is confirmed. Your sign-up is waiting for approval: we will email you when it is ready.',
+    'waiting_phone' => 'Thanks, your number is confirmed. Your sign-up is waiting for approval: we will message you when it is ready.',
+    'already_registered' => 'This address already has an account. Sign in instead.',
+    'number_registered' => 'This number already has an account. Sign in with a code instead.',
+    'provider_removed' => 'A sign-in provider since removed',
+    'not_waiting' => 'This sign-up is not waiting for a decision.',
+    'no_signup' => 'There is no such sign-up.',
+    'trial_note' => 'Trial credit',
+    'link_sent' => 'If a customer account uses that address, a sign-in link is on its way.',
+    'link_unavailable' => 'Sign-in links are not available. Sign in with your password.',
+    'needs_email' => 'Turn on email first (Admin → Email): sign-ups are confirmed by email.',
+    'needs_sms' => 'Add a way to send codes first (Admin → Texts and WhatsApp).',
+    'needs_email_for_codes' => 'Turn on email first (Admin → Email): emailed codes need it.',
+    'needs_domains' => 'List at least one email domain.',
+    'needs_pricing' => 'Set up pricing first: a trial credit is in your pricing currency.',
+    'needs_options' => 'A choice field needs its choices.',
+    'settings' => [
+        'mode' => 'Who may sign up',
+        'domains' => 'Email domains',
+        'methods' => 'Ways in',
+        'fields' => 'Form fields',
+        'terms_url' => 'Terms address',
+        'terms_version' => 'Terms version',
+        'trialCredit' => 'Trial credit',
+    ],
+    'modes' => [
+        'closed' => 'Closed: invites only',
+        'open' => 'Open: anyone who confirms their email',
+        'approval' => 'Approval: anyone, and staff approve each one',
+        'domains' => 'Only addresses at these email domains',
+    ],
+];

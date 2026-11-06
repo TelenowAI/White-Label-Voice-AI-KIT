@@ -1,0 +1,39 @@
+{
+  "operationId": "uploadVoiceSample",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine that takes clones (tts_stub_k12.py), fake provider keys and every other outbound HTTP request sent to a dead local proxy (contract_k12voices.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/8ff3cc19-c117-503b-be70-0dfdf86abd1d/voices/d1a68922-7913-550f-926e-4f411e8d1c84/sample",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "consent_at": "2026-11-04T19:22:38.322021Z",
+        "consent_by": "dcd2601e-0d92-5a35-93e0-b569e4e7c83f",
+        "consent_text_version": "kit-voice-release-1",
+        "created_at": "2026-11-04T19:22:38.322021Z",
+        "created_by": "dcd2601e-0d92-5a35-93e0-b569e4e7c83f",
+        "has_sample": true,
+        "id": "d1a68922-7913-550f-926e-4f411e8d1c84",
+        "name": "Recorded in the browser",
+        "org_id": "8ff3cc19-c117-503b-be70-0dfdf86abd1d",
+        "sample_content_type": "audio/webm",
+        "sample_script": "Hello, thank you for calling Acme Dental.",
+        "sample_seconds": 5.0,
+        "source_kind": "record",
+        "source_language": "en",
+        "status": "active",
+        "subject_confirmed": true,
+        "subject_name": "Asha Rao",
+        "subject_relation": "employee",
+        "updated_at": "2026-11-04T19:22:38.425055Z",
+        "voiceprint_purge_after": null
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

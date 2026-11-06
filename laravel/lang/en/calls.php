@@ -1,0 +1,24 @@
+<?php
+
+// A customer's calls (App\Kit\Calls, CallsController). Customers read these: nothing here names the voice platform.
+return [
+    'not_found' => 'There is no such call.',
+    'no_recording' => 'This call has no such recording.',
+    'recording_unavailable' => 'The recording could not be played. Try again shortly.',
+    'account_not_ready' => 'Your account is still being set up.',
+    'fields' => [
+        'body' => 'Note',
+        'wrapup' => 'Wrap-up',
+        'followup' => 'Follow-up',
+        'dueAt' => 'Due',
+        'done' => 'Done',
+    ],
+    'too_many_notes' => 'This call has as many notes as it can keep.',
+    'too_many_followups' => 'This call has as many follow-ups as it can keep.',
+    'no_followup' => 'There is no such follow-up.',
+    'live_unavailable' => 'Calls on now could not be counted. Try again shortly.',
+    'listen_only_managers' => 'Only someone who manages this account can listen in.',
+    'listen_not_heard' => 'A call in a browser or a chat cannot be listened to.',
+    'listen_call_over' => 'This call is no longer on.',
+    'listen_unavailable' => 'Listening in could not start right now. Try again shortly.',
+];

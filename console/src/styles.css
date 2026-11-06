@@ -1,0 +1,659 @@
+/*
+ * The console's base styles. Every colour is a brand variable (`--color-<role>`, set by brand.ts from the
+ * operator's brand); the fallbacks only show before the brand arrives.
+ */
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--color-text, #111827);
+  background: var(--color-background, #ffffff);
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  padding: 16px;
+}
+
+.brand-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  margin: -16px -16px 16px;
+  background: var(--color-primary, #4f46e5);
+  color: var(--color-primary-contrast, #ffffff);
+}
+
+.brand-bar img {
+  max-height: 32px;
+}
+
+/* Status colours: the brand may set these roles too; these are the fallbacks. */
+:root {
+  --status-ok: var(--color-success, #15803d);
+  --status-warning: var(--color-warning, #b45309);
+  --status-blocking: var(--color-danger, #b91c1c);
+}
+
+.muted {
+  color: var(--color-muted, #6b7280);
+}
+
+.error {
+  color: var(--status-blocking);
+}
+
+button {
+  font: inherit;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: var(--color-primary, #4f46e5);
+  color: var(--color-primary-contrast, #ffffff);
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* The setup wizard: the step list beside the current step, stacked on a narrow screen. */
+.wizard-body {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .wizard-body {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.steps button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  background: var(--color-surface, #f6f7f9);
+  color: var(--color-text, #111827);
+  border-color: var(--color-surface, #f6f7f9);
+}
+
+.steps [aria-current="step"] button {
+  border-color: var(--color-primary, #4f46e5);
+}
+
+.status-done small {
+  color: var(--status-ok);
+}
+
+.status-blocked small {
+  color: var(--status-blocking);
+}
+
+.step {
+  max-width: 640px;
+}
+
+.checks {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.check {
+  display: grid;
+  padding: 8px 12px;
+  border-left: 4px solid var(--status-ok);
+  background: var(--color-surface, #f6f7f9);
+}
+
+.check-warning {
+  border-left-color: var(--status-warning);
+}
+
+.check-blocking {
+  border-left-color: var(--status-blocking);
+}
+
+.facts div {
+  display: flex;
+  gap: 8px;
+}
+
+.facts dt {
+  min-width: 120px;
+  color: var(--color-muted, #6b7280);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  padding: 8px;
+  border: 1px solid var(--color-muted, #6b7280);
+  border-radius: 6px;
+  background: var(--color-background, #ffffff);
+  color: var(--color-text, #111827);
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* A checkbox or radio button keeps its own size beside its words, inside a field too. */
+.field input[type="checkbox"],
+.field input[type="radio"] {
+  width: auto;
+  padding: 0;
+  flex: none;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.swatch {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--color-muted, #6b7280);
+}
+
+button.secondary {
+  background: var(--color-surface, #f6f7f9);
+  color: var(--color-text, #111827);
+  border-color: var(--color-muted, #6b7280);
+}
+
+/* A button that reads as a link ("Forgot your password?"). */
+button.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primary, #4f46e5);
+  text-decoration: underline;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* The admin panel. */
+.admin-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.admin-nav a {
+  color: var(--color-text, #111827);
+}
+
+.admin-nav a.active {
+  font-weight: 600;
+}
+
+.admin-nav button {
+  margin-left: auto;
+}
+
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 640px;
+}
+
+.inline-form .field {
+  flex: 1 1 240px;
+  margin-bottom: 0;
+}
+
+.voice-find {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.voice-find > * {
+  flex: 1 1 140px;
+  width: auto;
+  min-width: 0;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  /* Holds anything positioned inside it (a screen-reader-only label), which would otherwise widen the page. */
+  position: relative;
+  margin-top: 16px;
+}
+
+table.customers {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+}
+
+table.customers th,
+table.customers td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--color-surface, #f6f7f9);
+  vertical-align: top;
+}
+
+.sync {
+  display: grid;
+}
+
+.sync-synced span {
+  color: var(--status-ok);
+}
+
+.sync-pending span {
+  color: var(--status-warning);
+}
+
+.sync-failed span {
+  color: var(--status-blocking);
+}
+
+button.secondary[aria-pressed="true"] {
+  border-color: currentColor;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Lists inside a page (team members, invites). */
+table.list {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 480px;
+}
+
+table.list th,
+table.list td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--color-surface, #f6f7f9);
+  vertical-align: top;
+}
+
+.form-title {
+  flex-basis: 100%;
+  margin: 16px 0 0;
+}
+
+.field-narrow {
+  flex: 0 1 160px;
+}
+
+.invite-link {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--color-surface, #f6f7f9);
+  max-width: 640px;
+}
+
+.invite-link input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  padding: 8px;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The console's "service paused" notice. */
+.paused {
+  padding: 12px;
+  border-left: 4px solid var(--status-warning);
+  background: var(--color-surface, #f6f7f9);
+}
+
+.paused-account_suspended {
+  border-left-color: var(--status-blocking);
+}
+
+/* Console → Agents. */
+.agent-form {
+  max-width: 720px;
+  margin-top: 16px;
+}
+
+.agent-form textarea {
+  resize: vertical;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.test-call {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--color-surface, #f6f7f9);
+  max-width: 720px;
+}
+
+.call-state-live {
+  color: var(--status-ok);
+}
+
+.call-state-error {
+  color: var(--status-blocking);
+}
+
+.transcript {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 6px;
+}
+
+.transcript .partial {
+  opacity: 0.7;
+}
+
+/* Console → Phone and what the team writes on a call. */
+.phone-dial {
+  max-width: 480px;
+}
+
+.phone-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.call-work {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--color-surface, #f6f7f9);
+  max-width: 720px;
+}
+
+.notes,
+.follow-ups {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.note-body {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.follow-ups .checkbox {
+  margin-bottom: 2px;
+}
+
+.follow-ups .done span {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.follow-ups .late small {
+  color: var(--status-blocking);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.live-now,
+.calls-filter {
+  margin: 0 0 12px;
+}
+
+.live-calls {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.live-calls li {
+  overflow-wrap: anywhere;
+}
+
+.listen-in {
+  margin-left: 8px;
+}
+
+.danger-zone {
+  margin-top: 24px;
+}
+
+/* Console → a call. */
+audio.recording {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 8px;
+}
+
+/* Wallets and pricing. */
+.balance strong {
+  font-size: 1.5rem;
+}
+
+textarea.code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875rem;
+}
+
+.price-lists li {
+  margin-bottom: 8px;
+}
+
+/* A clip being heard (voices/ClipButton.tsx): the button, then its player. */
+.clip {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.clip audio {
+  max-width: 100%;
+  height: 2rem;
+}
+
+/* Admin → Catalog: a language model's choice (offered, and the name customers see). */
+.model-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+fieldset {
+  border: 1px solid var(--color-muted, #6b7280);
+  border-radius: 6px;
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  min-width: 0;
+}
+
+/* Console → Voices: what a voice is like reads as a line, not a narrow column. */
+table.list td.about {
+  min-width: 16rem;
+}
+
+/* A bank transfer's instructions keep the operator's line breaks. */
+.instructions {
+  white-space: pre-wrap;
+}
+
+/* A long address with nowhere to break (a webhook URL) wraps instead of widening the page on a phone. */
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+
+/* The days an admin report covers (admin/PeriodPicker.tsx): side by side when there is room. */
+form.period {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0 16px;
+  margin-bottom: 16px;
+}
+
+table.list tfoot th,
+table.list tfoot td {
+  font-weight: 600;
+}
+
+/* Text for screen readers only (a column whose cells are buttons). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* A short status word beside a name (admin/VoicePlatformPage.tsx: a late job). */
+.badge {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  border: 1px solid currentColor;
+}
+
+/* Staff looking at a customer's console (console/ConsoleArea.tsx): never mistaken for the customer's own view. */
+.viewing-as {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  border: 2px solid var(--status-warning, #b45309);
+  border-radius: 6px;
+}
+
+/* An email as it will be sent (admin/EmailTemplates.tsx): its HTML in a sandboxed frame, as wide as the page allows. */
+.email-preview iframe {
+  display: block;
+  width: 100%;
+  height: 480px;
+  border: 1px solid var(--color-muted, #6b7280);
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+/* A group of settings on the agent form (agents/AgentBehaviourFields.tsx): folded until it is wanted. */
+.settings-group {
+  border-top: 1px solid var(--color-muted, #6b7280);
+  padding: 0.5rem 0;
+}
+.settings-group > summary {
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+.settings-group[open] > summary {
+  margin-bottom: 0.75rem;
+}
+.settings-group > summary small {
+  display: block;
+}
+
+/* Call steps: the map keeps a usable height on a phone, with the list and forms below it. */
+.flow-canvas {
+  height: 420px;
+  border: 1px solid var(--border, #d0d5dd);
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.flow-steps {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flow-steps button {
+  width: 100%;
+  text-align: left;
+}
+
+.flow-steps button[aria-current="true"] {
+  font-weight: 600;
+}
+
+.react-flow__node.flow-node-start {
+  border-width: 2px;
+}
+
+.flow-add {
+  align-items: flex-end;
+}
+
+.flow-actions {
+  margin-top: 16px;
+}

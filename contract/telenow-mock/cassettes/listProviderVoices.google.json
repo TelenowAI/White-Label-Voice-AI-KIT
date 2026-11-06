@@ -1,0 +1,507 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/google/voices",
+    "query": "model=gemini-3.1-flash-tts-preview",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "description": "Firm and composed — collections, verification, banking.",
+          "gender": "female",
+          "id": "Kore",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Kore",
+          "style": "Firm",
+          "tags": [
+            "firm",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Warm and welcoming — the default-friendly choice.",
+          "gender": "female",
+          "id": "Sulafat",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Sulafat",
+          "style": "Warm",
+          "tags": [
+            "warm",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Measured and informative — explanations, onboarding.",
+          "gender": "male",
+          "id": "Charon",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Charon",
+          "style": "Informative",
+          "tags": [
+            "informative",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Friendly and approachable — general support.",
+          "gender": "male",
+          "id": "Achird",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Achird",
+          "style": "Friendly",
+          "tags": [
+            "friendly",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Bright and crisp — receptionist, front desk.",
+          "gender": "female",
+          "id": "Autonoe",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Autonoe",
+          "style": "Bright",
+          "tags": [
+            "bright",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Clear and articulate — instructions, addresses, numbers.",
+          "gender": "male",
+          "id": "Iapetus",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Iapetus",
+          "style": "Clear",
+          "tags": [
+            "clear",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Upbeat and quick — sales, lead qualification.",
+          "gender": "female",
+          "id": "Laomedeia",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Laomedeia",
+          "style": "Upbeat",
+          "tags": [
+            "upbeat",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Forward and confident — outbound, negotiation.",
+          "gender": "female",
+          "id": "Pulcherrima",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Pulcherrima",
+          "style": "Forward",
+          "tags": [
+            "forward",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Mature and seasoned — advisory, insurance, wealth.",
+          "gender": "female",
+          "id": "Gacrux",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Gacrux",
+          "style": "Mature",
+          "tags": [
+            "mature",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Soft and gentle — healthcare, sensitive topics.",
+          "gender": "female",
+          "id": "Achernar",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Achernar",
+          "style": "Soft",
+          "tags": [
+            "soft",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Gentle and patient — elderly callers, care lines.",
+          "gender": "female",
+          "id": "Vindemiatrix",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Vindemiatrix",
+          "style": "Gentle",
+          "tags": [
+            "gentle",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Clear and neutral — compliance read-outs, disclosures.",
+          "gender": "female",
+          "id": "Erinome",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Erinome",
+          "style": "Clear",
+          "tags": [
+            "clear",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Knowledgeable and precise — expert, B2B.",
+          "gender": "male",
+          "id": "Sadaltager",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Sadaltager",
+          "style": "Knowledgeable",
+          "tags": [
+            "knowledgeable",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Informative and assured — technical support.",
+          "gender": "male",
+          "id": "Rasalgethi",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Rasalgethi",
+          "style": "Informative",
+          "tags": [
+            "informative",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Firm and direct — reminders, escalations.",
+          "gender": "male",
+          "id": "Alnilam",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Alnilam",
+          "style": "Firm",
+          "tags": [
+            "firm",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Firm and grounded — authority without coldness.",
+          "gender": "male",
+          "id": "Orus",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Orus",
+          "style": "Firm",
+          "tags": [
+            "firm",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Smooth and even — premium, concierge.",
+          "gender": "male",
+          "id": "Algieba",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Algieba",
+          "style": "Smooth",
+          "tags": [
+            "smooth",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Smooth and polished — hospitality, travel.",
+          "gender": "female",
+          "id": "Despina",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Despina",
+          "style": "Smooth",
+          "tags": [
+            "smooth",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Even and steady — surveys, long forms.",
+          "gender": "male",
+          "id": "Schedar",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Schedar",
+          "style": "Even",
+          "tags": [
+            "even",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Easy-going and unhurried — long explanations.",
+          "gender": "female",
+          "id": "Callirrhoe",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Callirrhoe",
+          "style": "Easy-going",
+          "tags": [
+            "easy-going",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Easy-going and warm — retention, win-back.",
+          "gender": "male",
+          "id": "Umbriel",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Umbriel",
+          "style": "Easy-going",
+          "tags": [
+            "easy-going",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Casual and conversational — peer-to-peer tone.",
+          "gender": "male",
+          "id": "Zubenelgenubi",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Zubenelgenubi",
+          "style": "Casual",
+          "tags": [
+            "casual",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Breezy and relaxed — casual, friendly outreach.",
+          "gender": "female",
+          "id": "Aoede",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Aoede",
+          "style": "Breezy",
+          "tags": [
+            "breezy",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Bright, light-toned — energetic openers.",
+          "gender": "female",
+          "id": "Zephyr",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Zephyr",
+          "style": "Bright",
+          "tags": [
+            "bright",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Youthful and fresh — app support, student lines.",
+          "gender": "female",
+          "id": "Leda",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Leda",
+          "style": "Youthful",
+          "tags": [
+            "youthful",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Upbeat and playful — consumer, retail, youth brands.",
+          "gender": "male",
+          "id": "Puck",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Puck",
+          "style": "Upbeat",
+          "tags": [
+            "upbeat",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Lively and animated — events, entertainment.",
+          "gender": "male",
+          "id": "Sadachbia",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Sadachbia",
+          "style": "Lively",
+          "tags": [
+            "lively",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Excitable, high-energy — promotions, launches.",
+          "gender": "male",
+          "id": "Fenrir",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Fenrir",
+          "style": "Excitable",
+          "tags": [
+            "excitable",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Breathy and close — intimate, confiding delivery.",
+          "gender": "male",
+          "id": "Enceladus",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Enceladus",
+          "style": "Breathy",
+          "tags": [
+            "breathy",
+            "multilingual"
+          ]
+        },
+        {
+          "description": "Gravelly and textured — distinctive, memorable.",
+          "gender": "male",
+          "id": "Algenib",
+          "models": [
+            "gemini-3.1-flash-tts-preview",
+            "gemini-2.5-flash-preview-tts",
+            "gemini-2.5-pro-preview-tts"
+          ],
+          "name": "Algenib",
+          "style": "Gravelly",
+          "tags": [
+            "gravelly",
+            "multilingual"
+          ]
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "synced",
+      "page": 0,
+      "source": "live",
+      "success": true,
+      "totalCount": 30
+    }
+  }
+}

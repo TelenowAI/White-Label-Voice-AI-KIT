@@ -1,0 +1,37 @@
+{
+  "name": "A fallback list that does not exist",
+  "why": "Refused, naming the missing list, even before a rule could match.",
+  "plan": "orphan",
+  "usdRate": "84.25",
+  "priceLists": [
+    {
+      "id": "orphan",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [
+        {
+          "id": "all",
+          "match": {
+            "item": "component"
+          },
+          "price": {
+            "markupPercent": "40"
+          }
+        }
+      ],
+      "extends": "gone"
+    }
+  ],
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "error": "unknown_price_list",
+    "subject": "gone"
+  }
+}

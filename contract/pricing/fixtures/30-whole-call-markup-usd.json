@@ -1,0 +1,27 @@
+{
+  "name": "A markup on the whole call, in USD",
+  "why": "A call rule with a markup marks up Telenow's total; USD at rate 1, 4 places, half-even.",
+  "plan": "wholesale-usd",
+  "usdRate": "1",
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "USD",
+    "usdRate": "1",
+    "lines": [
+      {
+        "subject": "call",
+        "rule": "wholesale-usd/calls",
+        "method": "markupPercent",
+        "costUsd": "0.0691066666",
+        "billedSeconds": null,
+        "amount": "0.0829"
+      }
+    ],
+    "total": "0.0829"
+  }
+}

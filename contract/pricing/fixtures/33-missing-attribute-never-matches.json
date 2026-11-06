@@ -1,0 +1,25 @@
+{
+  "name": "A rule on an attribute the item lacks",
+  "why": "direction is null, so the per-minute call rules do not match and the call falls to component rules \u2014 here none, so refused. Written for this case.",
+  "plan": "per-minute",
+  "usdRate": "84.25",
+  "item": {
+    "inline": {
+      "kind": "call",
+      "attributes": {
+        "callType": "agent_voice",
+        "direction": null,
+        "channel": "telephony"
+      },
+      "durationSec": 95,
+      "components": {
+        "telephony": "0.0266"
+      },
+      "totalUsd": "0.0266"
+    }
+  },
+  "expect": {
+    "error": "unpriced_component",
+    "subject": "component:telephony"
+  }
+}

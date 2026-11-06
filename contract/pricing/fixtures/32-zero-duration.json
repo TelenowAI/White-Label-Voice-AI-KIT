@@ -1,0 +1,36 @@
+{
+  "name": "A per-minute price on a call of 0 s",
+  "why": "No started minute: one line of 0.00. Written for this case.",
+  "plan": "per-minute",
+  "usdRate": "84.25",
+  "item": {
+    "inline": {
+      "kind": "call",
+      "attributes": {
+        "callType": "agent_voice",
+        "direction": "outbound",
+        "channel": "telephony"
+      },
+      "durationSec": 0,
+      "components": {
+        "telephony": "0"
+      },
+      "totalUsd": "0"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "call",
+        "rule": "per-minute/outbound-phone",
+        "method": "perMinute",
+        "costUsd": "0",
+        "billedSeconds": 0,
+        "amount": "0.00"
+      }
+    ],
+    "total": "0.00"
+  }
+}

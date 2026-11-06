@@ -1,0 +1,65 @@
+{
+  "operationId": "getCampaignResultsV1",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k7campaigns.py); people settled in the database with the words the release's finalisers write",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/campaigns/c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f/results",
+    "query": "limit=100",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "nextCursor": "2026-11-04T09:17:07.922491Z_181570db-aade-4504-a9ed-e151e60be741",
+      "nextSince": "2026-11-04T09:17:07.922491+00:00",
+      "results": [
+        {
+          "attempt": 1,
+          "callId": "dc3d9e4e-fb50-46d0-aebd-6c08e33307a5",
+          "completedAt": "2026-11-04T09:17:05.673858+00:00",
+          "id": "a0000001-0000-4000-8000-000000000000",
+          "outcome": "answered",
+          "phone": "+14155550101",
+          "source": "push|kit"
+        },
+        {
+          "attempt": 2,
+          "callId": "cac6f934-3426-4a1a-bd41-2c1c2eaf7508",
+          "completedAt": "2026-11-04T09:17:05.709571+00:00",
+          "id": "a0000002-0000-4000-8000-000000000000",
+          "outcome": "answered",
+          "phone": "+14155550102",
+          "source": "push|kit"
+        },
+        {
+          "attempt": 1,
+          "callId": "68e461c9-ceba-49a6-afaf-cd74526582d9",
+          "completedAt": "2026-11-04T09:17:05.766263+00:00",
+          "id": "a0000006-0000-4000-8000-000000000000",
+          "outcome": "dial timed out",
+          "phone": "+14155550106",
+          "source": "push|kit"
+        },
+        {
+          "attempt": 1,
+          "callId": "3b22932c-a6cf-4ea0-bac1-77e930ffa49b",
+          "completedAt": "2026-11-04T09:17:05.780561+00:00",
+          "id": "a0000007-0000-4000-8000-000000000000",
+          "outcome": "insufficient balance",
+          "phone": "+14155550107",
+          "source": "push|kit"
+        },
+        {
+          "attempt": 1,
+          "callId": "181570db-aade-4504-a9ed-e151e60be741",
+          "completedAt": "2026-11-04T09:17:07.922491+00:00",
+          "id": "a0000003-0000-4000-8000-000000000000",
+          "outcome": "no-answer",
+          "phone": "+14155550103",
+          "source": "push|kit"
+        }
+      ]
+    }
+  },
+  "serve": false
+}

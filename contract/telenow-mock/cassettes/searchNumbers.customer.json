@@ -1,0 +1,103 @@
+{
+  "operationId": "searchNumbers",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1numbers.py); the carrier was a STAND-IN speaking Plivo's API (teleone_stub.py, TELEONE_API_BASE), so no number was bought anywhere; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/voice/numbers/search",
+    "query": "country=IN&provider=teleone",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "country"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "meta": {
+          "limit": 20,
+          "next": null,
+          "offset": 0,
+          "previous": null,
+          "total_count": 2
+        },
+        "numbers": [
+          {
+            "capabilities": {
+              "mms": false,
+              "sms": false,
+              "voice": true
+            },
+            "country": "India",
+            "e164": "918045671001",
+            "monthly_rent": "499.00000",
+            "monthly_rent_usd": "5.25",
+            "number_type": "local",
+            "price_currency": "INR",
+            "raw": {
+              "city": "Bangalore",
+              "country": "India",
+              "currency": null,
+              "lata": null,
+              "mms_enabled": false,
+              "monthly_rental_rate": "499.00000",
+              "number": "918045671001",
+              "prefix": "80",
+              "rate_center": null,
+              "region": "Karnataka",
+              "resource_uri": "/v1/Account/MAKITSTUB0001/PhoneNumber/918045671001/",
+              "restriction": null,
+              "restriction_text": null,
+              "setup_rate": "0.00000",
+              "sms_enabled": false,
+              "sub_type": null,
+              "type": "local",
+              "voice_enabled": true
+            },
+            "region": "Karnataka",
+            "setup_price": "0.00000",
+            "setup_price_usd": "0"
+          },
+          {
+            "capabilities": {
+              "mms": false,
+              "sms": false,
+              "voice": true
+            },
+            "country": "India",
+            "e164": "918045671002",
+            "monthly_rent": "499.00000",
+            "monthly_rent_usd": "5.25",
+            "number_type": "local",
+            "price_currency": "INR",
+            "raw": {
+              "city": "Bangalore",
+              "country": "India",
+              "currency": null,
+              "lata": null,
+              "mms_enabled": false,
+              "monthly_rental_rate": "499.00000",
+              "number": "918045671002",
+              "prefix": "80",
+              "rate_center": null,
+              "region": "Karnataka",
+              "resource_uri": "/v1/Account/MAKITSTUB0001/PhoneNumber/918045671002/",
+              "restriction": null,
+              "restriction_text": null,
+              "setup_rate": "0.00000",
+              "sms_enabled": false,
+              "sub_type": null,
+              "type": "local",
+              "voice_enabled": true
+            },
+            "region": "Karnataka",
+            "setup_price": "0.00000",
+            "setup_price_usd": "0"
+          }
+        ],
+        "provider": "teleone"
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "operationId": "previewRealtimeVoice",
+  "recorded": "2026-11-05, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, the realtime engine ON (S2S_ENGINE_ENABLED), a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k14realtime.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/providers/s2s/openai/preview",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 429,
+    "body": {
+      "error": "Voice previews are rate-limited — try again in a moment.",
+      "retryAfter": 6,
+      "success": false
+    }
+  },
+  "serve": false
+}

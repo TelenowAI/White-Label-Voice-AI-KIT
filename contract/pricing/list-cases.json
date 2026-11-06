@@ -1,0 +1,653 @@
+{
+  "description": "Whether a price list is in the format price-list.schema.json describes. tests/pricing.test.ts holds the schema itself to every case, and each stack's own check of a list an operator saves must agree with it (the Laravel one: laravel/tests/Unit/PriceListFormatTest.php).",
+  "cases": [
+    {
+      "name": "a minimal list",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "name": "no rules at all",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": []
+      },
+      "valid": true
+    },
+    {
+      "name": "extends another list",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ],
+        "extends": "base"
+      },
+      "valid": true
+    },
+    {
+      "name": "a list of values to match",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "phone",
+            "match": {
+              "item": "call",
+              "channel": [
+                "telephony",
+                "softphone"
+              ]
+            },
+            "price": {
+              "perMinute": "1.50"
+            }
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "name": "a full discount",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "free",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "-100"
+            }
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "name": "a fee at a fixed price",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "rent",
+            "match": {
+              "item": "fee",
+              "refKind": "rental"
+            },
+            "price": {
+              "fixed": "120"
+            }
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "name": "no currency",
+      "list": {
+        "id": "standard",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a currency in lower case",
+      "list": {
+        "id": "standard",
+        "currency": "inr",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "too many decimals",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 9,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "decimals as text",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": "2",
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "an unknown rounding",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "nearest",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a zero billing increment",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 0,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a field the format does not have",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ],
+        "tax": "18"
+      },
+      "valid": false
+    },
+    {
+      "name": "an id with capitals",
+      "list": {
+        "id": "Standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "extends with an underscore",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ],
+        "extends": "base_plan"
+      },
+      "valid": false
+    },
+    {
+      "name": "rules as an object",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": {}
+      },
+      "valid": false
+    },
+    {
+      "name": "a rule with no id",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a rule with a field the format does not have",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40"
+            },
+            "note": "x"
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a rule that matches no kind of item",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "channel": "telephony"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "an unknown kind of item",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "number"
+            },
+            "price": {
+              "markupPercent": "40"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a number to match",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "call",
+              "durationSec": 60
+            },
+            "price": {
+              "perMinute": "1"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "an empty list to match",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "call",
+              "channel": []
+            },
+            "price": {
+              "perMinute": "1"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "two prices at once",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "40",
+              "perMinute": "1"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "no price",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {}
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a fee priced per minute",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "rent",
+            "match": {
+              "item": "fee"
+            },
+            "price": {
+              "perMinute": "1"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a call at a fixed price",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "c",
+            "match": {
+              "item": "call"
+            },
+            "price": {
+              "fixed": "5"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a markup below -100",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "ai",
+            "match": {
+              "item": "component"
+            },
+            "price": {
+              "markupPercent": "-101"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a negative per-minute rate",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "c",
+            "match": {
+              "item": "call"
+            },
+            "price": {
+              "perMinute": "-1"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a rate with an exponent",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "c",
+            "match": {
+              "item": "call"
+            },
+            "price": {
+              "perMinute": "1.5e2"
+            }
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "name": "a rate as a number",
+      "list": {
+        "id": "standard",
+        "currency": "INR",
+        "decimals": 2,
+        "rounding": "half-up",
+        "billingIncrementSeconds": 60,
+        "rules": [
+          {
+            "id": "c",
+            "match": {
+              "item": "call"
+            },
+            "price": {
+              "perMinute": 1.5
+            }
+          }
+        ]
+      },
+      "valid": false
+    }
+  ]
+}

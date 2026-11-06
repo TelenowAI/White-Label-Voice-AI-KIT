@@ -1,0 +1,34 @@
+{
+  "operationId": "updateSubAccount",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1money.py; the charge amounts are seeded, the shapes Telenow's); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "PATCH",
+    "path": "/api/v1/sub-accounts/3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "closedAt": null,
+      "createdAt": "2026-10-30T12:05:33.883867Z",
+      "externalId": "2d44e696-2348-4eb5-81f8-9ad7b0a0dc84",
+      "id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+      "limits": {
+        "maxConcurrentCalls": null,
+        "monthlySpendLimitUsd": null,
+        "totalSpendLimitUsd": 5.029395
+      },
+      "name": "Acme Dental",
+      "status": "active",
+      "suspendedAt": null,
+      "suspendedReason": null,
+      "updatedAt": "2026-10-30T12:05:34.021014Z",
+      "usage": {
+        "activeCalls": 0,
+        "monthToDateSpendUsd": 0.029395
+      }
+    }
+  },
+  "serve": false
+}

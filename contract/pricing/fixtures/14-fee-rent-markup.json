@@ -1,0 +1,27 @@
+{
+  "name": "Number rent marked up",
+  "why": "A fee's cost is its ledger amount negated, marked up and converted.",
+  "plan": "starter",
+  "usdRate": "84.25",
+  "item": {
+    "fee": {
+      "ledger": "listLedger.number-fees",
+      "refKind": "rental"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "fee:rental",
+        "rule": "starter/fees",
+        "method": "markupPercent",
+        "costUsd": "1.15",
+        "billedSeconds": null,
+        "amount": "135.64"
+      }
+    ],
+    "total": "135.64"
+  }
+}

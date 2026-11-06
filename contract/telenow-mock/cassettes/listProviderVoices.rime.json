@@ -1,0 +1,170 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/rime/voices",
+    "query": "model=mistv2",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "isa",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "model": "mistv2",
+          "name": "Isa",
+          "tags": [
+            "Mexican"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "alois",
+          "language": "fr",
+          "languages": [
+            "fr"
+          ],
+          "model": "mistv2",
+          "name": "Alois",
+          "tags": [
+            "Standard"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "amalia",
+          "language": "de",
+          "languages": [
+            "de"
+          ],
+          "model": "mistv2",
+          "name": "Amalia",
+          "tags": [
+            "Standard"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "astra",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Astra",
+          "tags": [
+            "Standard"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "cove",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Cove",
+          "tags": [
+            "African American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "eucalyptus",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Eucalyptus",
+          "tags": [
+            "Australian"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "lagoon",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Lagoon",
+          "tags": [
+            "Standard"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "mari",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Mari",
+          "tags": [
+            "Caribbean"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "marlu",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Marlu",
+          "tags": [
+            "Australian"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "mesa_extra",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Mesa",
+          "tags": [
+            "Californian"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "moon",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "mistv2",
+          "name": "Moon",
+          "tags": [
+            "African American"
+          ]
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 11
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders; the body as webhook_deliveries stored it (the delivery itself could not leave the box)",
+  "event": "call.completed",
+  "delivery": "a2a28589-edf5-4a44-be55-55b63f724747",
+  "secret": "wh_secret_test_voice_kit_events",
+  "body": {
+    "event": "call.completed",
+    "orgId": "e9d83440-d03a-45e9-9b7b-d6808e96fd65",
+    "status": "ended",
+    "agentId": "bb200d86-3f31-46ba-a4cc-bba1da382221",
+    "attempt": null,
+    "callSid": null,
+    "channel": "telephony",
+    "endTime": "2026-10-30T09:39:55.682645Z",
+    "outcome": "completed",
+    "analysis": null,
+    "toNumber": "+14155550199",
+    "direction": "outbound",
+    "endReason": null,
+    "sessionId": "528b2941-4566-4dbc-bac2-5837de3fc8bf",
+    "startTime": "2026-10-30T09:38:55.682645Z",
+    "variables": {},
+    "answeredBy": null,
+    "campaignId": null,
+    "fromNumber": "+14155550100",
+    "identifier": null,
+    "occurredAt": "2026-10-30T11:38:59.609Z",
+    "disposition": "completed",
+    "billableSecs": null,
+    "durationSecs": 60,
+    "campaignTargetId": null
+  }
+}

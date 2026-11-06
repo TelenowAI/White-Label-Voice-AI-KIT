@@ -1,0 +1,36 @@
+{
+  "name": "Lists that extend each other",
+  "why": "loop-a extends loop-b extends loop-a: refused, naming the list met twice.",
+  "plan": "loop-a",
+  "usdRate": "84.25",
+  "priceLists": [
+    {
+      "id": "loop-a",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [],
+      "extends": "loop-b"
+    },
+    {
+      "id": "loop-b",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [],
+      "extends": "loop-a"
+    }
+  ],
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "error": "price_list_cycle",
+    "subject": "loop-a"
+  }
+}

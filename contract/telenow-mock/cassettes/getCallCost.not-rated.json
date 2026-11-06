@@ -1,0 +1,17 @@
+{
+  "operationId": "getCallCost",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database; the charge and fee amounts were seeded (contract/pricing/README.md)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/1f975cc3-85c9-4fbf-ad68-769e17d6d84d/calls/5070120c-c4eb-4cd7-807f-d9dde9f368b9/cost",
+    "query": "",
+    "apiKey": "vai_test_pricing_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": null,
+      "success": true
+    }
+  }
+}

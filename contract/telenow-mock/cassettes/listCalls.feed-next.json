@@ -1,0 +1,24 @@
+{
+  "operationId": "listCalls",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/calls",
+    "query": "cursor=2026-10-30T11%3A38%3A57.202780Z_ca369e0a-f70b-4fca-81ab-c7449569511e",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "cursor"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "calls": [],
+        "nextCursor": "2026-10-30T11:38:57.202780Z_ca369e0a-f70b-4fca-81ab-c7449569511e",
+        "total": null
+      },
+      "success": true
+    }
+  }
+}

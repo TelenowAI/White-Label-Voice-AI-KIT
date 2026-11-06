@@ -1,0 +1,77 @@
+{
+  "operationId": "listDnc",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1dnc.py; the opt-out row seeded as the call engine writes it); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/dnc",
+    "query": "updatedAfter=2026-10-30T12%3A56%3A48.000Z",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "updatedAfter"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "created_at": "2026-10-30T12:57:49.265713Z",
+            "created_by": "116f867c-3ebe-415c-91d2-11d4ce776ee7",
+            "deleted": false,
+            "deleted_at": null,
+            "id": "d68bca9c-df6a-4de1-a3d8-c228578b6351",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550123",
+            "reason": "Complained twice",
+            "session_id": null,
+            "source": "manual",
+            "updated_at": "2026-10-30T12:57:49.280505Z"
+          },
+          {
+            "created_at": "2026-10-30T12:57:49.301159Z",
+            "created_by": "116f867c-3ebe-415c-91d2-11d4ce776ee7",
+            "deleted": false,
+            "deleted_at": null,
+            "id": "658a5cce-e0cd-4cee-826b-daffbd44cb22",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550124",
+            "reason": "From the CRM",
+            "session_id": null,
+            "source": "csv",
+            "updated_at": "2026-10-30T12:57:49.301159Z"
+          },
+          {
+            "created_at": "2026-10-30T12:57:49.301159Z",
+            "created_by": "116f867c-3ebe-415c-91d2-11d4ce776ee7",
+            "deleted": false,
+            "deleted_at": null,
+            "id": "cb16d190-d4a5-4bef-aa7c-dda83889fc5d",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550125",
+            "reason": null,
+            "session_id": null,
+            "source": "csv",
+            "updated_at": "2026-10-30T12:57:49.301159Z"
+          },
+          {
+            "created_at": "2026-10-30T12:57:49.326515Z",
+            "created_by": null,
+            "deleted": false,
+            "deleted_at": null,
+            "id": "2e45ad11-f37b-4c87-af7b-3e0fe662d7c1",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550126",
+            "reason": "The caller asked not to be called again",
+            "session_id": "154e8cef-0ba3-456f-97d0-d846a2adf9d7",
+            "source": "opt_out",
+            "updated_at": "2026-10-30T12:57:49.326515Z"
+          }
+        ],
+        "nextCursor": "2026-10-30T12:57:49.326515Z_2e45ad11-f37b-4c87-af7b-3e0fe662d7c1",
+        "total": null
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "operationId": "createSubAccount",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1customers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/sub-accounts",
+    "query": "",
+    "apiKey": "vai_test_operator_admin",
+    "idempotencyKey": "external-id-taken"
+  },
+  "response": {
+    "status": 409,
+    "body": {
+      "error": "externalId is already used by another of this account's sub-accounts",
+      "success": false
+    }
+  }
+}

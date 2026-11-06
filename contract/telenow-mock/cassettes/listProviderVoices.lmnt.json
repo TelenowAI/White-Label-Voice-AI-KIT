@@ -1,0 +1,351 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/lmnt/voices",
+    "query": "model=aurora",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "amy",
+          "name": "Amy",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/amy/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "neutral",
+          "id": "ansel",
+          "name": "Ansel",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/ansel/preview"
+        },
+        {
+          "gender": "female",
+          "id": "autumn",
+          "name": "Autumn",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/autumn/preview"
+        },
+        {
+          "gender": "female",
+          "id": "ava",
+          "name": "Ava",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/ava/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "bella",
+          "name": "Bella",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/bella/preview"
+        },
+        {
+          "gender": "male",
+          "id": "brandon",
+          "name": "Brandon",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/brandon/preview"
+        },
+        {
+          "gender": "male",
+          "id": "caleb",
+          "name": "Caleb",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/caleb/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "neutral",
+          "id": "cassian",
+          "name": "Cassian",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/cassian/preview"
+        },
+        {
+          "gender": "female",
+          "id": "chloe",
+          "name": "Chloe",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/chloe/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "dalton",
+          "name": "Dalton",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/dalton/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "daniel",
+          "name": "Daniel",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/daniel/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "dustin",
+          "name": "Dustin",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/dustin/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "elowen",
+          "name": "Elowen",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/elowen/preview"
+        },
+        {
+          "gender": "male",
+          "id": "evander",
+          "name": "Evander",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/evander/preview"
+        },
+        {
+          "gender": "male",
+          "id": "huxley",
+          "name": "Huxley",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/huxley/preview"
+        },
+        {
+          "gender": "male",
+          "id": "jacob",
+          "name": "Jacob",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/jacob/preview"
+        },
+        {
+          "gender": "male",
+          "id": "james",
+          "name": "James",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/james/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "juniper",
+          "name": "Juniper",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/juniper/preview"
+        },
+        {
+          "gender": "female",
+          "id": "kennedy",
+          "name": "Kennedy",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/kennedy/preview"
+        },
+        {
+          "gender": "female",
+          "id": "lauren",
+          "name": "Lauren",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/lauren/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "leah",
+          "name": "Leah",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/leah/preview"
+        },
+        {
+          "gender": "female",
+          "id": "lily",
+          "name": "Lily",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/lily/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "lucas",
+          "name": "Lucas",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/lucas/preview"
+        },
+        {
+          "gender": "male",
+          "id": "magnus",
+          "name": "Magnus",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/magnus/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "miles",
+          "name": "Miles",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/miles/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "morgan",
+          "name": "Morgan",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/morgan/preview"
+        },
+        {
+          "gender": "female",
+          "id": "natalie",
+          "name": "Natalie",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/natalie/preview"
+        },
+        {
+          "gender": "male",
+          "id": "nathan",
+          "name": "Nathan",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/nathan/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "noah",
+          "name": "Noah",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/noah/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "nyssa",
+          "name": "Nyssa",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/nyssa/preview"
+        },
+        {
+          "gender": "male",
+          "id": "oliver",
+          "name": "Oliver",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/oliver/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "paige",
+          "name": "Paige",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/paige/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "ryan",
+          "name": "Ryan",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/ryan/preview"
+        },
+        {
+          "gender": "female",
+          "id": "sadie",
+          "name": "Sadie",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/sadie/preview"
+        },
+        {
+          "gender": "female",
+          "id": "sophie",
+          "name": "Sophie",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/sophie/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "stella",
+          "name": "Stella",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/stella/preview"
+        },
+        {
+          "gender": "male",
+          "id": "terrence",
+          "name": "Terrence",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/terrence/preview",
+          "tags": [
+            "Narrative"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "tyler",
+          "name": "Tyler",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/tyler/preview"
+        },
+        {
+          "gender": "neutral",
+          "id": "vesper",
+          "name": "Vesper",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/vesper/preview"
+        },
+        {
+          "gender": "female",
+          "id": "violet",
+          "name": "Violet",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/violet/preview"
+        },
+        {
+          "gender": "neutral",
+          "id": "warrick",
+          "name": "Warrick",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/warrick/preview"
+        },
+        {
+          "gender": "male",
+          "id": "zain",
+          "name": "Zain",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/zain/preview"
+        },
+        {
+          "gender": "male",
+          "id": "zeke",
+          "name": "Zeke",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/zeke/preview",
+          "tags": [
+            "Conversational"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "zoe",
+          "name": "Zoe",
+          "preview_url": "https://api.lmnt.com/v1/ai/voice/zoe/preview",
+          "tags": [
+            "Conversational"
+          ]
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 44
+    }
+  }
+}

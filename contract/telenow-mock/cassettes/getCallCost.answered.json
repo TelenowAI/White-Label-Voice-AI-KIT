@@ -1,0 +1,49 @@
+{
+  "operationId": "getCallCost",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1money.py; the charge amounts are seeded, the shapes Telenow's); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/calls/700e33e4-1bb0-48ba-8c19-5e7f66546249/cost",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "breakdown": {
+          "events": [
+            {
+              "billedSeconds": 60,
+              "chargeUsd": "0.0071",
+              "kind": "telephony"
+            },
+            {
+              "chargeUsd": "0.0021",
+              "inputTokens": 6100,
+              "kind": "llm",
+              "model": "gpt-4o-mini",
+              "outputTokens": 640
+            }
+          ]
+        },
+        "callType": "agent_voice",
+        "embeddingUsd": "0",
+        "hasEstimates": false,
+        "llmUsd": "0.0021000000",
+        "orgId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+        "platformAiUsd": "0",
+        "platformFeeUsd": "0.0083333333",
+        "postCallAnalysisUsd": "0",
+        "ratedAt": "2026-10-30T12:05:33.957406Z",
+        "sessionId": "700e33e4-1bb0-48ba-8c19-5e7f66546249",
+        "simulationUsd": "0",
+        "sttUsd": "0.0035416667",
+        "telephonyUsd": "0.0071000000",
+        "totalChargeUsd": "0.0293950000",
+        "ttsUsd": "0.0083200000"
+      },
+      "success": true
+    }
+  }
+}

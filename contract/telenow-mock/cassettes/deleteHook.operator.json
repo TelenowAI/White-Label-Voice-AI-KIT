@@ -1,0 +1,17 @@
+{
+  "operationId": "deleteHook",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/v1/hooks/90424480-a5da-4e4e-bf6f-b179c292f067",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "deleted": true,
+      "id": "90424480-a5da-4e4e-bf6f-b179c292f067"
+    }
+  }
+}

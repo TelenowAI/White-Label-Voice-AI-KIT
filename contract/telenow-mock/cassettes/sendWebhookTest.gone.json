@@ -1,0 +1,18 @@
+{
+  "operationId": "sendWebhookTest",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k4hooks.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/f5b2ecfe-1a21-4c72-83e2-03ced560e865/webhooks/3c1e8d7a-4f2b-4a6c-9d10-7b5e2f8c1a44/test",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Webhook endpoint not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

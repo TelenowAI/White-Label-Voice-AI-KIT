@@ -1,0 +1,28 @@
+{
+  "operationId": "listNumbersSlim",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/numbers",
+    "query": "",
+    "apiKey": "vai_test_viewer"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "numbers": [
+        {
+          "agent_id": "14691243-767c-4b2d-908e-47564518c45f",
+          "country": "US",
+          "id": "6eff9aa1-9e29-4451-a7e5-ce1f8b3c3bbe",
+          "is_active": true,
+          "phone_number": "+14155555388",
+          "provider": "twilio",
+          "released_at": null,
+          "updated_at": "2026-10-29T10:59:56.339974Z"
+        }
+      ],
+      "total": 1
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "A plan with no price list",
+  "why": "Refused, naming the missing list.",
+  "plan": "no-such-plan",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "error": "unknown_price_list",
+    "subject": "no-such-plan"
+  }
+}

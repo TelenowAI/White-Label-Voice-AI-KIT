@@ -1,0 +1,81 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/polly/voices",
+    "query": "model=neural",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "Joanna",
+          "language": "en-US",
+          "languages": [
+            "en-US"
+          ],
+          "name": "Joanna"
+        },
+        {
+          "gender": "male",
+          "id": "Matthew",
+          "language": "en-US",
+          "languages": [
+            "en-US"
+          ],
+          "name": "Matthew"
+        },
+        {
+          "gender": "female",
+          "id": "Ruth",
+          "language": "en-US",
+          "languages": [
+            "en-US"
+          ],
+          "name": "Ruth"
+        },
+        {
+          "gender": "female",
+          "id": "Amy",
+          "language": "en-GB",
+          "languages": [
+            "en-GB"
+          ],
+          "name": "Amy"
+        },
+        {
+          "gender": "male",
+          "id": "Brian",
+          "language": "en-GB",
+          "languages": [
+            "en-GB"
+          ],
+          "name": "Brian"
+        },
+        {
+          "gender": "female",
+          "id": "Kajal",
+          "language": "en-IN",
+          "languages": [
+            "en-IN"
+          ],
+          "name": "Kajal (Indian English)"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 6
+    }
+  }
+}

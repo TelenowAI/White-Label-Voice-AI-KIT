@@ -1,0 +1,38 @@
+{
+  "operationId": "listAgentVersions",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k1settings.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159/versions",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "versions": [
+          {
+            "createdAt": "2026-11-03T19:22:32.510627Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk (evenings)",
+            "note": "update",
+            "savedByEmail": "sub-account@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 2
+          },
+          {
+            "createdAt": "2026-11-03T19:22:32.483173Z",
+            "llmModel": "gpt-5.4-mini",
+            "name": "Front desk",
+            "note": "created",
+            "savedByEmail": "sub-account@sub-accounts.invalid",
+            "ttsVoice": "alloy",
+            "version": 1
+          }
+        ]
+      },
+      "success": true
+    }
+  }
+}

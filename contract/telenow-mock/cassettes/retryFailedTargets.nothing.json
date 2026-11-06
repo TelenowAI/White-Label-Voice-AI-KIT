@@ -1,0 +1,20 @@
+{
+  "operationId": "retryFailedTargets",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k7campaigns.py); people settled in the database with the words the release's finalisers write",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/campaigns/c0ffee00-1a2b-4c3d-8e4f-5a6b7c8d9e0f/retry-failed",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "retried": 0
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

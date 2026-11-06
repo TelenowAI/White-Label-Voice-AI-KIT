@@ -1,0 +1,38 @@
+{
+  "operationId": "listDnc",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1dnc.py; the opt-out row seeded as the call engine writes it); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/dnc",
+    "query": "cursor=2026-10-30T12%3A57%3A49.326515Z_2e45ad11-f37b-4c87-af7b-3e0fe662d7c1",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "cursor"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "created_at": null,
+            "created_by": null,
+            "deleted": true,
+            "deleted_at": "2026-10-30T12:57:50.359826Z",
+            "id": "d68bca9c-df6a-4de1-a3d8-c228578b6351",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550123",
+            "reason": null,
+            "session_id": null,
+            "source": null,
+            "updated_at": "2026-10-30T12:57:50.359826Z"
+          }
+        ],
+        "nextCursor": "2026-10-30T12:57:50.359826Z_d68bca9c-df6a-4de1-a3d8-c228578b6351",
+        "total": null
+      },
+      "success": true
+    }
+  }
+}

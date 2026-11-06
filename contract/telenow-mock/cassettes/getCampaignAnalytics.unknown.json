@@ -1,0 +1,18 @@
+{
+  "operationId": "getCampaignAnalytics",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k7campaigns.py); people settled in the database with the words the release's finalisers write",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/campaigns/b775909d-9f90-485e-819e-31d4b09b2cac/analytics",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "campaign not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

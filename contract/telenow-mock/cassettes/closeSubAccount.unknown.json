@@ -1,0 +1,17 @@
+{
+  "operationId": "closeSubAccount",
+  "recorded": "2026-11-02, Telenow fe7bbd2's binary (with T2.13, which does not touch this) on the build server, throwaway database (contract_k1close.py)",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/v1/sub-accounts/199a3202-be9b-4d30-bb53-194bf12d47d6",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "sub-account not found",
+      "success": false
+    }
+  }
+}

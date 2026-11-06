@@ -1,0 +1,29 @@
+{
+  "operationId": "closeSubAccount",
+  "recorded": "2026-11-02, Telenow fe7bbd2's binary (with T2.13, which does not touch this) on the build server, throwaway database (contract_k1close.py)",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/v1/sub-accounts/3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "closedAt": "2026-11-02T19:31:05.029428Z",
+      "createdAt": "2026-11-02T19:31:04.879052Z",
+      "externalId": "d75dead0-e3fc-4478-b8b1-4bd69bc7ed02",
+      "id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+      "limits": {
+        "maxConcurrentCalls": null,
+        "monthlySpendLimitUsd": null,
+        "totalSpendLimitUsd": null
+      },
+      "name": "Acme Dental",
+      "status": "closed",
+      "suspendedAt": "2026-11-02T19:31:04.974678Z",
+      "suspendedReason": "Closing this account",
+      "updatedAt": "2026-11-02T19:31:05.029428Z"
+    }
+  }
+}

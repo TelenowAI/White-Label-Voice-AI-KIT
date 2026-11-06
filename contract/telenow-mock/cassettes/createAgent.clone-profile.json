@@ -1,0 +1,54 @@
+{
+  "operationId": "createAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine that takes clones (tts_stub_k12.py), fake provider keys and every other outbound HTTP request sent to a dead local proxy (contract_k12voices.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "created_at": "2026-11-04T19:22:38.758421Z",
+        "deleted_at": null,
+        "description": null,
+        "fallback_config": null,
+        "id": "938b3e57-2a46-526b-89b6-b673490ea2e8",
+        "is_active": true,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "gpt-5.4-mini",
+        "llm_provider": "openai",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": true
+          },
+          "kitId": "bc2cb4c4-0190-591e-8161-013e8852fc32"
+        },
+        "name": "Front desk",
+        "org_id": "8ff3cc19-c117-503b-be70-0dfdf86abd1d",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {},
+        "stt_config": null,
+        "stt_provider": "deepgram",
+        "system_prompt": "You answer the phone.",
+        "tags": null,
+        "telephony_config": null,
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "telenow",
+        "tts_voice": "profile:0d91fbfe-c1ef-592d-81ec-f9bb9df05232",
+        "updated_at": "2026-11-04T19:22:38.758421Z",
+        "user_id": "dcd2601e-0d92-5a35-93e0-b569e4e7c83f"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

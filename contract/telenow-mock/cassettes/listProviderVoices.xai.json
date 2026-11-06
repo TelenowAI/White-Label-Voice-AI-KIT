@@ -1,0 +1,251 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-03, Telenow fe7bbd2's binary (with T2.13, which changes only a 400's wording here) on the build server, throwaway database with six providers' real lists from production's open route (contract_k1voices.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/xai/voices",
+    "query": "model=grok-tts",
+    "apiKey": "vai_test_operator_admin",
+    "queryNames": [
+      "model"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "male",
+          "id": "altair",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Altair"
+        },
+        {
+          "gender": "female",
+          "id": "ara",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Ara"
+        },
+        {
+          "gender": "male",
+          "id": "atlas",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Atlas"
+        },
+        {
+          "gender": "female",
+          "id": "aurora",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Aurora"
+        },
+        {
+          "gender": "female",
+          "id": "carina",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Carina"
+        },
+        {
+          "gender": "male",
+          "id": "castor",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Castor"
+        },
+        {
+          "gender": "female",
+          "id": "celeste",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Celeste"
+        },
+        {
+          "gender": "male",
+          "id": "cosmo",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Cosmo"
+        },
+        {
+          "gender": "female",
+          "id": "eve",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Eve"
+        },
+        {
+          "gender": "male",
+          "id": "helios",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Helios"
+        },
+        {
+          "gender": "male",
+          "id": "helix",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Helix"
+        },
+        {
+          "gender": "female",
+          "id": "iris",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Iris"
+        },
+        {
+          "gender": "male",
+          "id": "kepler",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Kepler"
+        },
+        {
+          "gender": "male",
+          "id": "leo",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Leo"
+        },
+        {
+          "gender": "female",
+          "id": "liora",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Liora"
+        },
+        {
+          "gender": "male",
+          "id": "lumen",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Lumen"
+        },
+        {
+          "gender": "female",
+          "id": "luna",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Luna"
+        },
+        {
+          "gender": "male",
+          "id": "lux",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Lux"
+        },
+        {
+          "gender": "male",
+          "id": "naksh",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Naksh"
+        },
+        {
+          "gender": "male",
+          "id": "orion",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Orion"
+        },
+        {
+          "gender": "male",
+          "id": "perseus",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Perseus"
+        },
+        {
+          "gender": "male",
+          "id": "rex",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Rex"
+        },
+        {
+          "gender": "male",
+          "id": "rigel",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Rigel"
+        },
+        {
+          "gender": "male",
+          "id": "sal",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Sal"
+        },
+        {
+          "gender": "male",
+          "id": "sirius",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Sirius"
+        },
+        {
+          "gender": "female",
+          "id": "ursa",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Ursa"
+        },
+        {
+          "gender": "male",
+          "id": "zagan",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Zagan"
+        },
+        {
+          "gender": "male",
+          "id": "zenith",
+          "models": [
+            "grok-tts"
+          ],
+          "name": "Zenith"
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "synced",
+      "page": 0,
+      "source": "live",
+      "success": true,
+      "totalCount": 28
+    }
+  }
+}

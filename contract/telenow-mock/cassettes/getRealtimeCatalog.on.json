@@ -1,0 +1,1801 @@
+{
+  "operationId": "getRealtimeCatalog",
+  "recorded": "2026-11-05, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, the realtime engine ON (S2S_ENGINE_ENABLED), a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k14realtime.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/catalog/s2s",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "enabled": true,
+        "providers": [
+          {
+            "blurb": "One realtime model handles listening, thinking and speaking — lowest voice-to-voice latency.",
+            "id": "openai",
+            "languages": [
+              "en",
+              "hi",
+              "es",
+              "fr",
+              "de",
+              "it",
+              "pt",
+              "nl",
+              "ru",
+              "ja",
+              "ko",
+              "zh",
+              "ar",
+              "tr",
+              "pl",
+              "id",
+              "vi",
+              "th",
+              "uk",
+              "ro",
+              "sv",
+              "da",
+              "fi",
+              "cs",
+              "el",
+              "he",
+              "hu"
+            ],
+            "models": [
+              {
+                "contextWindow": 128000,
+                "id": "gpt-realtime-2.1",
+                "name": "GPT Realtime 2.1",
+                "voices": [
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "marin",
+                    "name": "Marin",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "warm"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "cedar",
+                    "name": "Cedar",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "neutral",
+                    "id": "alloy",
+                    "name": "Alloy",
+                    "recommended": false,
+                    "tags": [
+                      "balanced",
+                      "neutral"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ash",
+                    "name": "Ash",
+                    "recommended": false,
+                    "tags": [
+                      "clear",
+                      "precise"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ballad",
+                    "name": "Ballad",
+                    "recommended": false,
+                    "tags": [
+                      "melodic",
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "coral",
+                    "name": "Coral",
+                    "recommended": false,
+                    "tags": [
+                      "warm",
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "echo",
+                    "name": "Echo",
+                    "recommended": false,
+                    "tags": [
+                      "resonant",
+                      "deep"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "sage",
+                    "name": "Sage",
+                    "recommended": false,
+                    "tags": [
+                      "calm",
+                      "thoughtful"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "shimmer",
+                    "name": "Shimmer",
+                    "recommended": false,
+                    "tags": [
+                      "bright",
+                      "energetic"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "verse",
+                    "name": "Verse",
+                    "recommended": false,
+                    "tags": [
+                      "versatile",
+                      "expressive"
+                    ]
+                  }
+                ]
+              },
+              {
+                "contextWindow": 128000,
+                "id": "gpt-realtime-2.1-mini",
+                "name": "GPT Realtime 2.1 mini",
+                "voices": [
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "marin",
+                    "name": "Marin",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "warm"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "cedar",
+                    "name": "Cedar",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "neutral",
+                    "id": "alloy",
+                    "name": "Alloy",
+                    "recommended": false,
+                    "tags": [
+                      "balanced",
+                      "neutral"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ash",
+                    "name": "Ash",
+                    "recommended": false,
+                    "tags": [
+                      "clear",
+                      "precise"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ballad",
+                    "name": "Ballad",
+                    "recommended": false,
+                    "tags": [
+                      "melodic",
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "coral",
+                    "name": "Coral",
+                    "recommended": false,
+                    "tags": [
+                      "warm",
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "echo",
+                    "name": "Echo",
+                    "recommended": false,
+                    "tags": [
+                      "resonant",
+                      "deep"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "sage",
+                    "name": "Sage",
+                    "recommended": false,
+                    "tags": [
+                      "calm",
+                      "thoughtful"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "shimmer",
+                    "name": "Shimmer",
+                    "recommended": false,
+                    "tags": [
+                      "bright",
+                      "energetic"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "verse",
+                    "name": "Verse",
+                    "recommended": false,
+                    "tags": [
+                      "versatile",
+                      "expressive"
+                    ]
+                  }
+                ]
+              },
+              {
+                "contextWindow": 32000,
+                "id": "gpt-realtime",
+                "name": "GPT Realtime",
+                "voices": [
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "marin",
+                    "name": "Marin",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "warm"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "cedar",
+                    "name": "Cedar",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "neutral",
+                    "id": "alloy",
+                    "name": "Alloy",
+                    "recommended": false,
+                    "tags": [
+                      "balanced",
+                      "neutral"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ash",
+                    "name": "Ash",
+                    "recommended": false,
+                    "tags": [
+                      "clear",
+                      "precise"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ballad",
+                    "name": "Ballad",
+                    "recommended": false,
+                    "tags": [
+                      "melodic",
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "coral",
+                    "name": "Coral",
+                    "recommended": false,
+                    "tags": [
+                      "warm",
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "echo",
+                    "name": "Echo",
+                    "recommended": false,
+                    "tags": [
+                      "resonant",
+                      "deep"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "sage",
+                    "name": "Sage",
+                    "recommended": false,
+                    "tags": [
+                      "calm",
+                      "thoughtful"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "shimmer",
+                    "name": "Shimmer",
+                    "recommended": false,
+                    "tags": [
+                      "bright",
+                      "energetic"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "verse",
+                    "name": "Verse",
+                    "recommended": false,
+                    "tags": [
+                      "versatile",
+                      "expressive"
+                    ]
+                  }
+                ]
+              },
+              {
+                "contextWindow": 32000,
+                "id": "gpt-realtime-mini",
+                "name": "GPT Realtime mini",
+                "voices": [
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "marin",
+                    "name": "Marin",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "warm"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "cedar",
+                    "name": "Cedar",
+                    "recommended": true,
+                    "tags": [
+                      "natural",
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "neutral",
+                    "id": "alloy",
+                    "name": "Alloy",
+                    "recommended": false,
+                    "tags": [
+                      "balanced",
+                      "neutral"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ash",
+                    "name": "Ash",
+                    "recommended": false,
+                    "tags": [
+                      "clear",
+                      "precise"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "ballad",
+                    "name": "Ballad",
+                    "recommended": false,
+                    "tags": [
+                      "melodic",
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "coral",
+                    "name": "Coral",
+                    "recommended": false,
+                    "tags": [
+                      "warm",
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "echo",
+                    "name": "Echo",
+                    "recommended": false,
+                    "tags": [
+                      "resonant",
+                      "deep"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "sage",
+                    "name": "Sage",
+                    "recommended": false,
+                    "tags": [
+                      "calm",
+                      "thoughtful"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "shimmer",
+                    "name": "Shimmer",
+                    "recommended": false,
+                    "tags": [
+                      "bright",
+                      "energetic"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "male",
+                    "id": "verse",
+                    "name": "Verse",
+                    "recommended": false,
+                    "tags": [
+                      "versatile",
+                      "expressive"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "name": "OpenAI Realtime",
+            "recommended": false,
+            "status": "ga"
+          },
+          {
+            "blurb": "Gemini native-audio realtime model — one model listens, thinks and speaks with server-side turn taking. Gemini 3.8 Live for low-latency dialogue; Extended Thinking reasons and runs tools in the background while it talks.",
+            "id": "gemini",
+            "languages": [
+              "en",
+              "hi",
+              "es",
+              "fr",
+              "de",
+              "it",
+              "pt",
+              "nl",
+              "ru",
+              "ja",
+              "ko",
+              "zh",
+              "ar",
+              "tr",
+              "pl",
+              "id",
+              "vi",
+              "th",
+              "uk",
+              "ro",
+              "sv",
+              "da",
+              "fi",
+              "cs",
+              "el",
+              "he",
+              "hu",
+              "ta",
+              "te",
+              "bn",
+              "mr",
+              "gu",
+              "kn",
+              "ml"
+            ],
+            "models": [
+              {
+                "contextWindow": 131072,
+                "id": "gemini-3.8-live",
+                "name": "Gemini 3.8 Live",
+                "voices": [
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Zephyr",
+                    "name": "Zephyr",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Puck",
+                    "name": "Puck",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Charon",
+                    "name": "Charon",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Kore",
+                    "name": "Kore",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Fenrir",
+                    "name": "Fenrir",
+                    "recommended": false,
+                    "tags": [
+                      "excitable"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Leda",
+                    "name": "Leda",
+                    "recommended": false,
+                    "tags": [
+                      "youthful"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Orus",
+                    "name": "Orus",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Aoede",
+                    "name": "Aoede",
+                    "recommended": false,
+                    "tags": [
+                      "breezy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Callirrhoe",
+                    "name": "Callirrhoe",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Autonoe",
+                    "name": "Autonoe",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Enceladus",
+                    "name": "Enceladus",
+                    "recommended": false,
+                    "tags": [
+                      "breathy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Iapetus",
+                    "name": "Iapetus",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Umbriel",
+                    "name": "Umbriel",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algieba",
+                    "name": "Algieba",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Despina",
+                    "name": "Despina",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Erinome",
+                    "name": "Erinome",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algenib",
+                    "name": "Algenib",
+                    "recommended": false,
+                    "tags": [
+                      "gravelly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Rasalgethi",
+                    "name": "Rasalgethi",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Laomedeia",
+                    "name": "Laomedeia",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Achernar",
+                    "name": "Achernar",
+                    "recommended": false,
+                    "tags": [
+                      "soft"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Alnilam",
+                    "name": "Alnilam",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Schedar",
+                    "name": "Schedar",
+                    "recommended": false,
+                    "tags": [
+                      "even"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Gacrux",
+                    "name": "Gacrux",
+                    "recommended": false,
+                    "tags": [
+                      "mature"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Pulcherrima",
+                    "name": "Pulcherrima",
+                    "recommended": false,
+                    "tags": [
+                      "forward"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Achird",
+                    "name": "Achird",
+                    "recommended": false,
+                    "tags": [
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Zubenelgenubi",
+                    "name": "Zubenelgenubi",
+                    "recommended": false,
+                    "tags": [
+                      "casual"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Vindemiatrix",
+                    "name": "Vindemiatrix",
+                    "recommended": false,
+                    "tags": [
+                      "gentle"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadachbia",
+                    "name": "Sadachbia",
+                    "recommended": false,
+                    "tags": [
+                      "lively"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadaltager",
+                    "name": "Sadaltager",
+                    "recommended": false,
+                    "tags": [
+                      "knowledgeable"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "Sulafat",
+                    "name": "Sulafat",
+                    "recommended": false,
+                    "tags": [
+                      "warm"
+                    ]
+                  }
+                ]
+              },
+              {
+                "contextWindow": 131072,
+                "id": "gemini-3.8-live-extended-thinking",
+                "name": "Gemini 3.8 Live Extended Thinking",
+                "voices": [
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Zephyr",
+                    "name": "Zephyr",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Puck",
+                    "name": "Puck",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Charon",
+                    "name": "Charon",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Kore",
+                    "name": "Kore",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Fenrir",
+                    "name": "Fenrir",
+                    "recommended": false,
+                    "tags": [
+                      "excitable"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Leda",
+                    "name": "Leda",
+                    "recommended": false,
+                    "tags": [
+                      "youthful"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Orus",
+                    "name": "Orus",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Aoede",
+                    "name": "Aoede",
+                    "recommended": false,
+                    "tags": [
+                      "breezy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Callirrhoe",
+                    "name": "Callirrhoe",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Autonoe",
+                    "name": "Autonoe",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Enceladus",
+                    "name": "Enceladus",
+                    "recommended": false,
+                    "tags": [
+                      "breathy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Iapetus",
+                    "name": "Iapetus",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Umbriel",
+                    "name": "Umbriel",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algieba",
+                    "name": "Algieba",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Despina",
+                    "name": "Despina",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Erinome",
+                    "name": "Erinome",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algenib",
+                    "name": "Algenib",
+                    "recommended": false,
+                    "tags": [
+                      "gravelly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Rasalgethi",
+                    "name": "Rasalgethi",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Laomedeia",
+                    "name": "Laomedeia",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Achernar",
+                    "name": "Achernar",
+                    "recommended": false,
+                    "tags": [
+                      "soft"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Alnilam",
+                    "name": "Alnilam",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Schedar",
+                    "name": "Schedar",
+                    "recommended": false,
+                    "tags": [
+                      "even"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Gacrux",
+                    "name": "Gacrux",
+                    "recommended": false,
+                    "tags": [
+                      "mature"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Pulcherrima",
+                    "name": "Pulcherrima",
+                    "recommended": false,
+                    "tags": [
+                      "forward"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Achird",
+                    "name": "Achird",
+                    "recommended": false,
+                    "tags": [
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Zubenelgenubi",
+                    "name": "Zubenelgenubi",
+                    "recommended": false,
+                    "tags": [
+                      "casual"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Vindemiatrix",
+                    "name": "Vindemiatrix",
+                    "recommended": false,
+                    "tags": [
+                      "gentle"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadachbia",
+                    "name": "Sadachbia",
+                    "recommended": false,
+                    "tags": [
+                      "lively"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadaltager",
+                    "name": "Sadaltager",
+                    "recommended": false,
+                    "tags": [
+                      "knowledgeable"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "Sulafat",
+                    "name": "Sulafat",
+                    "recommended": false,
+                    "tags": [
+                      "warm"
+                    ]
+                  }
+                ]
+              },
+              {
+                "contextWindow": 131072,
+                "id": "gemini-3.1-flash-live-preview",
+                "name": "Gemini 3.1 Flash Live",
+                "voices": [
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Zephyr",
+                    "name": "Zephyr",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Puck",
+                    "name": "Puck",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Charon",
+                    "name": "Charon",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Kore",
+                    "name": "Kore",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Fenrir",
+                    "name": "Fenrir",
+                    "recommended": false,
+                    "tags": [
+                      "excitable"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Leda",
+                    "name": "Leda",
+                    "recommended": false,
+                    "tags": [
+                      "youthful"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Orus",
+                    "name": "Orus",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Aoede",
+                    "name": "Aoede",
+                    "recommended": false,
+                    "tags": [
+                      "breezy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Callirrhoe",
+                    "name": "Callirrhoe",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Autonoe",
+                    "name": "Autonoe",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Enceladus",
+                    "name": "Enceladus",
+                    "recommended": false,
+                    "tags": [
+                      "breathy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Iapetus",
+                    "name": "Iapetus",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Umbriel",
+                    "name": "Umbriel",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algieba",
+                    "name": "Algieba",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Despina",
+                    "name": "Despina",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Erinome",
+                    "name": "Erinome",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algenib",
+                    "name": "Algenib",
+                    "recommended": false,
+                    "tags": [
+                      "gravelly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Rasalgethi",
+                    "name": "Rasalgethi",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Laomedeia",
+                    "name": "Laomedeia",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Achernar",
+                    "name": "Achernar",
+                    "recommended": false,
+                    "tags": [
+                      "soft"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Alnilam",
+                    "name": "Alnilam",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Schedar",
+                    "name": "Schedar",
+                    "recommended": false,
+                    "tags": [
+                      "even"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Gacrux",
+                    "name": "Gacrux",
+                    "recommended": false,
+                    "tags": [
+                      "mature"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Pulcherrima",
+                    "name": "Pulcherrima",
+                    "recommended": false,
+                    "tags": [
+                      "forward"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Achird",
+                    "name": "Achird",
+                    "recommended": false,
+                    "tags": [
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Zubenelgenubi",
+                    "name": "Zubenelgenubi",
+                    "recommended": false,
+                    "tags": [
+                      "casual"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Vindemiatrix",
+                    "name": "Vindemiatrix",
+                    "recommended": false,
+                    "tags": [
+                      "gentle"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadachbia",
+                    "name": "Sadachbia",
+                    "recommended": false,
+                    "tags": [
+                      "lively"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadaltager",
+                    "name": "Sadaltager",
+                    "recommended": false,
+                    "tags": [
+                      "knowledgeable"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "Sulafat",
+                    "name": "Sulafat",
+                    "recommended": false,
+                    "tags": [
+                      "warm"
+                    ]
+                  }
+                ]
+              },
+              {
+                "contextWindow": 131072,
+                "id": "gemini-2.5-flash-native-audio-preview-12-2025",
+                "name": "Gemini 2.5 Flash Native Audio",
+                "voices": [
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Zephyr",
+                    "name": "Zephyr",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Puck",
+                    "name": "Puck",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Charon",
+                    "name": "Charon",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Kore",
+                    "name": "Kore",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Fenrir",
+                    "name": "Fenrir",
+                    "recommended": false,
+                    "tags": [
+                      "excitable"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Leda",
+                    "name": "Leda",
+                    "recommended": false,
+                    "tags": [
+                      "youthful"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Orus",
+                    "name": "Orus",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Aoede",
+                    "name": "Aoede",
+                    "recommended": false,
+                    "tags": [
+                      "breezy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Callirrhoe",
+                    "name": "Callirrhoe",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Autonoe",
+                    "name": "Autonoe",
+                    "recommended": false,
+                    "tags": [
+                      "bright"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Enceladus",
+                    "name": "Enceladus",
+                    "recommended": false,
+                    "tags": [
+                      "breathy"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Iapetus",
+                    "name": "Iapetus",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Umbriel",
+                    "name": "Umbriel",
+                    "recommended": false,
+                    "tags": [
+                      "easy-going"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algieba",
+                    "name": "Algieba",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Despina",
+                    "name": "Despina",
+                    "recommended": false,
+                    "tags": [
+                      "smooth"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Erinome",
+                    "name": "Erinome",
+                    "recommended": false,
+                    "tags": [
+                      "clear"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Algenib",
+                    "name": "Algenib",
+                    "recommended": false,
+                    "tags": [
+                      "gravelly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Rasalgethi",
+                    "name": "Rasalgethi",
+                    "recommended": false,
+                    "tags": [
+                      "informative"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Laomedeia",
+                    "name": "Laomedeia",
+                    "recommended": false,
+                    "tags": [
+                      "upbeat"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Achernar",
+                    "name": "Achernar",
+                    "recommended": false,
+                    "tags": [
+                      "soft"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Alnilam",
+                    "name": "Alnilam",
+                    "recommended": false,
+                    "tags": [
+                      "firm"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Schedar",
+                    "name": "Schedar",
+                    "recommended": false,
+                    "tags": [
+                      "even"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Gacrux",
+                    "name": "Gacrux",
+                    "recommended": false,
+                    "tags": [
+                      "mature"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Pulcherrima",
+                    "name": "Pulcherrima",
+                    "recommended": false,
+                    "tags": [
+                      "forward"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Achird",
+                    "name": "Achird",
+                    "recommended": false,
+                    "tags": [
+                      "friendly"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Zubenelgenubi",
+                    "name": "Zubenelgenubi",
+                    "recommended": false,
+                    "tags": [
+                      "casual"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "female",
+                    "id": "Vindemiatrix",
+                    "name": "Vindemiatrix",
+                    "recommended": false,
+                    "tags": [
+                      "gentle"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadachbia",
+                    "name": "Sadachbia",
+                    "recommended": false,
+                    "tags": [
+                      "lively"
+                    ]
+                  },
+                  {
+                    "accent": "Neutral",
+                    "gender": "male",
+                    "id": "Sadaltager",
+                    "name": "Sadaltager",
+                    "recommended": false,
+                    "tags": [
+                      "knowledgeable"
+                    ]
+                  },
+                  {
+                    "accent": "American",
+                    "gender": "female",
+                    "id": "Sulafat",
+                    "name": "Sulafat",
+                    "recommended": false,
+                    "tags": [
+                      "warm"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "name": "Google Gemini Live",
+            "recommended": false,
+            "status": "ga"
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

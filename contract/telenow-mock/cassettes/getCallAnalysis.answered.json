@@ -1,0 +1,45 @@
+{
+  "operationId": "getCallAnalysis",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1calls.py); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/analysis/result/700e33e4-1bb0-48ba-8c19-5e7f66546249",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "actionItems": [],
+        "agentId": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+        "agentTurns": 0,
+        "agentWords": 0,
+        "coaching": [],
+        "createdAt": "2026-10-30T11:37:57.167985Z",
+        "customData": {},
+        "customerTurns": 0,
+        "customerWords": 0,
+        "cx": {},
+        "disposition": "booked",
+        "error": null,
+        "evidence": {},
+        "hallucinations": [],
+        "keywords": [],
+        "model": "openai/gpt-4o-mini",
+        "objections": [],
+        "orgId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+        "qa": [],
+        "score": null,
+        "sentiment": "positive",
+        "sentimentScore": null,
+        "sessionId": "700e33e4-1bb0-48ba-8c19-5e7f66546249",
+        "status": "done",
+        "summary": "Booked a cleaning for Tuesday 10 am.",
+        "topics": [],
+        "updatedAt": "2026-10-30T11:38:57.167985Z"
+      },
+      "success": true
+    }
+  }
+}

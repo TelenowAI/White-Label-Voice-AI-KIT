@@ -1,0 +1,27 @@
+{
+  "name": "All in per minute, inbound phone call",
+  "why": "The direction picks the rule: 312 s bills as 6 minutes at the inbound rate.",
+  "plan": "per-minute",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.inbound-phone",
+      "call": "getCallV1.inbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "call",
+        "rule": "per-minute/inbound-phone",
+        "method": "perMinute",
+        "costUsd": "0.182962",
+        "billedSeconds": 360,
+        "amount": "12.00"
+      }
+    ],
+    "total": "12.00"
+  }
+}

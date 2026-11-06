@@ -1,0 +1,21 @@
+{
+  "operationId": "whoAmI",
+  "recorded": "2026-10-29, Telenow 2446ecb's binary on the build server, throwaway database",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "query": "",
+    "apiKey": "vai_test_viewer"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "key_id": "e0bd6fb0-da5b-4da3-83c1-07cadc071d5f",
+      "key_name": "contract viewer",
+      "key_role": "viewer",
+      "org_id": "68afd140-e3b0-4769-82b8-fba1499a94ce",
+      "org_name": "Kit v1",
+      "parent_org_id": null
+    }
+  }
+}

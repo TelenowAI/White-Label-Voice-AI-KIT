@@ -1,0 +1,250 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://voice-kit.dev/contract/pricing/fixture.schema.json",
+  "title": "A pricing fixture",
+  "description": "One case every stack's engine must reproduce exactly (README.md): price `item` with plan `plan` at `usdRate`, using the lists in price-lists/ plus `priceLists`, and answer exactly `expect`.",
+  "type": "object",
+  "required": [
+    "name",
+    "why",
+    "plan",
+    "usdRate",
+    "item",
+    "expect"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "why": {
+      "type": "string",
+      "description": "What rule of the spec this case pins."
+    },
+    "plan": {
+      "type": "string"
+    },
+    "usdRate": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+    },
+    "priceLists": {
+      "type": "array",
+      "description": "Lists of this case alone, beside price-lists/ (an id may not repeat one there).",
+      "items": {
+        "type": "object"
+      }
+    },
+    "item": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "call"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "call": {
+              "type": "object",
+              "required": [
+                "cost",
+                "call"
+              ],
+              "additionalProperties": false,
+              "description": "Recorded Telenow answers, by cassette name (telenow-mock/cassettes/<name>.json).",
+              "properties": {
+                "cost": {
+                  "type": "string"
+                },
+                "call": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "fee"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "fee": {
+              "type": "object",
+              "required": [
+                "ledger",
+                "refKind"
+              ],
+              "additionalProperties": false,
+              "description": "The entry with this refKind in a recorded ledger answer (it must be the only one).",
+              "properties": {
+                "ledger": {
+                  "type": "string"
+                },
+                "refKind": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "inline"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "inline": {
+              "type": "object",
+              "description": "An item written for this case, to pin a rule no recording reaches. Not a Telenow answer.",
+              "required": [
+                "kind",
+                "attributes"
+              ],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "call",
+                    "fee"
+                  ]
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "durationSec": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "components": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "totalUsd": {
+                  "type": "string"
+                },
+                "costUsd": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "ledgerEntry"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "ledgerEntry": {
+              "type": "object",
+              "description": "A Telenow LedgerEntry written for this case (not recorded), to pin how an entry becomes a fee."
+            }
+          }
+        }
+      ]
+    },
+    "expect": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "currency",
+            "usdRate",
+            "lines",
+            "total"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "currency": {
+              "type": "string"
+            },
+            "usdRate": {
+              "type": "string"
+            },
+            "total": {
+              "type": "string"
+            },
+            "lines": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "subject",
+                  "rule",
+                  "method",
+                  "costUsd",
+                  "billedSeconds",
+                  "amount"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "subject": {
+                    "type": "string"
+                  },
+                  "rule": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "enum": [
+                      "perMinute",
+                      "markupPercent",
+                      "fixed"
+                    ]
+                  },
+                  "costUsd": {
+                    "type": "string"
+                  },
+                  "billedSeconds": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "amount": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "error",
+            "subject"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "enum": [
+                "not_rated",
+                "not_a_charge",
+                "unknown_price_list",
+                "price_list_cycle",
+                "currency_mismatch",
+                "unpriced_component",
+                "components_exceed_total",
+                "unpriced_fee"
+              ]
+            },
+            "subject": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "operationId": "uploadKnowledgeFile",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1) on the build server, throwaway database, with a sub-account's own key (contract_k1knowledge.py); no vendor is reachable there, so text documents failed to embed and the table was indexed; ids and keys mapped to the earlier recordings' placeholders; a CSV table (prices.csv)",
+  "request": {
+    "method": "POST",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/knowledge-bases/8f3b2c1d-5e6a-4b7c-9d8e-0f1a2b3c4d5e/documents/upload",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "body": "| service | price |\n| --- | --- |\n| cleaning | 1200 |\n| whitening | 8000 |\n",
+        "created_at": "2026-10-30T14:56:33.417152Z",
+        "deleted_at": null,
+        "error": null,
+        "id": "1a2b3c4d-0003-4e5f-8a9b-0c1d2e3f4a5b",
+        "kb_id": "8f3b2c1d-5e6a-4b7c-9d8e-0f1a2b3c4d5e",
+        "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+        "source_type": "upload",
+        "source_uri": "prices.csv",
+        "status": "indexed",
+        "title": "prices",
+        "updated_at": "2026-10-30T14:56:33.417152Z"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

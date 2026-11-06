@@ -1,0 +1,251 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://voice-kit.local/contract/resources.schema.json",
+  "title": "voice-kit resource manifest",
+  "description": "What contract/resources.yaml may say. One entry per Telenow-backed resource the kit keeps in its own database (plan §3.8): its table, the Telenow operations that write and read it, how its columns map to Telenow's fields, the events that update it, how it is back-filled, and what is never stored. Each backend runs one generic engine over these entries; contract/tests checks every Telenow operation, field and event named here against Telenow's released API document.",
+  "type": "object",
+  "required": [
+    "version",
+    "resources"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "The manifest format's version."
+    },
+    "resources": {
+      "type": "object",
+      "description": "Keyed by the resource's kit name.",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/resource"
+      }
+    }
+  },
+  "definitions": {
+    "operation": {
+      "type": "object",
+      "required": [
+        "operationId"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "description": "A Telenow operationId from contract/telenow/openapi.yaml."
+        },
+        "objectAt": {
+          "type": "string",
+          "pattern": "^([A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*)?$",
+          "description": "Where the resource's object sits in the operation's answer, dot-separated (`data` for Telenow's {success, data} answers); empty or absent when the answer is the object itself."
+        },
+        "mergeBlobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "JSON fields Telenow REPLACES whole when sent. The engine re-reads the object, changes only the keys the customer edited, and sends the result; a blob the customer did not touch is never sent (plan §3.8 a.5)."
+        },
+        "body": {
+          "type": "object",
+          "description": "Fields every such write carries as they are (Telenow's create needs `sessionConfig`, say), beside the mapped fields."
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "required": [
+        "column",
+        "telenow"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "The kit table's column."
+        },
+        "telenow": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*$",
+          "description": "The field in the read operation's answer, dot-separated for nested objects."
+        },
+        "write": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+          "description": "The field's name in Telenow's write requests (create and update), when the kit writes it."
+        },
+        "on": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "create",
+              "update"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "Which writes carry it; absent: both. (Telenow's agent create takes no isActive.)"
+        }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "required": [
+        "table",
+        "writer",
+        "telenow",
+        "fields",
+        "events",
+        "backfill",
+        "permission",
+        "neverStored"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "table": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "writer": {
+          "type": "string",
+          "enum": [
+            "kit",
+            "telenow"
+          ],
+          "description": "kit: the customer creates and edits it in the kit, which sends the writes through the outbox. telenow: Telenow produces it; only events and back-fill write it."
+        },
+        "telenow": {
+          "type": "object",
+          "required": [
+            "read"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "create": {
+              "$ref": "#/definitions/operation"
+            },
+            "update": {
+              "$ref": "#/definitions/operation"
+            },
+            "delete": {
+              "$ref": "#/definitions/operation"
+            },
+            "read": {
+              "$ref": "#/definitions/operation"
+            }
+          }
+        },
+        "kitIdSlot": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Where the kit's own id travels inside the Telenow object, dot-separated (e.g. metadata.kitId), or null when Telenow has no slot and the kit keeps the mapping (plan §3.8 a.6)."
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/field"
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "Telenow webhook events that update this resource; each must be an event Telenow's document lists."
+        },
+        "backfill": {
+          "type": "object",
+          "required": [
+            "mode",
+            "operationId"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "changed-since",
+                "window",
+                "full",
+                "per-row",
+                "drift-check"
+              ],
+              "description": "changed-since: a feed with a cursor; window: re-read recent days; full: the whole list, compared; per-row: re-read each unfinished row; drift-check: re-read each row and compare with the stored snapshot."
+            },
+            "operationId": {
+              "type": "string"
+            },
+            "cursorParameter": {
+              "type": "string",
+              "description": "For changed-since: the query parameter that resumes the feed."
+            },
+            "startParameter": {
+              "type": "string",
+              "description": "For changed-since: the query parameter that starts the feed at an instant, before there is a cursor."
+            }
+          }
+        },
+        "permission": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.]*$",
+          "description": "The kit permission a member needs to change it."
+        },
+        "neverStored": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "Telenow fields the kit never stores or shows (Telenow's prices, provider secrets), dot-separated. A shared test scans kit API answers for them."
+        },
+        "extraReads": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extraRead"
+          },
+          "description": "Further Telenow reads that fill one column each, beside `telenow.read` (a call's analysis comes from its own operation)."
+        }
+      }
+    },
+    "extraRead": {
+      "type": "object",
+      "required": [
+        "operationId",
+        "column",
+        "whenPresent"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "description": "A Telenow operationId from contract/telenow/openapi.yaml."
+        },
+        "objectAt": {
+          "type": "string",
+          "pattern": "^([A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*)?$",
+          "description": "Where the resource's object sits in the operation's answer, dot-separated (`data` for Telenow's {success, data} answers); empty or absent when the answer is the object itself."
+        },
+        "column": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "The kit column it fills."
+        },
+        "whenPresent": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+          "description": "Read only while the read answer's `completeness` says this part is `present`."
+        }
+      }
+    }
+  }
+}

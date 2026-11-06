@@ -1,0 +1,357 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k6flow.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "created_at": "2026-11-04T07:45:13.135731Z",
+        "deleted_at": null,
+        "description": null,
+        "fallback_config": null,
+        "id": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+        "is_active": true,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "gpt-5.4-mini",
+        "llm_provider": "openai",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": true
+          },
+          "flow": {
+            "edges": [
+              {
+                "condition": {
+                  "digit": "1",
+                  "kind": "dtmf"
+                },
+                "id": "k1",
+                "label": "Booking",
+                "source": "menu",
+                "target": "ask"
+              },
+              {
+                "condition": {
+                  "digit": "2",
+                  "kind": "dtmf"
+                },
+                "id": "k2",
+                "label": "A person",
+                "source": "menu",
+                "target": "person"
+              },
+              {
+                "condition": {
+                  "expr": "{order_id} != ''",
+                  "kind": "equation"
+                },
+                "id": "a1",
+                "source": "ask",
+                "target": "lookup"
+              },
+              {
+                "condition": {
+                  "kind": "tool_result",
+                  "match": "ok"
+                },
+                "id": "l1",
+                "priority": 0,
+                "source": "lookup",
+                "target": "sum"
+              },
+              {
+                "condition": {
+                  "kind": "fallback"
+                },
+                "id": "l2",
+                "priority": 1,
+                "source": "lookup",
+                "target": "say"
+              },
+              {
+                "condition": {
+                  "kind": "always"
+                },
+                "id": "s1",
+                "source": "sum",
+                "target": "split"
+              },
+              {
+                "condition": {
+                  "expr": "{order_total} > 0",
+                  "kind": "equation"
+                },
+                "id": "r1",
+                "priority": 0,
+                "source": "split",
+                "target": "tell"
+              },
+              {
+                "condition": {
+                  "kind": "fallback"
+                },
+                "id": "r2",
+                "priority": 1,
+                "source": "split",
+                "target": "billing"
+              },
+              {
+                "condition": {
+                  "describe": "the caller has nothing more to ask",
+                  "kind": "ai"
+                },
+                "id": "t1",
+                "source": "tell",
+                "target": "bye"
+              },
+              {
+                "condition": {
+                  "kind": "always"
+                },
+                "id": "y1",
+                "source": "say",
+                "target": "bye"
+              }
+            ],
+            "nodes": [
+              {
+                "entryMessage": "For booking press 1. For a person press 2.",
+                "guards": {
+                  "dtmfRouteOnly": true,
+                  "keypadOnly": true
+                },
+                "id": "menu",
+                "kind": "dtmf",
+                "name": "Main menu",
+                "position": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "continueAfterEntry": false,
+                "entryMessage": "What is your order number?",
+                "extract": [
+                  {
+                    "description": "the order number",
+                    "name": "order_id",
+                    "required": true,
+                    "type": "string"
+                  }
+                ],
+                "id": "ask",
+                "kind": "extract",
+                "name": "Ask",
+                "position": {
+                  "x": 200,
+                  "y": 0
+                },
+                "prompt": "Ask for the order number.",
+                "promptMode": "append"
+              },
+              {
+                "config": {
+                  "bearer": "••••1111",
+                  "config": {
+                    "responseMap": [
+                      {
+                        "path": "order.status",
+                        "variable": "order_status"
+                      }
+                    ]
+                  },
+                  "description": "Look an order up.",
+                  "endpoint": "https://example.com/orders",
+                  "handoff": "Let me check.",
+                  "name": "lookup_order",
+                  "parameters": {
+                    "properties": {
+                      "order_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "order_id"
+                    ],
+                    "type": "object"
+                  },
+                  "timeoutSecs": 10
+                },
+                "id": "lookup",
+                "kind": "tool",
+                "name": "Look up",
+                "position": {
+                  "x": 400,
+                  "y": 0
+                },
+                "saves": [
+                  {
+                    "name": "order_status"
+                  }
+                ],
+                "sends": [
+                  "order_id"
+                ]
+              },
+              {
+                "config": {
+                  "language": "js",
+                  "source": "return { total: Number(dv.a || 0) + 1 };",
+                  "storeFields": [
+                    {
+                      "field": "total",
+                      "variable": "order_total"
+                    }
+                  ],
+                  "timeoutMs": 2000
+                },
+                "id": "sum",
+                "kind": "code",
+                "name": "Work out",
+                "position": {
+                  "x": 600,
+                  "y": 0
+                }
+              },
+              {
+                "id": "split",
+                "kind": "router",
+                "name": "Which",
+                "position": {
+                  "x": 800,
+                  "y": 0
+                }
+              },
+              {
+                "id": "tell",
+                "kind": "conversation",
+                "name": "Tell",
+                "position": {
+                  "x": 1000,
+                  "y": 0
+                },
+                "prompt": "Your order is {order_status}."
+              },
+              {
+                "entryMessage": "Sorry, I cannot reach that just now.",
+                "id": "say",
+                "kind": "static",
+                "name": "Sorry",
+                "position": {
+                  "x": 1000,
+                  "y": 200
+                }
+              },
+              {
+                "config": {
+                  "destinations": [
+                    {
+                      "label": "Reception",
+                      "mode": "serial",
+                      "numbers": [
+                        "+14155550199"
+                      ]
+                    }
+                  ],
+                  "message": "Connecting you.",
+                  "noAnswerMessage": "Nobody is free."
+                },
+                "globalCondition": "the caller asks to speak to a person",
+                "globalExamples": [
+                  "can I talk to someone"
+                ],
+                "globalGoBack": false,
+                "id": "person",
+                "isGlobal": true,
+                "kind": "transfer",
+                "name": "A person",
+                "position": {
+                  "x": 1200,
+                  "y": 0
+                }
+              },
+              {
+                "config": {
+                  "agents": [
+                    {
+                      "agentId": "7d2c9e14-5a3b-4f60-8e21-9c4b6a1f0d37",
+                      "kitAgentId": "kit-agent-2",
+                      "label": "Billing",
+                      "mode": "transfer"
+                    }
+                  ],
+                  "message": "One moment."
+                },
+                "id": "billing",
+                "kind": "agent",
+                "name": "Billing",
+                "position": {
+                  "x": 1200,
+                  "y": 200
+                }
+              },
+              {
+                "entryMessage": "Goodbye.",
+                "id": "bye",
+                "kind": "end",
+                "name": "Goodbye",
+                "position": {
+                  "x": 1400,
+                  "y": 0
+                }
+              },
+              {
+                "id": "memo",
+                "kind": "note",
+                "name": "A note",
+                "position": {
+                  "x": 0,
+                  "y": 300
+                },
+                "prompt": "Remember to change the hours."
+              }
+            ],
+            "schema": 1,
+            "startNodeId": "menu"
+          },
+          "kitId": "kit-agent-1"
+        },
+        "name": "Front desk",
+        "org_id": "f5b2ecfe-1a21-4c72-83e2-03ced560e865",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {
+          "maxDuration": 600
+        },
+        "stt_config": null,
+        "stt_provider": "deepgram",
+        "system_prompt": "You are the front desk.",
+        "tags": null,
+        "telephony_config": {
+          "agentMsg": "Hello.",
+          "firstResponse": "agent",
+          "recording": true
+        },
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "openai",
+        "tts_voice": "alloy",
+        "updated_at": "2026-11-04T07:45:13.372117Z",
+        "user_id": "f898f020-68ba-46f2-b6ec-61e62c42f851"
+      },
+      "success": true,
+      "version": 2
+    }
+  },
+  "serve": false
+}

@@ -1,0 +1,43 @@
+{
+  "id": "mixed",
+  "currency": "INR",
+  "decimals": 2,
+  "rounding": "half-up",
+  "billingIncrementSeconds": 60,
+  "rules": [
+    {
+      "id": "lines",
+      "match": {
+        "item": "component",
+        "component": "telephony"
+      },
+      "price": {
+        "perMinute": "0.90"
+      }
+    },
+    {
+      "id": "ai",
+      "match": {
+        "item": "component",
+        "component": [
+          "llm",
+          "stt",
+          "tts"
+        ]
+      },
+      "price": {
+        "markupPercent": "45"
+      }
+    },
+    {
+      "id": "platform",
+      "match": {
+        "item": "component",
+        "component": "platformFee"
+      },
+      "price": {
+        "markupPercent": "0"
+      }
+    }
+  ]
+}

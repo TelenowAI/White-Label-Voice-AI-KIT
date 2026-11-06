@@ -1,0 +1,18 @@
+{
+  "operationId": "endSession",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key and a stand-in carrier that takes the call (contract_k9human.py)",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/sessions/5e551011-0000-4000-8000-000000000001",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message": "Session ended successfully",
+      "success": true
+    }
+  },
+  "serve": false
+}

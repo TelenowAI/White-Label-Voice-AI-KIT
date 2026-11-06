@@ -1,0 +1,20 @@
+{
+  "operationId": "getRealtimeCatalog",
+  "recorded": "2026-11-05, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, the realtime engine OFF (S2S_ENGINE_ENABLED), a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k14realtime.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/catalog/s2s",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "enabled": false,
+        "providers": []
+      },
+      "success": true
+    }
+  }
+}

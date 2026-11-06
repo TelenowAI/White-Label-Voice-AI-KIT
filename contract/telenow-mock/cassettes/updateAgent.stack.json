@@ -1,0 +1,54 @@
+{
+  "operationId": "updateAgent",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1: the voice library; main 2f1cafd changes only mid-call app events) on the build server, throwaway database (contract_k1catalog.py); Telenow's own text-to-speech engine was a STAND-IN (tts_stub.py, TELENOW_TTS_BASE_URL) answering a tone, so no vendor was reached; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "PUT",
+    "path": "/api/agents/5b0c2a9e-4d1f-4c3a-8e72-9f6d1b0a4c35",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "created_at": "2026-10-30T14:08:52.316101Z",
+        "deleted_at": null,
+        "description": null,
+        "fallback_config": null,
+        "id": "5b0c2a9e-4d1f-4c3a-8e72-9f6d1b0a4c35",
+        "is_active": true,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "claude-haiku-4-5",
+        "llm_provider": "anthropic",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": true
+          },
+          "kitId": "c49a0a51-a217-4fc5-a20b-593fc0c045ba"
+        },
+        "name": "Billing desk",
+        "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {},
+        "stt_config": null,
+        "stt_provider": "deepgram",
+        "system_prompt": "You answer billing questions for Acme Dental.",
+        "tags": null,
+        "telephony_config": null,
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "telenow",
+        "tts_voice": "vikram-en-in",
+        "updated_at": "2026-10-30T14:08:55.401732Z",
+        "user_id": "e2d727af-1ef4-49aa-9dfc-f57472e15350"
+      },
+      "success": true,
+      "version": 2
+    }
+  }
+}

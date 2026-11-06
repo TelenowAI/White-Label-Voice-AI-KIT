@@ -1,0 +1,59 @@
+{
+  "name": "Telephony per minute, AI marked up, platform fee passed through",
+  "why": "Component rules of different kinds on one call; a 0% markup passes Telenow's charge through, converted.",
+  "plan": "mixed",
+  "usdRate": "84.25",
+  "item": {
+    "call": {
+      "cost": "getCallCost.outbound-phone",
+      "call": "getCallV1.outbound-phone"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "component:llm",
+        "rule": "mixed/ai",
+        "method": "markupPercent",
+        "costUsd": "0.004125",
+        "billedSeconds": null,
+        "amount": "0.50"
+      },
+      {
+        "subject": "component:platformFee",
+        "rule": "mixed/platform",
+        "method": "markupPercent",
+        "costUsd": "0.0158333333",
+        "billedSeconds": null,
+        "amount": "1.33"
+      },
+      {
+        "subject": "component:stt",
+        "rule": "mixed/ai",
+        "method": "markupPercent",
+        "costUsd": "0.0067083333",
+        "billedSeconds": null,
+        "amount": "0.82"
+      },
+      {
+        "subject": "component:telephony",
+        "rule": "mixed/lines",
+        "method": "perMinute",
+        "costUsd": "0.0266",
+        "billedSeconds": 120,
+        "amount": "1.80"
+      },
+      {
+        "subject": "component:tts",
+        "rule": "mixed/ai",
+        "method": "markupPercent",
+        "costUsd": "0.01584",
+        "billedSeconds": null,
+        "amount": "1.94"
+      }
+    ],
+    "total": "6.39"
+  }
+}

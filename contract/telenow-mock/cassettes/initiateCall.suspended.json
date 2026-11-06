@@ -1,0 +1,18 @@
+{
+  "operationId": "initiateCall",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key, a stand-in carrier that takes the dial, fake provider keys and every outbound HTTP request sent to a dead local proxy (contract_k11agentcall.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/initiate-call",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": "This sub-account is suspended by the account it is billed to. Reason: kit recording",
+      "success": false
+    }
+  },
+  "serve": false
+}

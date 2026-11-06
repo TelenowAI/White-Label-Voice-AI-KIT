@@ -1,0 +1,33 @@
+{
+  "operationId": "getAgentDefaults",
+  "recorded": "2026-10-30, Telenow main 01f2fc8's binary (vl_g1: the voice library; main 2f1cafd changes only mid-call app events) on the build server, throwaway database (contract_k1catalog.py); Telenow's own text-to-speech engine was a STAND-IN (tts_stub.py, TELENOW_TTS_BASE_URL) answering a tone, so no vendor was reached; ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/agent-defaults",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "country": "IN",
+        "countrySource": "org.country",
+        "demoted": [
+          "stt 'sarvam' dropped: SARVAM_API_KEY is not set",
+          "tts 'smallest' dropped: SMALLEST_API_KEY is not set"
+        ],
+        "enabled": true,
+        "llmModel": "gpt-5.4-mini",
+        "llmProvider": "openai",
+        "source": "platform",
+        "sttConfig": {},
+        "sttProvider": "",
+        "ttsConfig": {},
+        "ttsProvider": "",
+        "ttsVoice": ""
+      },
+      "success": true
+    }
+  }
+}

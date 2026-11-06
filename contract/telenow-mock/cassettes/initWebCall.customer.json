@@ -1,0 +1,23 @@
+{
+  "operationId": "initWebCall",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1agents.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/init-web-call",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "embedSnippet": "<script async src=\"https://unpkg.com/web-agent-widget\"></script>\n<script>\n  WebAgentWidget.init({\n    websocketUrl: \"ws://127.0.0.1:39885/ws/web-agent\",\n    sessionId: \"eaf799f7-c543-46c9-aa90-e8dda077ca2e\"\n  });\n</script>",
+        "sessionId": "eaf799f7-c543-46c9-aa90-e8dda077ca2e",
+        "status": "active",
+        "transport": "websocket",
+        "websocketUrl": "ws://127.0.0.1:39885/ws/web-agent"
+      },
+      "success": true
+    }
+  }
+}

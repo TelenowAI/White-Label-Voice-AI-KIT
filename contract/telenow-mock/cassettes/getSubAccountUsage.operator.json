@@ -1,0 +1,30 @@
+{
+  "operationId": "getSubAccountUsage",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database (contract_k1money.py; the charge amounts are seeded, the shapes Telenow's); ids and keys mapped to the earlier recordings' placeholders",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/sub-accounts/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/usage",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "activeCalls": 0,
+      "billableSeconds": 50,
+      "calls": 2,
+      "from": "2026-09-30T18:30:00Z",
+      "limits": {
+        "maxConcurrentCalls": null,
+        "monthlySpendLimitUsd": null,
+        "totalSpendLimitUsd": null
+      },
+      "monthToDateSpendUsd": 0.029395,
+      "spendUsd": 0.029395,
+      "status": "active",
+      "subAccountId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+      "to": "2026-10-30T12:05:33.987218219Z",
+      "totalSpendUsd": 0.029395
+    }
+  }
+}

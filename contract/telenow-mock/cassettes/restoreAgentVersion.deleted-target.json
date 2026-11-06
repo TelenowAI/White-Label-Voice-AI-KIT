@@ -1,0 +1,114 @@
+{
+  "operationId": "restoreAgentVersion",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k5versions.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159/versions/7/restore",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "created_at": "2026-11-04T07:00:39.059140Z",
+        "deleted_at": null,
+        "description": "Answers the phone",
+        "fallback_config": null,
+        "id": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+        "is_active": true,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "gpt-5.4-mini",
+        "llm_provider": "openai",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": true
+          },
+          "kitId": "kit-agent-1",
+          "tools": [
+            {
+              "bearer": "••••2222",
+              "description": "Book a visit.",
+              "endpoint": "https://example.org/hooks/book",
+              "name": "book_visit",
+              "parameters": {
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "date"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "config": {
+                "destinations": [
+                  {
+                    "label": "Front desk",
+                    "number": "+14155550199"
+                  }
+                ],
+                "message": "One moment."
+              },
+              "description": "Transfer the caller to a person.",
+              "kind": "transfer",
+              "name": "transfer_to_human"
+            },
+            {
+              "config": {
+                "agents": [
+                  {
+                    "agentId": "7d2c9e14-5a3b-4f60-8e21-9c4b6a1f0d37",
+                    "kitAgentId": "kit-agent-2",
+                    "label": "Billing",
+                    "mode": "transfer"
+                  }
+                ],
+                "message": "One moment."
+              },
+              "description": "Hand over.",
+              "kind": "agent",
+              "name": "handoff_to_agent"
+            }
+          ],
+          "voicemailMessage": "Please call back."
+        },
+        "name": "Front desk 2",
+        "org_id": "f5b2ecfe-1a21-4c72-83e2-03ced560e865",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {
+          "bargeInSensitivity": "high",
+          "behavior": {
+            "tone": "warm"
+          },
+          "maxDuration": 900
+        },
+        "stt_config": null,
+        "stt_provider": "deepgram",
+        "system_prompt": "You are the front desk, version two.",
+        "tags": null,
+        "telephony_config": {
+          "agentMsg": "Hello.",
+          "firstResponse": "agent",
+          "recording": false
+        },
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "openai",
+        "tts_voice": "alloy",
+        "updated_at": "2026-11-04T07:00:39.622957Z",
+        "user_id": "9d4016b6-eba0-4928-99f0-7e1e0ec3a2c0"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

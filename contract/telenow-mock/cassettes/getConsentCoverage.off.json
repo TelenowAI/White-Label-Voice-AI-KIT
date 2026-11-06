@@ -1,0 +1,23 @@
+{
+  "operationId": "getConsentCoverage",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k8consent.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/consent/coverage",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "mode": "off",
+        "pending_blocked": 5,
+        "pending_covered": 2,
+        "pending_total": 7
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

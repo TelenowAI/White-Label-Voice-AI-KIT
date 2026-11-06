@@ -1,0 +1,59 @@
+{
+  "name": "Rounding up",
+  "why": "0.121 \u2192 0.13 when rounding up. Written for this case.",
+  "plan": "round-up",
+  "usdRate": "1",
+  "priceLists": [
+    {
+      "id": "round-up",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "up",
+      "billingIncrementSeconds": 60,
+      "rules": [
+        {
+          "id": "all",
+          "match": {
+            "item": "component"
+          },
+          "price": {
+            "markupPercent": "0"
+          }
+        },
+        {
+          "id": "fees",
+          "match": {
+            "item": "fee"
+          },
+          "price": {
+            "markupPercent": "0"
+          }
+        }
+      ]
+    }
+  ],
+  "item": {
+    "inline": {
+      "kind": "fee",
+      "attributes": {
+        "refKind": "rental"
+      },
+      "costUsd": "0.121"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "1",
+    "lines": [
+      {
+        "subject": "fee:rental",
+        "rule": "round-up/fees",
+        "method": "markupPercent",
+        "costUsd": "0.121",
+        "billedSeconds": null,
+        "amount": "0.13"
+      }
+    ],
+    "total": "0.13"
+  }
+}

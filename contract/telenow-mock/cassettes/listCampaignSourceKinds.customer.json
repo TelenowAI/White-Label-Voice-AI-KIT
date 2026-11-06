@@ -1,0 +1,292 @@
+{
+  "operationId": "listCampaignSourceKinds",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k7campaigns.py); people settled in the database with the words the release's finalisers write",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/campaigns/source-kinds",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "kinds": [
+          {
+            "capability": "records.list",
+            "id": "records.list:airtable",
+            "label": "Airtable table",
+            "providers": [
+              "airtable"
+            ],
+            "settings": [
+              {
+                "help": "From the base URL: airtable.com/<appXXXXXXXX>/…",
+                "key": "base_id",
+                "label": "Base ID",
+                "required": true
+              },
+              {
+                "key": "table",
+                "label": "Table name or ID",
+                "required": true
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "http.list",
+            "id": "http.list:custom_http",
+            "label": "Custom API",
+            "providers": [
+              "custom_http"
+            ],
+            "settings": [],
+            "writeback": true
+          },
+          {
+            "capability": "sheets.list_rows",
+            "id": "sheets.list_rows:microsoft365",
+            "label": "Excel table",
+            "providers": [
+              "microsoft365"
+            ],
+            "settings": [
+              {
+                "help": "The Excel workbook in your OneDrive. Its data must be an Excel table: select the data, then Insert → Table.",
+                "key": "workbook_id",
+                "label": "Workbook",
+                "options": {
+                  "label": "name",
+                  "list": "value",
+                  "request": {
+                    "headers": {
+                      "Authorization": "Bearer {auth.access_token}"
+                    },
+                    "method": "GET",
+                    "url": "https://graph.microsoft.com/v1.0/me/drive/root/search(q='xlsx')?$select=id,name&$top=200"
+                  },
+                  "value": "id"
+                },
+                "required": true
+              },
+              {
+                "help": "The table inside the workbook (Excel: Table Design → Table Name).",
+                "key": "table_name",
+                "label": "Table",
+                "options": {
+                  "label": "name",
+                  "list": "value",
+                  "request": {
+                    "headers": {
+                      "Authorization": "Bearer {auth.access_token}"
+                    },
+                    "method": "GET",
+                    "url": "https://graph.microsoft.com/v1.0/me/drive/items/{connection.workbook_id|urlencode}/workbook/tables?$select=name"
+                  },
+                  "value": "name"
+                },
+                "required": true
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "sheets.list_rows",
+            "id": "sheets.list_rows:google",
+            "label": "Google Sheet",
+            "providers": [
+              "google",
+              "google_sheets"
+            ],
+            "settings": [
+              {
+                "help": "From the sheet URL: docs.google.com/spreadsheets/d/<ID>/edit",
+                "key": "spreadsheet_id",
+                "label": "Spreadsheet ID",
+                "required": true
+              },
+              {
+                "default": "Sheet1",
+                "key": "sheet_name",
+                "label": "Tab",
+                "options": {
+                  "label": "properties.title",
+                  "list": "sheets",
+                  "request": {
+                    "headers": {
+                      "Authorization": "Bearer {auth.access_token}"
+                    },
+                    "method": "GET",
+                    "url": "https://sheets.googleapis.com/v4/spreadsheets/{connection.spreadsheet_id}?fields=sheets.properties(title,index)"
+                  },
+                  "value": "properties.title"
+                },
+                "placeholder": "Sheet1"
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "crm.list_contacts",
+            "id": "crm.list_contacts:hubspot",
+            "label": "HubSpot contacts",
+            "providers": [
+              "hubspot"
+            ],
+            "settings": [],
+            "writeback": true
+          },
+          {
+            "capability": "db.query",
+            "id": "db.query:db_mongodb",
+            "label": "MongoDB collection",
+            "providers": [
+              "db_mongodb"
+            ],
+            "settings": [
+              {
+                "key": "collection",
+                "label": "Collection",
+                "placeholder": "leads",
+                "required": true
+              },
+              {
+                "help": "A find filter like {\"called\": false}, or an aggregation pipeline like [{\"$match\":{\"called\":false}},{\"$sort\":{\"_id\":1}}]. Use {} for every document. Sort on a stable key — pages are read by offset, so without a sort the server may return documents in a different order between pages and some are skipped. Stages that write ($out, $merge) or run JavaScript ($function, $where) are refused.",
+                "key": "query",
+                "kind": "json",
+                "label": "Filter or pipeline",
+                "placeholder": "{\"called\": false}",
+                "required": true
+              },
+              {
+                "help": "The field that identifies a document — used to write outcomes back onto the right one. A document's POSITION is not its identity: without this, a re-ordered or re-filtered read would write onto whichever document now sits in that slot. Must be unique.",
+                "key": "key_column",
+                "label": "Key field"
+              },
+              {
+                "help": "Where outcomes are written. Leave blank to write back into the collection this source reads from.",
+                "key": "table",
+                "label": "Write-back collection"
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "db.query",
+            "id": "db.query:db_mysql",
+            "label": "MySQL query",
+            "providers": [
+              "db_mysql"
+            ],
+            "settings": [
+              {
+                "help": "A single read-only SELECT. Include an ORDER BY on a stable key — pages are read by offset, so without one the database may return rows in a different order between pages and some are skipped.",
+                "key": "query",
+                "kind": "sql",
+                "label": "SQL query",
+                "placeholder": "SELECT id, name, phone FROM leads WHERE called_at IS NULL ORDER BY id",
+                "required": true
+              },
+              {
+                "help": "The column that uniquely identifies a row — a primary key. Include it in the SELECT above. Required only if you want call outcomes written back; without it the campaign still dials. It MUST be unique: a non-unique key would stamp one call's outcome onto every row that shares the value.",
+                "key": "key_column",
+                "label": "Key column (for write-back)",
+                "placeholder": "id"
+              },
+              {
+                "help": "The table an outcome is written to. Needed because your query may join several and we will not guess which one to UPDATE.",
+                "key": "table",
+                "label": "Write-back table",
+                "placeholder": "leads"
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "db.query",
+            "id": "db.query:db_postgres",
+            "label": "PostgreSQL query",
+            "providers": [
+              "db_postgres"
+            ],
+            "settings": [
+              {
+                "help": "A single read-only SELECT. Include an ORDER BY on a stable key — pages are read by offset, so without one the database may return rows in a different order between pages and some are skipped.",
+                "key": "query",
+                "kind": "sql",
+                "label": "SQL query",
+                "placeholder": "SELECT id, name, phone FROM leads WHERE called_at IS NULL ORDER BY id",
+                "required": true
+              },
+              {
+                "help": "The column that uniquely identifies a row — a primary key. Include it in the SELECT above. Required only if you want call outcomes written back; without it the campaign still dials. It MUST be unique: a non-unique key would stamp one call's outcome onto every row that shares the value.",
+                "key": "key_column",
+                "label": "Key column (for write-back)",
+                "placeholder": "id"
+              },
+              {
+                "help": "The table an outcome is written to. Needed because your query may join several and we will not guess which one to UPDATE.",
+                "key": "table",
+                "label": "Write-back table",
+                "placeholder": "leads"
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "db.query",
+            "id": "db.query:db_mssql",
+            "label": "SQL Server query",
+            "providers": [
+              "db_mssql"
+            ],
+            "settings": [
+              {
+                "help": "A single read-only SELECT. An ORDER BY is REQUIRED on this engine — SQL Server will not page without one. Order on a stable key (an id works) so rows cannot shuffle between pages. Do not add your own OFFSET/FETCH; the source pages for you.",
+                "key": "query",
+                "kind": "sql",
+                "label": "SQL query",
+                "placeholder": "SELECT id, name, phone FROM leads WHERE called_at IS NULL ORDER BY id",
+                "required": true
+              }
+            ],
+            "writeback": true
+          },
+          {
+            "capability": "crm.list_leads",
+            "id": "crm.list_leads:salesforce",
+            "label": "Salesforce leads",
+            "providers": [
+              "salesforce"
+            ],
+            "settings": [],
+            "writeback": true
+          },
+          {
+            "capability": "customer.list",
+            "id": "customer.list:woocommerce",
+            "label": "WooCommerce customers",
+            "providers": [
+              "woocommerce"
+            ],
+            "settings": [],
+            "writeback": false
+          },
+          {
+            "capability": "crm.list_leads",
+            "id": "crm.list_leads:zoho_crm",
+            "label": "Zoho CRM leads",
+            "providers": [
+              "zoho_crm"
+            ],
+            "settings": [],
+            "writeback": true
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

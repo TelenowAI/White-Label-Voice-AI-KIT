@@ -1,0 +1,55 @@
+{
+  "operationId": "getConsentHistory",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k8consent.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/consent/%2B14155550101",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "records": [
+          {
+            "captured_at": "2026-10-01T09:00:00Z",
+            "consent_type": "express_written",
+            "created_at": "2026-11-04T10:30:12.444165Z",
+            "created_by": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+            "disclosure_text": "I agree to be called about my appointments by Acme Dental.",
+            "disclosure_version": "v1",
+            "evidence": {
+              "kitId": "a0000001-0000-4000-8000-000000000000",
+              "note": "Form 12",
+              "recordedFrom": {
+                "ip": "203.0.113.9",
+                "userAgent": "Browser"
+              },
+              "server": {
+                "apiKeyId": "f543b4ec-5ec8-437c-87bc-679ee6b4f051",
+                "forwardedFor": null,
+                "peer": "127.0.0.1",
+                "recordedByUser": "757e3bbf-0605-4fa6-85f7-a6762a72f582",
+                "recordedVia": "api",
+                "userAgent": "Python-urllib/3.9"
+              }
+            },
+            "expires_at": "2027-10-01T09:00:00Z",
+            "id": "547a0672-5115-46fb-91dd-bd2f3540d673",
+            "org_id": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da",
+            "phone_number": "+14155550101",
+            "revoke_note": null,
+            "revoke_source": null,
+            "revoked_at": null,
+            "scope": "marketing",
+            "source": "web_form"
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

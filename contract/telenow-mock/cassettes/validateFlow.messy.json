@@ -1,0 +1,99 @@
+{
+  "operationId": "validateFlow",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k6flow.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/flow/validate",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "errors": [],
+        "multiContext": true,
+        "valid": true,
+        "warnings": [
+          {
+            "at": "a",
+            "code": "enum_without_values",
+            "message": "'kind_of' on step 'a' captures a fixed choice but lists no options, so                              it behaves as free text and no rule can be written against it. Add                              the allowed values, or use the text type."
+          },
+          {
+            "at": "e3",
+            "code": "rule_on_free_text",
+            "message": "the exit 'e3' out of 'a' tests 'free' against the exact word 'exact', but 'free' is captured as free text — the extractor stores the caller's own wording ('Health insurance', 'health plan'), so this exit matches by luck. Capture 'free' as a choice (type enum) whose values are the exact words these exits test."
+          },
+          {
+            "at": "a",
+            "code": "section_unclosed",
+            "message": "Line 1: `{#if` is never closed — add `{/if}` where the section should end."
+          },
+          {
+            "at": "b",
+            "code": "strandable_step",
+            "message": "every exit from step 'b' is a condition on a variable, and this step does not wait for the caller — so if none of them match when it runs, nothing will ever change them and the call stays here for good. Add an 'Otherwise' exit."
+          },
+          {
+            "at": "c",
+            "code": "strandable_step",
+            "message": "every exit from step 'c' is a condition on a variable, and this step does not wait for the caller — so if none of them match when it runs, nothing will ever change them and the call stays here for good. Add an 'Otherwise' exit."
+          },
+          {
+            "at": "d",
+            "code": "silent_arrival",
+            "message": "the call reaches step 'd' from c without the agent saying anything — that step runs inside the agent's turn, so this step parks and waits for a caller who is waiting for it. Give it a 'Line spoken on arrival'."
+          },
+          {
+            "at": "e",
+            "code": "end_message_never_spoken",
+            "message": "step 'e' has a farewell (\"Bye…\") stored where nothing reads it, so the call just drops in silence. Move it to the step's spoken message."
+          },
+          {
+            "at": "f",
+            "code": "strandable_step",
+            "message": "every exit from step 'f' is a condition on a variable, and this step does not wait for the caller — so if none of them match when it runs, nothing will ever change them and the call stays here for good. Add an 'Otherwise' exit."
+          },
+          {
+            "at": "g",
+            "code": "keypad_menu_without_a_catch_all",
+            "message": "step 'g' routes keypresses without asking the AI and has no menu line to read out again, so a digit you have not mapped reaches nothing — the call stays here in silence, with no reply and no retry. Write the menu into the step (an unmapped key repeats it), or add an 'Otherwise' exit."
+          },
+          {
+            "at": "e1",
+            "code": "vague_ai_condition",
+            "message": "\"yes\" is too short for the router to tell this exit apart from the others. Describe what the caller says or wants."
+          },
+          {
+            "at": "e2",
+            "code": "missing_braces",
+            "message": "'kind_of' has no braces, so this compares the literal text \"kind_of\"                                  rather than reading the variable — the condition's result never                                  changes. Write {kind_of}."
+          },
+          {
+            "at": "e4",
+            "code": "empty_string_compare",
+            "message": "\"{free} == ''\" is true both when the variable is empty and when it was never set at all, so this exit fires before anything has had a chance to fill it."
+          },
+          {
+            "at": "e6",
+            "code": "tool_result_without_a_tool",
+            "message": "this exit branches on whether a tool succeeded, but 'b' does not                              run one — and the result of an earlier step is cleared before this                              one is reached. The branch can never be taken. Move it onto the step                              that runs the tool, or branch on a variable instead."
+          },
+          {
+            "at": "c",
+            "code": "tied_priorities",
+            "message": "two or more RULE exits from this step share the same priority and could both match, so which one wins is not defined by the flow. Give them distinct priorities. (An Otherwise never ties with a rule — it only runs when no rule matched — and an ok/error pair can never both match.)"
+          },
+          {
+            "at": "a",
+            "code": "tied_priorities",
+            "message": "two or more RULE exits from this step share the same priority and could both match, so which one wins is not defined by the flow. Give them distinct priorities. (An Otherwise never ties with a rule — it only runs when no rule matched — and an ok/error pair can never both match.)"
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

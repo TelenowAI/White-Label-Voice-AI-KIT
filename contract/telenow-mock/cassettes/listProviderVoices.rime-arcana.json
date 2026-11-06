@@ -1,0 +1,168 @@
+{
+  "operationId": "listProviderVoices",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1) on the build server, throwaway database, with a sub-account's own key, a stand-in for Telenow's own text-to-speech engine (tts_stub_k12.py), no provider key, and every other outbound HTTP request sent to a dead local proxy (contract_k13settings.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/providers/tts/rime/voices",
+    "query": "model=arcana",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "gender": "female",
+          "id": "alfhild",
+          "language": "de",
+          "languages": [
+            "de"
+          ],
+          "model": "arcana",
+          "name": "Alfhild",
+          "tags": [
+            "German"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "alzira",
+          "language": "pt",
+          "languages": [
+            "pt"
+          ],
+          "model": "arcana",
+          "name": "Alzira",
+          "tags": [
+            "Brazilian"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "amarante",
+          "language": "fr",
+          "languages": [
+            "fr"
+          ],
+          "model": "arcana",
+          "name": "Amarante",
+          "tags": [
+            "Montreal"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "anaya",
+          "language": "hi",
+          "languages": [
+            "hi"
+          ],
+          "model": "arcana",
+          "name": "Anaya",
+          "tags": [
+            "India"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "aurelio",
+          "language": "es",
+          "languages": [
+            "es"
+          ],
+          "model": "arcana",
+          "name": "Aurelio",
+          "tags": [
+            "Heritage"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "aviva",
+          "language": "he",
+          "languages": [
+            "he"
+          ],
+          "model": "arcana",
+          "name": "Aviva",
+          "tags": [
+            "Israeli"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "albion",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "arcana",
+          "name": "Albion",
+          "tags": [
+            "English"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "arcade",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "arcana",
+          "name": "Arcade",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "female",
+          "id": "astra",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "arcana",
+          "name": "Astra",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "atrium",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "arcana",
+          "name": "Atrium",
+          "tags": [
+            "American"
+          ]
+        },
+        {
+          "gender": "male",
+          "id": "bond",
+          "language": "en",
+          "languages": [
+            "en"
+          ],
+          "model": "arcana",
+          "name": "Bond",
+          "tags": [
+            "American"
+          ]
+        }
+      ],
+      "hasMore": false,
+      "offered": true,
+      "origin": "curated",
+      "page": 0,
+      "source": "fallback",
+      "success": true,
+      "totalCount": 11
+    }
+  },
+  "serve": false
+}

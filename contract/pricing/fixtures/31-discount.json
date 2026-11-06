@@ -1,0 +1,47 @@
+{
+  "name": "A negative markup",
+  "why": "\u221210% gives a fee below Telenow's charge.",
+  "plan": "discount",
+  "usdRate": "84.25",
+  "priceLists": [
+    {
+      "id": "discount",
+      "currency": "INR",
+      "decimals": 2,
+      "rounding": "half-up",
+      "billingIncrementSeconds": 60,
+      "rules": [
+        {
+          "id": "fees",
+          "match": {
+            "item": "fee"
+          },
+          "price": {
+            "markupPercent": "-10"
+          }
+        }
+      ]
+    }
+  ],
+  "item": {
+    "fee": {
+      "ledger": "listLedger.number-fees",
+      "refKind": "rental"
+    }
+  },
+  "expect": {
+    "currency": "INR",
+    "usdRate": "84.25",
+    "lines": [
+      {
+        "subject": "fee:rental",
+        "rule": "discount/fees",
+        "method": "markupPercent",
+        "costUsd": "1.15",
+        "billedSeconds": null,
+        "amount": "87.20"
+      }
+    ],
+    "total": "87.20"
+  }
+}

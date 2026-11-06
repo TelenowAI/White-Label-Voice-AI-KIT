@@ -1,0 +1,18 @@
+{
+  "operationId": "restoreAgentVersion",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k5versions.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159/versions/9999/restore",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Version not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

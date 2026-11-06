@@ -1,0 +1,55 @@
+{
+  "operationId": "listLedger",
+  "recorded": "2026-10-30, Telenow 2446ecb's binary on the build server, throwaway database, with a sub-account's own key (contract_k1numbers.py); the carrier was a STAND-IN speaking Plivo's API (teleone_stub.py, TELEONE_API_BASE), so no number was bought anywhere; ids and keys mapped to the earlier recordings' placeholders; its call charge (ref_kind session, as Telenow writes a call's) was seeded, as contract_k0pricing.py seeds its rows",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/3e1cd17a-d25e-40c4-b0b0-0694f052f6da/billing/ledger",
+    "query": "updatedAfter=2026-10-30T13%3A49%3A02.000Z",
+    "apiKey": "vai_test_customer_acme",
+    "queryNames": [
+      "updatedAfter"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "amountUsd": "-0.0293950000",
+            "balanceAfterUsd": null,
+            "createdAt": "2026-10-30T13:50:03.406344Z",
+            "createdBy": "system",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "f82a277b-bf4f-4600-bdb7-5611f10b4c41",
+            "note": "Voice call",
+            "refId": "1b66f78b-d4ff-4cca-adb6-0395480ad17d",
+            "refKind": "session",
+            "sourceOrgId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da"
+          },
+          {
+            "amountUsd": "-5.2500000000",
+            "balanceAfterUsd": null,
+            "createdAt": "2026-10-30T13:50:03.567325Z",
+            "createdBy": "number-purchase-prepaid",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "b533a7b5-2187-406c-b88e-7495b4fa595a",
+            "note": "Number rental 918045671001 (from 2026-10-30)",
+            "refId": "03da86f7-7935-46eb-bd54-e0c1b8c6006b",
+            "refKind": "rental",
+            "sourceOrgId": "3e1cd17a-d25e-40c4-b0b0-0694f052f6da"
+          }
+        ],
+        "limit": 50,
+        "nextCursor": "2026-10-30T13:50:03.567325Z_b533a7b5-2187-406c-b88e-7495b4fa595a"
+      },
+      "success": true
+    }
+  }
+}

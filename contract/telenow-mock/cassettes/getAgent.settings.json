@@ -1,0 +1,179 @@
+{
+  "operationId": "getAgent",
+  "recorded": "2026-11-04, Telenow's 11-03 release binary (rall_g1, e209fee0) on the build server, throwaway database, with a sub-account's own key (contract_k1settings.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "created_at": "2026-11-03T19:22:32.450331Z",
+        "deleted_at": null,
+        "description": "Books appointments",
+        "fallback_config": null,
+        "id": "606ea9ac-1eb0-48bb-9d4f-f0897ae0f159",
+        "is_active": false,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "gpt-5.4-mini",
+        "llm_provider": "openai",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": true
+          },
+          "callerMemory": {
+            "enabled": true,
+            "ttlDays": 30
+          },
+          "gender": "female",
+          "kitId": "4ce77eb3-c931-4ac0-800d-4e33a23898b5",
+          "postCallAnalysis": {
+            "customFields": [
+              {
+                "description": "The date the caller booked.",
+                "key": "appointment_date",
+                "label": "Appointment date",
+                "type": "date"
+              }
+            ],
+            "enabled": true,
+            "minCustomerTurns": 2,
+            "minDurationSec": 20,
+            "qaCriteria": [
+              {
+                "description": "The agent greeted the caller.",
+                "key": "greeted"
+              }
+            ]
+          },
+          "tools": [
+            {
+              "description": "End the call when the caller has clearly finished — they say goodbye, tell you they are done, or you asked whether there is anything else and they said no. Then say your closing line and call this in that SAME turn — do not wait for them to reply to your goodbye. Never end on the caller's answer to any other question you asked, and never while something you offered or promised is still open. If unsure, ask \"Is there anything else I can help you with?\" instead.",
+              "kind": "end_call",
+              "name": "end_call"
+            },
+            {
+              "config": {
+                "destinations": [
+                  {
+                    "label": "Billing",
+                    "mode": "serial",
+                    "numbers": [
+                      "+15551234567",
+                      "+15551234568"
+                    ]
+                  },
+                  {
+                    "label": "Support",
+                    "mode": "parallel",
+                    "numbers": [
+                      "+15551230000"
+                    ]
+                  }
+                ],
+                "message": "Connecting you now.",
+                "noAnswerMessage": "Nobody picked up."
+              },
+              "description": "Transfer the caller to a human agent when they ask for a person or you cannot help with their request.",
+              "kind": "transfer",
+              "name": "transfer_to_human"
+            }
+          ],
+          "voicemailMessage": "Please call us back."
+        },
+        "name": "Front desk (evenings)",
+        "org_id": "f5b2ecfe-1a21-4c72-83e2-03ced560e865",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {
+          "backchannel": {
+            "enabled": true
+          },
+          "backgroundSound": {
+            "enabled": true,
+            "preset": "call_center",
+            "volume": 0.3
+          },
+          "bargeInSensitivity": 0.15,
+          "behavior": {
+            "aiDisclosureWhenAsked": false,
+            "echoVerification": true,
+            "highEmpathy": true,
+            "natoPhonetic": true,
+            "naturalFillers": true,
+            "scopeBoundaries": true,
+            "smartMatching": true,
+            "speechNormalization": true,
+            "tone": "professional_conversational"
+          },
+          "contextMode": "window",
+          "contextWindow": 25,
+          "directedSpeechGate": true,
+          "fillers": {
+            "enabled": true
+          },
+          "keypadInput": {
+            "digitLimit": 8,
+            "enabled": true,
+            "terminationKey": "#",
+            "timeoutMs": 3000
+          },
+          "maxDuration": 300,
+          "maxDurationMessage": "We are out of time, goodbye.",
+          "optOut": false,
+          "personaGender": "female",
+          "rememberInterruptions": true,
+          "ringSound": {
+            "inbound": true,
+            "outbound": false,
+            "secs": 6
+          },
+          "silenceCheckin": {
+            "enabled": true,
+            "message": "Are you still there?",
+            "secs": 12
+          },
+          "silenceHangupMessage": "It seems you stepped away.",
+          "silenceHangupSecs": 15
+        },
+        "stt_config": null,
+        "stt_provider": "deepgram",
+        "system_prompt": "You are the evening front desk.",
+        "tags": null,
+        "telephony_config": {
+          "agentMsg": "Hi, thanks for calling Acme Dental.",
+          "agentMsgOutbound": "Hi, this is Acme Dental.",
+          "callScreen": {
+            "enabled": true,
+            "message": "Who is calling, please?"
+          },
+          "fastOpener": true,
+          "firstResponse": "agent",
+          "firstResponseOutbound": "agent",
+          "greetingDelaySecs": 2,
+          "ignoreSpeechBeforeGreeting": true,
+          "ivrHangup": {
+            "enabled": true
+          },
+          "recording": true,
+          "ringDurationSecs": 45
+        },
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "openai",
+        "tts_voice": "alloy",
+        "updated_at": "2026-11-03T19:22:32.539747Z",
+        "user_id": "e132cf27-f25b-42de-ae46-4f9df22700b1"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}
