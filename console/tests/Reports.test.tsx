@@ -3,17 +3,19 @@
  * fake backend: the operator's voice-platform account in our words (a value we have no words for shows as it is),
  * paused with its reason and a link to its Billing page; the period's money, customers and calls; what needs a look,
  * each linking to where it is handled, or that nothing does; another period asked for, and a refused one shown by its
- * field; the cost report grouped as picked, its customers linking to their page, the totals, and its pages; the admin
+ * field; a date typed the moment the period shows is kept (it was lost on a slow CI runner); the cost report grouped as picked, its customers linking to their page, the totals, and its pages; the admin
  * panel opens on the dashboard.
  */
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import type { ReactElement } from "react";
+import { createRoot } from "react-dom/client";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AdminDashboard, CostReport } from "../src/api";
 import { AdminArea } from "../src/admin/AdminArea";
 import { CostsPage } from "../src/admin/CostsPage";
 import { DashboardPage } from "../src/admin/DashboardPage";
+import { PeriodPicker } from "../src/admin/PeriodPicker";
 import { fakeKit } from "./fakeKit";
 
 afterEach(() => {
@@ -139,6 +141,36 @@ describe("Admin → Dashboard", () => {
       "/api/kit/admin/dashboard?from=2026-10-05&to=2026-10-06",
       "/api/kit/admin/dashboard?from=2026-10-06&to=2026-10-05",
     ]);
+  });
+
+  it("keeps a date typed as soon as the period shows, before React's after-render work has run", async () => {
+    // Outside act, as on a slow machine: the picker is on the page but what React runs after showing it has not run yet.
+    const was = (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT;
+    (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = false;
+    const host = document.body.appendChild(document.createElement("div"));
+    const root = createRoot(host);
+    try {
+      const shown = new Promise<void>((resolve) => {
+        const seen = new MutationObserver(() => {
+          if (host.querySelector("#period-from")) {
+            seen.disconnect();
+            resolve();
+          }
+        });
+        seen.observe(host, { childList: true, subtree: true });
+      });
+      root.render(<PeriodPicker period={{ from: "2026-10-01", to: "2026-10-31" }} errors={{}} onPick={() => {}} />);
+      await shown;
+      fireEvent.change(host.querySelector("#period-from")!, { target: { value: "2026-10-05" } });
+      fireEvent.change(host.querySelector("#period-to")!, { target: { value: "2026-10-06" } });
+      await new Promise((settled) => setTimeout(settled, 50));
+      const field = (id: string) => (host.querySelector(id) as HTMLInputElement).value;
+      expect([field("#period-from"), field("#period-to")]).toEqual(["2026-10-05", "2026-10-06"]);
+    } finally {
+      root.unmount();
+      host.remove();
+      (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = was;
+    }
   });
 
   it("is where the admin panel opens", async () => {
