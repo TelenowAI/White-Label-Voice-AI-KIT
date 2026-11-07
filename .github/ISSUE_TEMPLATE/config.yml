@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/TelenowAI/White-Label-Voice-AI-KIT/security/advisories/new
+    about: Privately, never in a public issue.
+  - name: Telenow's platform and API
+    url: https://telenow.ai
+    about: Questions about Telenow itself, its voices, numbers or prices.

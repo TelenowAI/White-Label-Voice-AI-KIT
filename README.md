@@ -1,7 +1,9 @@
 # White-Label Voice AI Kit — launch your own AI voice agent platform
 
+[![CI](https://github.com/TelenowAI/White-Label-Voice-AI-KIT/actions/workflows/ci.yml/badge.svg)](https://github.com/TelenowAI/White-Label-Voice-AI-KIT/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/TelenowAI/White-Label-Voice-AI-KIT)](https://github.com/TelenowAI/White-Label-Voice-AI-KIT/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777bb4)
+![PHP 8.4+](https://img.shields.io/badge/PHP-8.4%2B-777bb4)
 ![Laravel 13](https://img.shields.io/badge/Laravel-13-ff2d20)
 ![React 19](https://img.shields.io/badge/React-19-61dafb)
 ![Databases](https://img.shields.io/badge/DB-MySQL%20%7C%20MariaDB%20%7C%20PostgreSQL%20%7C%20SQLite-4479a1)
@@ -15,13 +17,25 @@ speech-to-text, text-to-speech, language models and telephony — and every one 
 It is built for **agencies, resellers, SaaS founders, BPOs and telecom operators** who want to sell AI calling, AI
 receptionists and voice automation under their own name, without building a voice AI stack from scratch.
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [How it works](#how-it-works)
 - [Install](#install)
 - [Development](#development)
 - [Repository layout](#repository-layout)
+- [Contributing and security](#contributing-and-security)
 - [FAQ](#faq)
-- [Build notes](docs/BUILD_NOTES.md)
+- [Changelog](CHANGELOG.md) · [Build notes](docs/BUILD_NOTES.md)
+
+## Screenshots
+
+| Your website, under your brand | Your customers' console: their AI agents |
+|---|---|
+| ![The operator's public website with its own brand, features and sign-up](docs/screenshots/website.png) | ![The customer console's agent list: each agent, whether it takes calls, and whether it is saved](docs/screenshots/console-agents.png) |
+| **Every call: transcript and analysis** | **Your admin dashboard** |
+| ![A call's page: agent, duration, outcome, numbers, transcript and the call's analysis](docs/screenshots/console-call.png) | ![The admin dashboard: the voice platform account, top-ups and customers](docs/screenshots/admin-dashboard.png) |
+
+Shown with demo data: a brand called Acme Voice and a customer called Clinic Co.
 
 ## Features
 
@@ -99,10 +113,12 @@ flowchart LR
 
 ## Install
 
-You need **PHP 8.3+**, a database (**MySQL 8, MariaDB 10.11, PostgreSQL 16 or SQLite**), HTTPS, a cron job, and a
+You need **PHP 8.4.1+**, a database (**MySQL 8, MariaDB 10.11, PostgreSQL 16 or SQLite**), HTTPS, a cron job, and a
 **Telenow API key**. It runs on ordinary shared hosting (Apache or LiteSpeed) as well as a VPS.
 
-1. Build the release zip (`pnpm release`), upload and unzip it on your server, and point your domain at it.
+1. Download the release zip from [Releases](https://github.com/TelenowAI/White-Label-Voice-AI-KIT/releases/latest)
+   (or build it yourself with `pnpm release`), check it against its `.sha256`, upload and unzip it on your server, and
+   point your domain at it.
 2. Open the site: the **setup wizard** takes you through the database, your account, your Telenow key, your brand,
    email, sign-ups and payments.
 3. Add one cron line, every minute: `php artisan schedule:run`.
@@ -111,7 +127,8 @@ Step by step, including shared hosting and updating: [laravel/INSTALL.md](larave
 
 ## Development
 
-Node 22 with pnpm, and PHP 8.3+ with Composer.
+Node 22 with pnpm, and PHP 8.4.1+ with Composer. [CONTRIBUTING.md](CONTRIBUTING.md) has the full setup and every
+check CI runs.
 
 ```bash
 pnpm install
@@ -161,7 +178,8 @@ To see the emails a test kit sends, run the tests' SMTP catcher and add it in Ad
 php laravel/tests/Support/smtp_sink.php /tmp/kit-smtp-port /tmp/kit-smtp-messages 2525
 ```
 
-The test suite runs on all four databases: MySQL 8.0, MariaDB 10.11, PostgreSQL 16 and SQLite.
+The test suite runs on all four databases: MySQL 8.0, MariaDB 10.11, PostgreSQL 16 and SQLite. CI runs it on each of them
+for every pull request, builds the release zip, and publishes it as a GitHub release when a version is tagged.
 
 ## Repository layout
 
@@ -172,6 +190,12 @@ The test suite runs on all four databases: MySQL 8.0, MariaDB 10.11, PostgreSQL 
 | `contract/` | The kit API document (`kit-api.yaml`), the resource manifest, the pricing engine spec, Telenow's released API document, the recorded Telenow answers and the contract tests. |
 | `scripts/` | The release zip (`release.mjs`) and what makes a release good (`check-release.mjs`). |
 | `docs/` | [Build notes](docs/BUILD_NOTES.md): how each feature was built and proven, and what was left out and why. |
+
+## Contributing and security
+
+Bug reports, fixes and features are welcome: [CONTRIBUTING.md](CONTRIBUTING.md) has the setup, the checks and the rules a
+change keeps, and everyone follows the [code of conduct](CODE_OF_CONDUCT.md). Report a security problem privately, never
+in a public issue: see [SECURITY.md](SECURITY.md). What changed in each release is in [CHANGELOG.md](CHANGELOG.md).
 
 ## FAQ
 

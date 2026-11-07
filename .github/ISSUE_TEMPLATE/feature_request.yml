@@ -1,0 +1,20 @@
+name: Feature request
+description: Something the kit should do that it does not yet.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you need
+      description: The problem, and who has it (you as the operator, your customers, your staff).
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How it could work
+      description: What you would see or do. If Telenow already has it, link the part of Telenow's API it uses.
+  - type: textarea
+    id: today
+    attributes:
+      label: What you do today instead

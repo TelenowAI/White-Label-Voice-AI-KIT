@@ -1,7 +1,8 @@
 # Installing
 
-1. **Check the server.** PHP as `composer.json` asks (`require.php`), a database (MySQL or MariaDB, PostgreSQL or
-   SQLite), HTTPS. The setup wizard's first step checks the PHP extensions and folders it needs.
+1. **Check the server.** PHP 8.4.1 or later (the release's packages refuse anything older, before any page loads), a
+   database (MySQL or MariaDB, PostgreSQL or SQLite), HTTPS. The setup wizard's first step checks the PHP extensions and
+   folders it needs.
 2. **Upload and unzip** this folder, then point the site at it, one of two ways:
    - **The site's folder is `public/`** (the safest): point the domain's document root at this folder's `public/`.
    - **The site's folder must be `public_html`** (shared hosting): put this folder's contents (not the folder itself)

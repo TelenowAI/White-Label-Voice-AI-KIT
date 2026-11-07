@@ -1,0 +1,66 @@
+name: Bug report
+description: Something in the kit does not work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. A security problem goes in a private report instead (Security → Report a vulnerability), never here.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen again
+      placeholder: |
+        1. Sign in to the console as a customer
+        2. Open Agents → …
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The release you installed, or `laravel/VERSION` and the commit if you run it from source.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - Setup wizard
+        - Customer console
+        - Admin panel
+        - Public website
+        - Scheduled jobs (cron)
+        - Payments
+        - Release zip / installing / updating
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: Server
+      description: PHP version, database and version, web server, and shared hosting or a VPS.
+      placeholder: PHP 8.4.14, MySQL 8.0, LiteSpeed, shared hosting
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or errors
+      description: From `storage/logs/laravel.log`, the browser console, or Admin → Platform health.
+      render: text
+  - type: checkboxes
+    id: private
+    attributes:
+      label: Private data
+      options:
+        - label: I removed API keys, passwords, payment details and customers' data from everything above.
+          required: true
