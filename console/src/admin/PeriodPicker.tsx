@@ -4,7 +4,7 @@
  *
  * Used by DashboardPage.tsx and CostsPage.tsx.
  */
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { ReportPeriod } from "../api";
 import { t } from "../text";
 
@@ -12,10 +12,14 @@ export function PeriodPicker({ period, errors, onPick }: { period: ReportPeriod;
   const [from, setFrom] = useState(period.from);
   const [to, setTo] = useState(period.to);
 
-  useEffect(() => {
+  // A period the backend answers anew replaces what is typed, here while rendering: an effect would also run once
+  // after the picker first shows, and undo a date typed before it ran.
+  const [answered, setAnswered] = useState(period);
+  if (answered.from !== period.from || answered.to !== period.to) {
+    setAnswered(period);
     setFrom(period.from);
     setTo(period.to);
-  }, [period.from, period.to]);
+  }
 
   function submit(e: FormEvent) {
     e.preventDefault();
