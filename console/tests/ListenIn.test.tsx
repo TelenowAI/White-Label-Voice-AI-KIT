@@ -201,7 +201,7 @@ describe("listening in", () => {
     const call: CallDetail = {
       id: "c1", agent: { id: "a1", name: "Front desk" }, placedBy: null, requestedBy: { name: "Ben", me: false }, wrapup: null, status: "active", outcome: null, direction: "inbound", channel: "telephony", from: "+14155550123",
       to: "+918045671001", startedAt: "2026-11-04T10:00:00Z", endedAt: null, durationSec: null, complete: false, charge: null, canListen: true,
-      listens: [{ by: "Ana", at: "2026-11-04T10:02:00Z" }, { by: null, at: "2026-11-04T10:01:00Z" }], answeredBy: null, transcript: [], recordings: [], analysis: null,
+      listens: [{ by: "Ana", at: "2026-11-04T10:02:00Z" }, { by: null, at: "2026-11-04T10:01:00Z" }], canTellAgent: false, agentNotes: [], answeredBy: null, transcript: [], recordings: [], analysis: null,
     };
     fakeKit({ ...signedIn, "GET /api/kit/console/calls/c1": call, "GET /api/kit/console/calls/c1/work": { wrapup: null, notes: [], followUps: [], suggestions: [], limits: { noteMaxLength: 2000, wrapupMaxLength: 64, followUpMaxLength: 500 } } });
     open("/console/calls/c1");

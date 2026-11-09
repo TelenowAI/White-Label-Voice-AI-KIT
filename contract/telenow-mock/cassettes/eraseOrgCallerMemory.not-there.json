@@ -1,0 +1,20 @@
+{
+  "operationId": "eraseOrgCallerMemory",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the memory rows were SEEDED into its caller_memory table (Telenow writes them with its own model after a call, which no throwaway release can run): the shapes are Telenow's, the contents ours (contract_k17memory.py)",
+  "request": {
+    "method": "DELETE",
+    "path": "/api/orgs/fe94c9cc-8ddc-51b7-89e0-17bd6af2029e/memory",
+    "query": "caller=14155550100",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "removed": false
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

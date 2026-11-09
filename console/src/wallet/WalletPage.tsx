@@ -2,8 +2,9 @@
  * Console → Wallet (`/console/wallet`; contract/kit-api.yaml getWallet): the account's balance and its entries,
  * newest first — each credit and top-up, the charge of each call (linked to the call) and number fee, and a payment
  * refunded or disputed — with adding credit above them, and, once charging is on, when the low-balance email comes.
+ * A link under the balance leads to the account's invoices and billing details.
  *
- * Not here: topping up (AddCredit.tsx), choosing the low-balance email (WalletAlert.tsx).
+ * Not here: topping up (AddCredit.tsx), choosing the low-balance email (WalletAlert.tsx), the invoices (invoices/InvoicesPage.tsx).
  */
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -45,6 +46,9 @@ export function WalletPage() {
         <>
           <p className="balance">
             <span className="muted">{t("balance")}</span> <strong data-testid="balance">{money(data.balance, data.currency)}</strong>
+          </p>
+          <p>
+            <Link to="/console/invoices">{t("walletInvoicesLink")}</Link>
           </p>
           {!data.inForce && <p className="muted">{t("walletNotInForce")}</p>}
           <AddCredit onPaid={() => void load(page)} />

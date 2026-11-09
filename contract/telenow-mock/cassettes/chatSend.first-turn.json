@@ -1,0 +1,20 @@
+{
+  "operationId": "chatSend",
+  "recorded": "2026-11-07, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key, a stand-in language model behind telenow_onprem (llm_stub_k15.py), speech providers with placeholder keys, and every other outbound HTTP request sent to a dead local proxy (contract_k15chat.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/chat",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "identifier": "kit-visitor-1",
+      "reply": "Thanks for your message. You said: Hello, are you open on Saturday?",
+      "sessionId": "cd59dbbd-b19e-5940-8eb3-b1fa23d56392",
+      "turn": 1
+    }
+  },
+  "serve": false
+}

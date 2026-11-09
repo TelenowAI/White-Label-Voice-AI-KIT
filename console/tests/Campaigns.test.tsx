@@ -26,7 +26,7 @@ const home: ConsoleHome = { workspace: { id: "w1", name: "Acme Dental", status: 
 const one: WorkspaceList = { workspaces: [{ id: "w1", name: "Acme Dental", role: "member", current: true }] };
 const limits: CampaignLimits = {
   nameMaxLength: 120, concurrency: { default: 2, max: 50 }, maxAttempts: { default: 3, max: 10 }, retryGapMinutes: { default: 5, min: 1, max: 60 }, machineDetection: ["voicemail", "off", "beep-wait"],
-  phoneColumns: ["phone_number", "mobile"], importMaxBytes: 1024 * 1024, importMaxRows: 500,
+  phoneColumns: ["phone_number", "mobile"], importMaxBytes: 1024 * 1024, importMaxRows: 500, linksAllowed: false, linkEveryMinutes: 15,
 };
 const signedIn = { "GET /api/kit/session": { user: ana }, "GET /api/kit/console/home": home, "GET /api/kit/console/workspaces": one };
 const none = { waiting: 0, answered: 0, unanswered: 0, failed: 0 };
@@ -34,13 +34,13 @@ const six = { waiting: 1, answered: 2, unanswered: 2, failed: 1 };
 const stack = { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null };
 
 function agent(id: string, name: string): Agent {
-  return { id, name, description: null, systemPrompt: null, isActive: true, stack, stackNames: stack, settings: agentSettings, stackCheck: null, knowledgeBases: [], syncState: "synced",
+  return { id, name, description: null, systemPrompt: null, isActive: true, stack, stackNames: stack, settings: agentSettings, stackCheck: null, knowledgeBases: [], logoUrl: null, syncState: "synced",
     syncError: null, createdAt: "2026-10-30T14:00:00Z", updatedAt: "2026-10-30T14:00:00Z" };
 }
 
 function number(id: string, value: string, releasing = false): PhoneNumber {
   return { id, number: value, country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing,
-    syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" };
+    routed: false, agentCallerId: false, unanswered: "message", syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" };
 }
 
 function campaign(over: Partial<Campaign> & { id: string }): Campaign {
@@ -48,7 +48,7 @@ function campaign(over: Partial<Campaign> & { id: string }): Campaign {
     name: "October reminders", agent: { id: "a1", name: "Front desk" }, callerId: { id: "n1", number: "+14155550100" },
     settings: { concurrency: 2, windowStart: "09:00", windowEnd: "18:00", timezone: "Asia/Kolkata", machineDetection: "voicemail", maxAttempts: 2, retryGapMinutes: 5, retryOnNoAnswer: true },
     status: "draft", waiting: null, counts: { people: 0, answered: 0, notReached: 0 }, pushed: { added: 0, duplicates: 0, suppressed: 0, skipped: 0 },
-    syncState: "synced", syncError: null, startedAt: null, completedAt: null, createdAt: "2026-10-30T14:00:00Z", ...over,
+    syncState: "synced", syncError: null, source: null, startedAt: null, completedAt: null, createdAt: "2026-10-30T14:00:00Z", ...over,
   };
 }
 

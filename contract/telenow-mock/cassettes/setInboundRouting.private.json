@@ -1,0 +1,18 @@
+{
+  "operationId": "setInboundRouting",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; the endpoints routing points at are public pages that are not the kit (example.com, postman-echo.com) (contract_k26routing.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/orgs/44c23e3e-30f8-502b-9563-b21848107464/inbound-routing",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "url rejected: URL host `10.1.2.3` resolves to a disallowed address (10.1.2.3) — cloud-metadata, loopback, link-local, and private ranges are blocked",
+      "success": false
+    }
+  },
+  "serve": false
+}

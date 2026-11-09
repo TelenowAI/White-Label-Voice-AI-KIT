@@ -1,0 +1,42 @@
+<?php
+
+// Call routing (App\Kit\Routing): an account's rules for who takes a call to a routed number. Customers read these.
+return [
+    'not_found' => 'That rule was not found.',
+    'managers_only' => 'Only the account\'s managers can change call routing.',
+    'too_many_rules' => 'An account can have up to :max rules.',
+    'order_whole' => 'List every rule once, in the order you want.',
+    'unknown_number' => 'Choose your own numbers.',
+    'unknown_agent' => 'Choose one of your saved agents.',
+    'phone_shape' => 'Write each number with + and its country code, like +14155550123.',
+    'start_shape' => 'Write each start with + and digits, like +44 or +1415.',
+    'language_shape' => 'Write a language code, like en-US or hi-IN.',
+    'window_both' => 'Give both the start and the end of the hours, or neither.',
+    'window_empty' => 'The hours end when they start: choose a different end.',
+    'timezone_needed' => 'Choose the timezone the days and hours are in.',
+    'address_not_public' => 'The voice platform cannot reach this server: call routing needs this server at a public https address.',
+    'platform_unreachable' => 'The voice platform could not be reached just now. Try again in a moment.',
+    'account_not_ready' => 'This account is still being set up. Try again in a moment.',
+    'number_not_routed' => 'Calls to that number are not routed yet.',
+    'not_signed' => 'Not signed.',
+    // What a rule's fields are called in the framework's own messages.
+    'fields' => [
+        'name' => 'name',
+        'numberIds' => 'numbers',
+        'numberIds.*' => 'number',
+        'forwardedFrom' => 'forwarded-from lines',
+        'forwardedFrom.*' => 'forwarded-from line',
+        'callerStartsWith' => 'caller starts',
+        'callerStartsWith.*' => 'caller start',
+        'days' => 'days',
+        'days.*' => 'day',
+        'from' => 'start of the hours',
+        'until' => 'end of the hours',
+        'timezone' => 'timezone',
+        'action' => 'what the rule does',
+        'agentId' => 'agent',
+        'language' => 'language',
+        'greeting' => 'greeting',
+        'maxMinutes' => 'longest call in minutes',
+    ],
+];

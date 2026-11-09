@@ -1,0 +1,18 @@
+{
+  "operationId": "setNumberPool",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; the endpoints routing points at are public pages that are not the kit (example.com, postman-echo.com) (contract_k26routing.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/voice/numbers/7f1f0878-a37f-5917-9aa4-7f3f1c1592c5/pool",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "assign this number to an agent first — a pool number's agent is the fallback every call lands on when the routing endpoint does not answer",
+      "success": false
+    }
+  },
+  "serve": false
+}

@@ -1,0 +1,110 @@
+{
+  "operationId": "listInvoices",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the account made postpaid and its invoices written by SQL on that database as Telenow's monthly billing run writes them, and its balance emptied by SQL for the stopped case (contract_k29billing.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/9ea0c695-16dc-5814-b6e1-cf1b3eb6381f/billing/invoices",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "invoice": {
+            "createdAt": "2026-11-08T18:27:27.709568Z",
+            "currency": "INR",
+            "dueAt": null,
+            "fxRate": "83.0000000000",
+            "id": "07daa1ec-75b0-53d2-bf4d-3a79f3de7d60",
+            "issuedAt": null,
+            "orgId": "9ea0c695-16dc-5814-b6e1-cf1b3eb6381f",
+            "paidAt": null,
+            "periodEnd": "2026-11-30",
+            "periodStart": "2026-11-01",
+            "status": "draft",
+            "totalBilled": "249.00",
+            "totalUsd": "3.0000000000"
+          },
+          "lines": []
+        },
+        {
+          "invoice": {
+            "createdAt": "2026-11-08T18:27:27.705875Z",
+            "currency": "INR",
+            "dueAt": "2026-11-10T18:27:27.705875Z",
+            "fxRate": "83.0000000000",
+            "id": "43df51fa-a96c-57a2-89bc-40493d286b91",
+            "issuedAt": "2026-11-03T18:27:27.705875Z",
+            "orgId": "9ea0c695-16dc-5814-b6e1-cf1b3eb6381f",
+            "paidAt": null,
+            "periodEnd": "2026-10-31",
+            "periodStart": "2026-10-01",
+            "status": "issued",
+            "totalBilled": "1469.10",
+            "totalUsd": "17.7000000000"
+          },
+          "lines": [
+            {
+              "amountBilled": "83.00",
+              "amountUsd": "1.0000000000",
+              "description": "Chat sessions",
+              "invoiceId": "43df51fa-a96c-57a2-89bc-40493d286b91",
+              "lineKind": "chat",
+              "qty": null,
+              "unit": null
+            },
+            {
+              "amountBilled": "186.75",
+              "amountUsd": "2.2500000000",
+              "description": "Platform fee",
+              "invoiceId": "43df51fa-a96c-57a2-89bc-40493d286b91",
+              "lineKind": "platform_fee",
+              "qty": null,
+              "unit": null
+            },
+            {
+              "amountBilled": "435.75",
+              "amountUsd": "5.2500000000",
+              "description": "Phone number rentals",
+              "invoiceId": "43df51fa-a96c-57a2-89bc-40493d286b91",
+              "lineKind": "number_rental",
+              "qty": null,
+              "unit": null
+            },
+            {
+              "amountBilled": "539.50",
+              "amountUsd": "6.5000000000",
+              "description": "AI agent calls",
+              "invoiceId": "43df51fa-a96c-57a2-89bc-40493d286b91",
+              "lineKind": "agent_calls",
+              "qty": null,
+              "unit": null
+            }
+          ]
+        },
+        {
+          "invoice": {
+            "createdAt": "2026-10-04T18:27:27.691691Z",
+            "currency": "INR",
+            "dueAt": "2026-10-11T18:27:27.691691Z",
+            "fxRate": "83.0000000000",
+            "id": "c5bbcf1d-1759-5cd4-9456-fb2cfececd06",
+            "issuedAt": "2026-10-04T18:27:27.691691Z",
+            "orgId": "9ea0c695-16dc-5814-b6e1-cf1b3eb6381f",
+            "paidAt": "2026-10-09T18:27:27.693882Z",
+            "periodEnd": "2026-09-30",
+            "periodStart": "2026-09-01",
+            "status": "paid",
+            "totalBilled": "979.40",
+            "totalUsd": "11.8000000000"
+          },
+          "lines": []
+        }
+      ],
+      "success": true
+    }
+  },
+  "serve": false
+}

@@ -1,0 +1,69 @@
+{
+  "operationId": "getBillingSummary",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the account made postpaid and its invoices written by SQL on that database as Telenow's monthly billing run writes them, and its balance emptied by SQL for the stopped case (contract_k29billing.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/eb574dcc-8ef9-5250-8be6-e789b4833261/billing/summary",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "account": {
+          "balanceUsd": "0",
+          "browserConcurrency": null,
+          "chatFeeMode": null,
+          "chatTurnBlockTurns": null,
+          "chatTurnBlockUsd": null,
+          "feePerMinUsdOverride": null,
+          "feePercentOverride": null,
+          "mode": "postpaid",
+          "monthlySpendLimitUsd": null,
+          "orgId": "eb574dcc-8ef9-5250-8be6-e789b4833261",
+          "softphoneFeePerMinUsdOverride": null,
+          "suspended": false,
+          "telephonyConcurrencyPerNumber": null
+        },
+        "billedToParent": true,
+        "breakdown": {
+          "adjustmentUsd": "0",
+          "agentCallsUsd": "0",
+          "appAi": [],
+          "calls": 0,
+          "chatUsd": "0",
+          "fdeRechargeUsd": "0",
+          "manualUsd": "0",
+          "platformAiUsd": "0",
+          "platformFeeUsd": "0",
+          "postCallAnalysisUsd": "0",
+          "rentalUsd": "0",
+          "setupUsd": "0",
+          "simulationUsd": "0",
+          "totalUsd": "0"
+        },
+        "concurrencyLimits": {
+          "browser": 50,
+          "telephonyPerNumber": 2
+        },
+        "creditRateInr": null,
+        "dues": null,
+        "gateway": {
+          "razorpayKeyId": null
+        },
+        "numberCreditsUsd": null,
+        "payableNative": null,
+        "payableUsd": "0",
+        "perDay": [],
+        "periodStart": "2026-10-31T18:30:00Z",
+        "spendState": null,
+        "walletCurrency": null,
+        "walletNative": null,
+        "walletRate": null
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

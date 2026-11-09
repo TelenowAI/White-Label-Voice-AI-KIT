@@ -189,8 +189,8 @@ class NumbersTest extends TestCase
         $number = PhoneNumber::query()->sole();
         $telenow = self::telenowNumber();
         $made->assertExactJson([
-            'id' => $number->id, 'number' => '+918045671001', 'country' => 'India', 'region' => 'Karnataka', 'type' => 'local', 'agent' => null,
-            'monthlyPrice' => ['amount' => '522.90', 'currency' => 'INR'], 'nextRenewalAt' => Carbon::parse($telenow['next_renewal_at'])->toIso8601String(),
+            'id' => $number->id, 'number' => '+918045671001', 'country' => 'India', 'region' => 'Karnataka', 'type' => 'local', 'agent' => null, 'routed' => false,
+            'agentCallerId' => false, 'unanswered' => 'message', 'monthlyPrice' => ['amount' => '522.90', 'currency' => 'INR'], 'nextRenewalAt' => Carbon::parse($telenow['next_renewal_at'])->toIso8601String(),
             'releasing' => false, 'syncState' => 'synced', 'syncError' => null, 'createdAt' => $number->created_at->toIso8601String(),
         ]);
         [$search] = $this->sent('GET', self::V.'/search');
@@ -201,6 +201,7 @@ class NumbersTest extends TestCase
         $this->assertEquals(['number' => '918045671001', 'provider' => 'teleone', 'extras' => ['monthlyRent' => '499.00000', 'setupPrice' => '0.00000']],
             json_decode($purchase->body(), true), "never the browser's provider or prices");
         $this->assertSame([$telenow['id'], $telenow['updated_at']], [$number->telenow_id, $number->telenow_updated_at]);
+        $this->assertSame('5.25', $number->rent_usd, "its rent in USD, as the listing gave it (for renewal warnings; never shown)");
         $this->assertNull($this->acme->fresh()->numbers_synced_at, 'its fees: on the next feed run');
         $this->actingAs($this->ana)->getJson('/api/kit/console/numbers')->assertOk()->assertJsonPath('numbers.0.id', $number->id)->assertJsonCount(1, 'numbers');
     }

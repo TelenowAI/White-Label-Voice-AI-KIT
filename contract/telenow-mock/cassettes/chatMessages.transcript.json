@@ -1,0 +1,69 @@
+{
+  "operationId": "chatMessages",
+  "recorded": "2026-11-07, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key, a stand-in language model behind telenow_onprem (llm_stub_k15.py), speech providers with placeholder keys, and every other outbound HTTP request sent to a dead local proxy (contract_k15chat.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/chat/cd59dbbd-b19e-5940-8eb3-b1fa23d56392/messages",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "messages": [
+        {
+          "content": "Hello, are you open on Saturday?",
+          "createdAt": "2026-11-07T20:11:54.615834Z",
+          "role": "user"
+        },
+        {
+          "content": "Thanks for your message. You said: Hello, are you open on Saturday?",
+          "createdAt": "2026-11-07T20:11:54.635542Z",
+          "role": "assistant"
+        },
+        {
+          "content": "Thanks, and on Sunday?",
+          "createdAt": "2026-11-07T20:11:54.650318Z",
+          "role": "user"
+        },
+        {
+          "content": "Thanks for your message. You said: Thanks, and on Sunday?",
+          "createdAt": "2026-11-07T20:11:54.665564Z",
+          "role": "assistant"
+        },
+        {
+          "content": "One more",
+          "createdAt": "2026-11-07T20:11:54.688652Z",
+          "role": "user"
+        },
+        {
+          "content": "Thanks for your message. You said: One more",
+          "createdAt": "2026-11-07T20:11:54.703804Z",
+          "role": "assistant"
+        },
+        {
+          "content": "Please fail this one",
+          "createdAt": "2026-11-07T20:11:54.714853Z",
+          "role": "user"
+        },
+        {
+          "content": "I'm sorry, I ran into an issue. Could you try again?",
+          "createdAt": "2026-11-07T20:11:54.727660Z",
+          "role": "assistant"
+        },
+        {
+          "content": "Please answer slowly",
+          "createdAt": "2026-11-07T20:11:54.740022Z",
+          "role": "user"
+        },
+        {
+          "content": "Thanks for your message. You said: Please answer slowly",
+          "createdAt": "2026-11-07T20:11:58.758449Z",
+          "role": "assistant"
+        }
+      ],
+      "sessionId": "cd59dbbd-b19e-5940-8eb3-b1fa23d56392"
+    }
+  },
+  "serve": false
+}

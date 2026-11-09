@@ -169,6 +169,26 @@ final class TelenowClient
         return (int) ($this->send('GET', $key, '/api/agents/'.rawurlencode($agentId).'/versions')['data']['versions'][0]['version'] ?? 0);
     }
 
+    /**
+     * POST /api/agents/prompt/validate (`validatePrompt`): a prompt (and a greeting) checked as Telenow checks one on a save and on a call — its
+     * conditional sections' structure (`errors`: a save refuses them) and the lint (`warnings`) — and, given `values`, the prompt as a call with them
+     * would get it (`rendered`, `decisions`). `data` of the answer. Calls no model.
+     */
+    public function validatePrompt(string $key, array $body): array
+    {
+        return $this->send('POST', $key, '/api/agents/prompt/validate', $body)['data'] ?? [];
+    }
+
+    /**
+     * GET /api/agents/provider-health (`getProviderHealth`): the speech, voice and language model failures on the key's own account's calls in the
+     * last `minutes` (1 to 1440), grouped by part, provider, key and cause, `data` of the answer. An operator's key reads its own account only
+     * (recorded: a sub-account's failures are not in it).
+     */
+    public function providerHealth(string $key, int $minutes): array
+    {
+        return $this->send('GET', $key, '/api/agents/provider-health?'.http_build_query(['minutes' => $minutes]))['data'] ?? [];
+    }
+
     /** POST /api/agents/flow/validate (`validateFlow`): a graph checked as a call would read it. Telenow stores any graph, and discards a bad one on every call. */
     public function validateFlow(string $key, array $flow, array $variables): array
     {
@@ -226,10 +246,60 @@ final class TelenowClient
         $this->send('DELETE', $key, '/api/sessions/'.rawurlencode($sessionId));
     }
 
+    /**
+     * POST /api/v1/chat (`chatSend`): one visitor message to an agent, and its reply (recorded, contract_k15chat.py): `{sessionId, reply, turn,
+     * identifier}`, flat. The first, with no `sessionId`, starts the conversation; `identifier` names the visitor and binds the session to them.
+     * A model that fails still answers 200, with an apology as the reply. Refused: 400 an agent not taking calls or an empty message, 403 another
+     * visitor's session or a suspended account, 404 an agent or session not there, 409 while a turn is answered, 410 once the session has ended
+     * (suspending the account ends it), 429 at the account's calls-at-once limit. Waits config('kit.chat.timeout_seconds'), as a reply may run tools.
+     */
+    public function chatSend(string $key, array $body): array
+    {
+        return $this->send('POST', $key, '/api/v1/chat', $body, [], config('kit.chat.timeout_seconds'));
+    }
+
+    /** GET /api/v1/chat/{id}/messages (`chatMessages`): the conversation, oldest first, each `{role: user|assistant, content, createdAt}`; 404 for one not this account's. */
+    public function chatMessages(string $key, string $sessionId): array
+    {
+        return $this->send('GET', $key, '/api/v1/chat/'.rawurlencode($sessionId).'/messages')['messages'] ?? [];
+    }
+
+    /** POST /api/v1/chat/{id}/end (`chatEnd`): ends it, and Telenow rates it after; again is no error (recorded); 404 for a session that is not a chat. */
+    public function chatEnd(string $key, string $sessionId): void
+    {
+        $this->send('POST', $key, '/api/v1/chat/'.rawurlencode($sessionId).'/end');
+    }
+
+    /**
+     * GET /api/orgs/{orgId}/memory (`listOrgCallerMemory`): what the account's agents remember about each caller, the most recent 200 (recorded,
+     * contract_k17memory.py): `{callerKey, summary, facts, callCount, lastSession, updatedAt, expiresAt, orgId}`, ended ones too. A phone caller's key
+     * is their number's digits; a chat visitor's, the identifier it was sent with, lowercased.
+     */
+    public function callerMemory(string $key, string $orgId): array
+    {
+        return $this->send('GET', $key, '/api/orgs/'.rawurlencode($orgId).'/memory')['data'] ?? [];
+    }
+
+    /** DELETE /api/orgs/{orgId}/memory?caller= (`eraseOrgCallerMemory`): forget one caller; Telenow reads a number however written, a key in any case (recorded). */
+    public function forgetCaller(string $key, string $orgId, string $caller): bool
+    {
+        return ($this->send('DELETE', $key, '/api/orgs/'.rawurlencode($orgId).'/memory?'.http_build_query(['caller' => $caller]))['data']['removed'] ?? false) === true;
+    }
+
     /** POST /api/sessions/{id}/transfer (`transferCall`): hand a live call to a number. Ended is 400, the do-not-call list or consent 403, one it cannot make 502. */
     public function transferCall(string $key, string $sessionId, string $to): array
     {
         return $this->send('POST', $key, '/api/sessions/'.rawurlencode($sessionId).'/transfer', ['to' => $to])['data'] ?? [];
+    }
+
+    /**
+     * POST /api/sessions/{id}/context (`addContextNote`): tell the agent on a live call something, never as the caller's words; `respond` `when_idle`
+     * has it say it at once on a phone call. `{noteId, key, delivery: next_turn|held|speaking_now}`; refusals as recorded (contract_k22notes.py):
+     * 400 `empty`, 404, 409 `not_live` / `no_agent` / `engine_unsupported`, 413 `too_large` with `maxChars`.
+     */
+    public function addContextNote(string $key, string $sessionId, string $text, bool $sayNow): array
+    {
+        return $this->send('POST', $key, '/api/sessions/'.rawurlencode($sessionId).'/context', ['text' => $text, 'respond' => $sayNow ? 'when_idle' : 'none'])['data'] ?? [];
     }
 
     /** GET /api/agents/live-calls (`countLiveCalls`): calls on now, `counts` by Telenow's agent id (a browser call's is its own stand-in agent) and `total`. */
@@ -519,6 +589,37 @@ final class TelenowClient
             .http_build_query(['updatedAfter' => $after]))['data']['documents'] ?? [];
     }
 
+    /**
+     * GET …/documents/{docId}/dataset (`getKnowledgeTable`): a table document's `{columns[{name, sql_name, type}], rowCount, colCount, format,
+     * inlined, fuzzyTruncated, fuzzyRowCap}`; null for a text document, one that is not there or is deleted (recorded, contract_k19tables.py).
+     */
+    public function knowledgeTable(string $key, string $orgId, string $kbId, string $docId): ?array
+    {
+        return $this->send('GET', $key, self::documentPath($orgId, $kbId, $docId).'/dataset')['data'] ?? null;
+    }
+
+    /** GET …/documents/{docId}/rows (`listKnowledgeTableRows`): `{columns, rows (keyed by sql_name), rowCount, limit, offset}`, or null as knowledgeTable. */
+    public function knowledgeTableRows(string $key, string $orgId, string $kbId, string $docId, int $offset, int $limit): ?array
+    {
+        return $this->send('GET', $key, self::documentPath($orgId, $kbId, $docId).'/rows?'.http_build_query(['limit' => $limit, 'offset' => $offset]))['data'] ?? null;
+    }
+
+    /**
+     * PATCH …/documents/{docId}/dataset (`setKnowledgeColumnTypes`): `types` by sql_name. A type that is not one, or a column the table does not have,
+     * is 400; a document that is not a table is 404 (recorded).
+     *
+     * @param  array<string, string>  $types
+     */
+    public function setKnowledgeColumnTypes(string $key, string $orgId, string $kbId, string $docId, array $types): void
+    {
+        $this->send('PATCH', $key, self::documentPath($orgId, $kbId, $docId).'/dataset', ['types' => $types]);
+    }
+
+    private static function documentPath(string $orgId, string $kbId, string $docId): string
+    {
+        return '/api/orgs/'.rawurlencode($orgId).'/knowledge-bases/'.rawurlencode($kbId).'/documents/'.rawurlencode($docId);
+    }
+
     /** POST …/documents (`addKnowledgeText`): the whole answer (`data` is the document). */
     public function addKnowledgeText(string $key, string $orgId, string $kbId, array $body): array
     {
@@ -716,6 +817,88 @@ final class TelenowClient
         return $this->send('DELETE', $key, '/api/voice/numbers/'.rawurlencode($numberId).'/agent');
     }
 
+    /**
+     * POST /api/voice/numbers/{id}/pool (`setNumberPool`): whether calls to the number ask the account's routing endpoint who answers ("pool");
+     * the number, as stored (`is_pool`). Refused (400) for a number with no agent, as recorded (contract_k26routing.py): its agent is the fallback.
+     */
+    public function setNumberPool(string $key, string $numberId, bool $routed): array
+    {
+        return $this->send('POST', $key, '/api/voice/numbers/'.rawurlencode($numberId).'/pool', ['isPool' => $routed]);
+    }
+
+    /**
+     * POST /api/voice/numbers/{id}/default-outbound (`setDefaultOutboundNumber`): whether the number is its agent's caller id when a call names
+     * none; the number, as stored. Setting one clears the agent's other (recorded: the other's `updated_at` moves too); refused (400) for a number
+     * with no agent. Telenow clears it itself whenever the number's agent is set again, even to the same agent (recorded).
+     */
+    public function setDefaultOutboundNumber(string $key, string $numberId, bool $isDefault): array
+    {
+        return $this->send('POST', $key, '/api/voice/numbers/'.rawurlencode($numberId).'/default-outbound', ['isDefault' => $isDefault]);
+    }
+
+    /**
+     * POST /api/voice/numbers/{id}/inbound-action (`setNumberInboundAction`): what a call to the number does while no agent answers it (`speak`,
+     * `reject`, `no-answer`; null for the account's default, which is `speak`); the number, as stored. Refused (409) for a number with an agent;
+     * cleared by Telenow when one is set (recorded).
+     */
+    public function setNumberInboundAction(string $key, string $numberId, ?string $action): array
+    {
+        return $this->send('POST', $key, '/api/voice/numbers/'.rawurlencode($numberId).'/inbound-action', ['action' => $action]);
+    }
+
+    /** GET /api/voice/numbers/{id} (`getNumber`): one number, with its rent in USD. */
+    public function getNumber(string $key, string $numberId): array
+    {
+        return $this->send('GET', $key, '/api/voice/numbers/'.rawurlencode($numberId));
+    }
+
+    /**
+     * GET /api/voice/numbers/reclaimable (`listReclaimableNumbers`): numbers Telenow gave up for the account (not ones it released itself) that
+     * the carrier may still hold, each with its deadline, what it was set up for and its last prices; `data.numbers`.
+     */
+    public function reclaimableNumbers(string $key): array
+    {
+        return $this->send('GET', $key, '/api/voice/numbers/reclaimable')['data']['numbers'] ?? [];
+    }
+
+    /**
+     * POST /api/voice/numbers/{id}/reclaim (`reclaimNumber`): ask for a given-up number back, bought again at once and charged to the operator's
+     * account (`status` restored: a NEW number, set up as it was; its answer's `number` is the row before that set-up, so it is read again), or a
+     * request Telenow's staff finish by hand before the deadline (`status` requested); `data`. Refused: 403 the operator's account cannot pay, 400 the
+     * hold ended or the account released it, 409 already back, 404 not the account's or not given up (all recorded).
+     */
+    public function reclaimNumber(string $key, string $numberId): array
+    {
+        return $this->send('POST', $key, '/api/voice/numbers/'.rawurlencode($numberId).'/reclaim')['data'] ?? [];
+    }
+
+    /** GET /api/orgs/{orgId}/inbound-routing (`getInboundRouting`): the account's routing endpoint, or null; never the secret. */
+    public function inboundRouting(string $key, string $orgId): ?array
+    {
+        $data = $this->send('GET', $key, '/api/orgs/'.rawurlencode($orgId).'/inbound-routing')['data'] ?? null;
+
+        return is_array($data) ? $data : null;
+    }
+
+    /**
+     * PUT /api/orgs/{orgId}/inbound-routing (`setInboundRouting`): where Telenow asks; `signingSecret` in full only on the answer that made one
+     * (the first, or `rotateSecret`). A timeout not sent is reset to 1200 and `enabled` not sent is kept (recorded), so both are always sent.
+     */
+    public function setInboundRouting(string $key, string $orgId, string $url, int $timeoutMs, bool $rotateSecret): array
+    {
+        return $this->send('PUT', $key, '/api/orgs/'.rawurlencode($orgId).'/inbound-routing',
+            ['url' => $url, 'timeoutMs' => $timeoutMs, 'enabled' => true, 'rotateSecret' => $rotateSecret])['data'] ?? [];
+    }
+
+    /**
+     * POST /api/orgs/{orgId}/inbound-routing/test (`testInboundRouting`): Telenow asks the endpoint about a pretend call to a routed number and says
+     * whether it answered, how long it took, the action and why there is none (its own words). Never what the answer held.
+     */
+    public function testInboundRouting(string $key, string $orgId, string $toNumber): array
+    {
+        return $this->send('POST', $key, '/api/orgs/'.rawurlencode($orgId).'/inbound-routing/test', ['toNumber' => $toNumber])['data'] ?? [];
+    }
+
     /** DELETE /api/voice/numbers/{id} (`releaseNumber`): back to the carrier, rent stops; 404 when gone already. */
     public function releaseNumber(string $key, string $numberId): array
     {
@@ -735,6 +918,58 @@ final class TelenowClient
     public function ledgerFeed(string $key, string $orgId, array $position): array
     {
         return $this->send('GET', $key, '/api/orgs/'.rawurlencode($orgId).'/billing/ledger?'.http_build_query($position))['data'] ?? [];
+    }
+
+    /**
+     * PUT /api/orgs/{orgId}/billing/spend-alert (`setSpendAlert`): the level, in USD, at or below which the account's spend state is `low` (null clears
+     * it); the spend state it gives now, `data`. A top-level account only: a sub-account, or another org, is refused 403; a negative, text or unknown
+     * field 400 (recorded, contract_k29billing.py). The state is `low` while `headroomUsd` is at or below it, so a postpaid account with no cap (no
+     * headroom) is never low (recorded).
+     */
+    public function setSpendAlert(string $key, string $orgId, ?float $thresholdUsd): array
+    {
+        return $this->send('PUT', $key, '/api/orgs/'.rawurlencode($orgId).'/billing/spend-alert', ['thresholdUsd' => $thresholdUsd])['data'] ?? [];
+    }
+
+    /**
+     * GET /api/orgs/{orgId}/billing/invoices (`listInvoices`): the account's invoices, newest period first, drafts too, each `{invoice, lines}`; `data`.
+     * Telenow invoices a postpaid account only (none for a prepaid one, recorded). The lines are net; an invoice's tax (GST, for an Indian account) is
+     * in its total and in no field of its own.
+     */
+    public function invoices(string $key, string $orgId): array
+    {
+        $data = $this->send('GET', $key, '/api/orgs/'.rawurlencode($orgId).'/billing/invoices')['data'] ?? [];
+
+        return is_array($data) ? array_values(array_filter($data, 'is_array')) : [];
+    }
+
+    /**
+     * GET /api/catalog/openrouter-models (`listOpenRouterModels`): OpenRouter's public model list as Telenow reads it, each `{id, name, textToText}`;
+     * empty when OpenRouter cannot be reached. An agent may name any OpenRouter model id: Telenow takes even one that is not listed (recorded).
+     */
+    public function openRouterModels(string $key): array
+    {
+        $data = $this->send('GET', $key, '/api/catalog/openrouter-models')['data'] ?? [];
+
+        return is_array($data) ? array_values(array_filter($data, 'is_array')) : [];
+    }
+
+    /**
+     * GET /api/catalog/openrouter-price (`getOpenRouterPrice`): what Telenow charges per million tokens for an OpenRouter model (its margin in), `data`:
+     * `{found: false}` for one with no price. An estimate: Telenow charges what OpenRouter reports for each request, plus its margin.
+     */
+    public function openRouterPrice(string $key, string $model): array
+    {
+        return $this->send('GET', $key, '/api/catalog/openrouter-price?'.http_build_query(['model' => $model]))['data'] ?? ['found' => false];
+    }
+
+    /**
+     * GET /api/catalog/processing-country (`getProcessingCountry`): the country the key's account's calls are processed for, and where it comes from.
+     * A sub-account copies the operator's country when it is made, and keeps it after the operator's changes (recorded).
+     */
+    public function processingCountry(string $key): array
+    {
+        return $this->send('GET', $key, '/api/catalog/processing-country')['data'] ?? [];
     }
 
     /** GET /api/orgs/{orgId}/billing/summary (`getBillingSummary`): the account's billing, `data` of the answer. */
@@ -768,10 +1003,10 @@ final class TelenowClient
         return ['type' => $response->header('Content-Type') ?: 'application/octet-stream', 'bytes' => $response->body()];
     }
 
-    /** @param array<string, string> $headers */
-    private function send(string $method, string $key, string $path, ?array $body = null, array $headers = []): array
+    /** @param array<string, string> $headers @param ?int $timeout seconds, when not config('kit.telenow.timeout_seconds') */
+    private function send(string $method, string $key, string $path, ?array $body = null, array $headers = [], ?int $timeout = null): array
     {
-        $response = $this->request($method, $key, $path, $body, $headers);
+        $response = $this->request($method, $key, $path, $body, $headers, $timeout);
         $json = $response->json();
         if (! is_array($json)) {
             throw new TelenowError($response->status(), 'Telenow did not answer JSON.');
@@ -780,13 +1015,13 @@ final class TelenowClient
         return $json;
     }
 
-    /** @param array<string, string> $headers */
-    private function request(string $method, string $key, string $path, ?array $body = null, array $headers = []): Response
+    /** @param array<string, string> $headers @param ?int $timeout seconds, when not config('kit.telenow.timeout_seconds') */
+    private function request(string $method, string $key, string $path, ?array $body = null, array $headers = [], ?int $timeout = null): Response
     {
         $base = rtrim((string) config('kit.telenow.base_url'), '/');
         try {
             $response = Http::baseUrl($base)
-                ->timeout(config('kit.telenow.timeout_seconds'))
+                ->timeout($timeout ?? config('kit.telenow.timeout_seconds'))
                 ->acceptJson()
                 ->withHeaders(['X-API-Key' => $key, 'User-Agent' => 'voice-kit/'.config('kit.version')] + $headers)
                 ->send($method, $path, $body === null ? [] : ['json' => (object) $body]);
@@ -796,7 +1031,7 @@ final class TelenowClient
         if ($response->failed()) {
             $json = $response->json();
             $said = is_array($json) && is_string($json['error'] ?? null) ? $json['error'] : trim(mb_substr($response->body(), 0, 200));
-            throw new TelenowError($response->status(), $said);
+            throw new TelenowError($response->status(), $said, is_array($json) ? $json : []);
         }
 
         return $response;

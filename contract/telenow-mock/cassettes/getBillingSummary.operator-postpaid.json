@@ -1,0 +1,94 @@
+{
+  "operationId": "getBillingSummary",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the account made postpaid and its invoices written by SQL on that database as Telenow's monthly billing run writes them, and its balance emptied by SQL for the stopped case (contract_k29billing.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/9ea0c695-16dc-5814-b6e1-cf1b3eb6381f/billing/summary",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "account": {
+          "balanceUsd": "40.0000000000",
+          "browserConcurrency": null,
+          "chatFeeMode": null,
+          "chatTurnBlockTurns": null,
+          "chatTurnBlockUsd": null,
+          "feePerMinUsdOverride": null,
+          "feePercentOverride": null,
+          "mode": "postpaid",
+          "monthlySpendLimitUsd": null,
+          "orgId": "9ea0c695-16dc-5814-b6e1-cf1b3eb6381f",
+          "softphoneFeePerMinUsdOverride": null,
+          "suspended": false,
+          "telephonyConcurrencyPerNumber": null
+        },
+        "billedToParent": false,
+        "breakdown": {
+          "adjustmentUsd": "0",
+          "agentCallsUsd": "0",
+          "appAi": [],
+          "calls": 0,
+          "chatUsd": "0",
+          "fdeRechargeUsd": "0",
+          "manualUsd": "0",
+          "platformAiUsd": "0",
+          "platformFeeUsd": "0",
+          "postCallAnalysisUsd": "0",
+          "rentalUsd": "0",
+          "setupUsd": "0",
+          "simulationUsd": "0",
+          "totalUsd": "0"
+        },
+        "concurrencyLimits": {
+          "browser": 50,
+          "telephonyPerNumber": 2
+        },
+        "creditRateInr": null,
+        "dues": {
+          "amountBilled": "1469.10",
+          "amountUsd": "17.7000000000",
+          "currency": "INR",
+          "daysPastDue": -2,
+          "daysUntilSuspend": 9,
+          "dueAt": "2026-11-10T18:27:27.705875Z",
+          "invoiceId": "43df51fa-a96c-57a2-89bc-40493d286b91",
+          "issuedAt": "2026-11-03T18:27:27.705875Z",
+          "openCount": 1,
+          "openTotalUsd": "17.7000000000",
+          "overdueAt": "2026-11-13T18:27:27.705875Z",
+          "status": "issued",
+          "suspendAt": "2026-11-17T18:27:27.705875Z"
+        },
+        "gateway": {
+          "razorpayKeyId": null
+        },
+        "numberCreditsUsd": null,
+        "payableNative": null,
+        "payableUsd": "0",
+        "perDay": [],
+        "periodStart": "2026-10-31T18:30:00Z",
+        "spendState": {
+          "balanceUsd": "40.0000000000",
+          "canSpend": true,
+          "headroomUsd": null,
+          "lowThresholdUsd": "20.0000000000",
+          "mode": "postpaid",
+          "monthlySpendLimitUsd": null,
+          "periodSpendUsd": "0",
+          "periodStart": "2026-10-31T18:30:00Z",
+          "state": "ok",
+          "stoppedBy": null
+        },
+        "walletCurrency": null,
+        "walletNative": null,
+        "walletRate": null
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

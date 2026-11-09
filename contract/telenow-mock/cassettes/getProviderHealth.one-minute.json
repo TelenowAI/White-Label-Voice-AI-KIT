@@ -1,0 +1,22 @@
+{
+  "operationId": "getProviderHealth",
+  "recorded": "2026-11-09, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the calls' provider failures written by SQL as the call engine writes them (voice_stack_incidents), no call placed (contract_k32helpers.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/provider-health",
+    "query": "minutes=1",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "callsAffected": 0,
+        "groups": [],
+        "windowMinutes": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

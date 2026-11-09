@@ -18,12 +18,13 @@ use Illuminate\Support\Str;
  * - scheduled jobs (JobRuns): each one's last run, the late ones, whether the scheduler runs at all;
  * - the money check (Reconciliation): the customers whose gap is over the tolerance, whose call counts differ, or
  *   whose check failed, biggest gap first.
+ * - call health: the providers that failed on customers' recent calls, added up by `kit:call-health` (App\Kit\Calls\CallHealth);
  * Lists are at most config('kit.health.list') rows, with how many there are in all. Used by Admin\HealthController;
  * drifting() and JobRuns::running() also feed the dashboard's "needs a look".
  */
 final class HealthReport
 {
-    public function __construct(private readonly Settings $settings, private readonly JobRuns $jobs) {}
+    public function __construct(private readonly Settings $settings, private readonly JobRuns $jobs, private readonly \App\Kit\Calls\CallHealth $callHealth) {}
 
     public function build(): array
     {
@@ -44,6 +45,8 @@ final class HealthReport
                 'error' => $this->settings->get('telenow.status_error'),
                 'checkedAt' => $this->settings->get('telenow.status_checked_at'),
             ],
+            // The providers that failed on customers' recent calls, as `kit:call-health` last added them up (null before its first run).
+            'callHealth' => $this->callHealth->summary(),
             'events' => [
                 'registered' => isset($endpoint['id']),
                 'url' => $endpoint['url'] ?? null,

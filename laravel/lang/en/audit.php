@@ -10,6 +10,16 @@ return [
             'transfers_allowed' => 'Allowed transfers to a person',
             'transfers_stopped' => 'Stopped transfers to a person',
         ],
+        'campaign_links' => [
+            'allowed' => 'Allowed campaign contacts from a link',
+            'stopped' => 'Stopped campaign contacts from a link',
+        ],
+        'starters' => [
+            'published' => 'Published a starter agent for every account',
+            'changed' => 'Renamed or redescribed a starter agent',
+            'withdrawn' => 'Stopped offering a starter agent',
+            'offered' => 'Offered a starter agent again',
+        ],
         'softphone' => [
             'allowed' => 'Allowed calls from the browser',
             'stopped' => 'Stopped calls from the browser',

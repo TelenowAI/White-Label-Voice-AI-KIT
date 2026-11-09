@@ -35,6 +35,7 @@ return [
     'fields' => [
         'from' => 'From',
         'to' => 'To',
+        'customer' => 'Customer',
     ],
     'too_long' => 'A report covers at most :days days.',
     'rebuilt' => 'Wrote the daily totals again from :count charges.',

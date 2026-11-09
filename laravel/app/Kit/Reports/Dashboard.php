@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\DB;
 final class Dashboard
 {
     public function __construct(private readonly Settings $settings, private readonly CostReport $costs, private readonly Pricing $pricing,
-        private readonly HealthReport $health, private readonly JobRuns $jobs) {}
+        private readonly HealthReport $health, private readonly JobRuns $jobs, private readonly \App\Kit\Calls\CallHealth $callHealth) {}
 
     public function build(Period $period): array
     {
@@ -106,6 +106,8 @@ final class Dashboard
                 'eventsFailed' => DB::table('telenow_events')->whereNull('applied_at')->whereNotNull('failed_at')->count(),
                 'customersDrifting' => count($this->health->drifting()),
                 'jobsNotRunning' => ! $this->jobs->running(),
+                // Providers that failed on config('kit.call_health.alert_calls') or more of customers' recent calls (App\Kit\Calls\CallHealth).
+                'providersFailing' => $this->callHealth->failing(),
             ],
         ];
     }

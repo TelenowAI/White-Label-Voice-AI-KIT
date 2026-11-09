@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: voice-kit API
-  version: 0.41.0
+  version: 0.55.0
   description: >
     The API every voice-kit backend serves (Laravel first, Node later) and the console calls. It is the
     contract both stacks are held to: `contract/tests` sends real requests to a running backend and checks
@@ -57,6 +57,113 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/Brand' }
+
+  /api/kit/chat/{chatKey}:
+    get:
+      operationId: getChatBox
+      summary: A chat box's look and words, for the script on a customer's website.
+      description: >
+        Public, for a browser on one of the chat box's websites (getAgentWebChat): its `Origin` must be one of them, and a request
+        with none is refused (403). 404 while the chat box is off or unknown, or while the operator does not offer web chat. The
+        answer is the operator's brand and words, never the voice platform's: a visitor's browser only ever talks to this
+        platform. Every answer, refusals too, carries CORS headers, so the script can read it.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/ChatKey' }]
+      responses:
+        '200':
+          description: The chat box.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChatBox' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /api/kit/chat/{chatKey}/messages:
+    get:
+      operationId: getChatMessages
+      summary: A conversation so far, to show again when the visitor opens another page.
+      description: >
+        The same `Origin` as the conversation started from (403 otherwise). 404 for a conversation this chat box does not have;
+        410 once it has ended. Each message is the visitor's or the agent's, oldest first.
+      security: []
+      parameters:
+        - { $ref: '#/components/parameters/ChatKey' }
+        - { name: conversation, in: query, required: true, schema: { type: string, maxLength: 128 } }
+      responses:
+        '200':
+          description: The conversation.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChatConversation' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '410': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+    post:
+      operationId: sendChatMessage
+      summary: A visitor's message to the agent, and its reply.
+      description: >
+        Without `conversation` it starts one, from this `Origin`; the answer names it, and the script sends it with every later
+        message (from the same `Origin`). One message at a time per conversation: 409 while one is being answered. 410 once the
+        conversation has ended (idle too long, ended by the visitor or the platform, or it has reached its most messages, which
+        ends it): the script starts a new one. 422 names the field (an empty message, or one longer than the chat box's
+        `messageMaxLength`). 429 when messages come too fast from one place, or to all of the account's chat boxes. 503 when the
+        agent cannot answer now: the account is paused, is at its limit of calls at once, or the voice platform cannot be reached.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/ChatKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message: { type: string, minLength: 1 }
+                conversation: { type: string, maxLength: 128 }
+      responses:
+        '200':
+          description: The agent's reply.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChatReply' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '410': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '429': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/chat/{chatKey}/end:
+    post:
+      operationId: endChatConversation
+      summary: The visitor ends the conversation.
+      description: Ending one that has ended already is no error. The same `Origin` as it started from (403 otherwise).
+      security: []
+      parameters: [{ $ref: '#/components/parameters/ChatKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [conversation]
+              properties:
+                conversation: { type: string, maxLength: 128 }
+      responses:
+        '200':
+          description: Ended.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ended]
+                properties:
+                  ended: { type: boolean, enum: [true] }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
 
   /api/kit/setup:
     get:
@@ -1266,6 +1373,115 @@ paths:
         '409': { $ref: '#/components/responses/Error' }
         '422': { $ref: '#/components/responses/ValidationError' }
 
+  /api/kit/admin/starters:
+    get:
+      operationId: listStarterAgents
+      summary: "The starter agents the operator offers every account, and the accounts the signed-in staff member owns, with their agents, to publish from."
+      description: Needs the `starters` ability.
+      security: []
+      responses:
+        '200':
+          description: The starters and where they may come from.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [starters, sources]
+                properties:
+                  starters: { type: array, items: { $ref: '#/components/schemas/StarterAgent' } }
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, name, agents]
+                      properties:
+                        id: { type: string, format: uuid }
+                        name: { type: string }
+                        agents:
+                          type: array
+                          items: { type: object, required: [id, name], properties: { id: { type: string, format: uuid }, name: { type: string } } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+    post:
+      operationId: publishStarterAgent
+      summary: "Offer every account a starter made from an agent in an account the staff member owns, after reading what it carries (previewStarterAgent)."
+      description: >
+        Only an agent in an account the signed-in staff member owns (404 otherwise, whatever account it is in): a starter goes to every account, and an
+        agent's prompt, lines and steps carry its account's business. `reviewed` must be true. A starter carries the prompt, description, every call
+        setting, the voice setup (not an own cloned voice), provider settings, the realtime voice, analysis fields and the published call steps with every
+        tool, hand-over and transfer step made an ending; never keys, tools, look-ups, hand-overs, transfers, knowledge, webhooks or email recipients.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [agentId, name, reviewed]
+              properties:
+                agentId: { type: string, format: uuid }
+                name: { type: string, maxLength: 120 }
+                description: { type: string, nullable: true, maxLength: 500 }
+                reviewed: { type: boolean, description: The staff member read every text the preview showed. }
+      responses:
+        '201':
+          description: Offered.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StarterAgent' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/admin/starters/preview:
+    get:
+      operationId: previewStarterAgent
+      summary: "What a starter made from this agent would carry: every piece of its free text in full, to read first, and what it leaves out."
+      description: 404 for an agent not in an account the staff member owns.
+      security: []
+      parameters:
+        - { name: agentId, in: query, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: The preview.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StarterAgentPreview' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/admin/starters/{starterId}:
+    patch:
+      operationId: updateStarterAgent
+      summary: "Rename or redescribe a starter agent, or stop offering it (and offer it again)."
+      description: An agent made from it stays as it is. 404 for none.
+      security: []
+      parameters:
+        - { name: starterId, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string, maxLength: 120 }
+                description: { type: string, nullable: true, maxLength: 500 }
+                offered: { type: boolean }
+      responses:
+        '200':
+          description: As it is now.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StarterAgent' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
   /api/kit/admin/catalog:
     get:
       operationId: getCatalogCuration
@@ -1317,6 +1533,14 @@ paths:
                             properties:
                               offered: { type: boolean }
                               name: { type: string, nullable: true, maxLength: 120 }
+                        extraModels:
+                          type: object
+                          description: "The provider that offers its whole model list (`openModels`, OpenRouter) only: the models added beyond the catalog's, by OpenRouter's model id (listOpenModels), each `{offered, name}` — those sent are its added models now (`{}` none); none sent, those added before stay. A model is added only from OpenRouter's list, never one the catalog has, at most `max` of listOpenModels; one added before stays, under the list's name of then. Customers pick them as the catalog's models."
+                          additionalProperties:
+                            type: object
+                            properties:
+                              offered: { type: boolean }
+                              name: { type: string, nullable: true, maxLength: 120 }
                         settings:
                           type: object
                           description: "Which of its own settings customers may change, by key, and of one with options which (by the platform's value). None sent: those chosen before stay."
@@ -1343,6 +1567,8 @@ paths:
                             name: { type: string, nullable: true, maxLength: 120 }
                 transferAllowed: { type: boolean }
                 browserCallsAllowed: { type: boolean, description: Whether customers may place calls from the browser. }
+                webChatAllowed: { type: boolean, description: "Whether customers may put a chat box on their websites, answered by their agents. Off stops every chat box at once." }
+                campaignLinksAllowed: { type: boolean, description: "Whether campaigns may take their people from a link this server reads. Off stops reading every link; they stay on their campaigns." }
                 consentRequired: { type: boolean, description: Every customer's calls need consent on file. Each account is told within a few minutes. }
                 cloningAllowed: { type: boolean, description: Customers may clone voices of their own. Off stops new voices and clones; those made keep working. }
                 clonesPerAccount: { type: integer, minimum: 1, maximum: 50, description: Clones (and own voices) one account may have. }
@@ -1394,6 +1620,57 @@ paths:
         '401': { $ref: '#/components/responses/Error' }
         '403': { $ref: '#/components/responses/Error' }
         '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/admin/catalog/open-models:
+    get:
+      operationId: listOpenModels
+      summary: "OpenRouter's own model list (text to text), searched and a page at a time, to add models to OpenRouter beyond the catalog's."
+      description: >
+        The models of the provider that offers its whole list (`openModels` on Admin → Catalog), as the voice platform
+        reads it from OpenRouter, each with whether it is added (saveCatalogCuration `extraModels`) or in the catalog
+        already. Kept for a while. 404 when no provider offers its list; 409 before the platform's key is set; 502 when
+        the list cannot be read (OpenRouter out of reach). Ability `settings`.
+      security: []
+      parameters:
+        - { name: search, in: query, required: false, description: 'Words in the model id or name, any case.', schema: { type: string, maxLength: 200 } }
+        - { name: page, in: query, required: false, schema: { type: integer, minimum: 1, default: 1 } }
+      responses:
+        '200':
+          description: One page.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpenModelPage' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '502': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/catalog/open-models/price:
+    get:
+      operationId: getOpenModelPrice
+      summary: "What the voice platform charges the operator for an OpenRouter model, per million tokens — an estimate."
+      description: >
+        The platform bills what OpenRouter reports for each request plus its margin; this is that price per million
+        tokens as it stands now (US dollars), `found` false for a model it has no price for. The operator's own cost:
+        never shown to a customer, whose calls are charged by the operator's price lists. 404 when no provider offers its
+        list; 409 before the platform's key is set; 502 when the price cannot be read. Ability `settings`.
+      security: []
+      parameters:
+        - { name: model, in: query, required: true, description: "OpenRouter's model id.", schema: { type: string, maxLength: 200 } }
+      responses:
+        '200':
+          description: The price.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OpenModelPrice' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '502': { $ref: '#/components/responses/Error' }
 
   /api/kit/admin/email:
     get:
@@ -1807,6 +2084,7 @@ paths:
         - { name: to, in: query, required: false, schema: { type: string, format: date } }
         - { name: by, in: query, required: false, schema: { type: string } }
         - { name: page, in: query, required: false, schema: { type: integer, minimum: 1 } }
+        - { name: customer, in: query, required: false, description: "One customer's figures only (their components, say).", schema: { type: string, format: uuid } }
       responses:
         '200':
           description: OK.
@@ -1817,6 +2095,137 @@ paths:
         '403': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
         '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/admin/platform-billing:
+    get:
+      operationId: getPlatformBilling
+      summary: "The operator's own account at the voice platform: what it may still spend, its low-balance level, and the platform's invoices to it."
+      description: >
+        `state` is the platform's spend state as last read (every few minutes; null before the first read). The staff who handle money are
+        emailed when the balance falls to the low-balance level and when the platform stops the account. `invoices` are read live, newest
+        period first, drafts too (only a postpaid account gets any); null with `invoicesError` when they could not be read (the platform out of
+        reach, or not connected yet). An
+        invoice's lines are net; `rest` is what its total holds beyond them (tax), null when nothing.
+      security: []
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PlatformBilling' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/platform-billing/alert:
+    put:
+      operationId: setPlatformBalanceAlert
+      summary: Set or clear the level, in USD, at which the platform calls the operator's balance low.
+      description: >
+        The balance counts as low while what it can still spend is at or below the level, so a postpaid account with no cap never is. Answers
+        the state the platform gives at once (setting a level already passed sends no email). 422 for a level of the wrong shape or one the
+        platform will not take (`errors.thresholdUsd`), 409 before the platform is connected, 503 while it cannot be reached.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [thresholdUsd]
+              properties:
+                thresholdUsd: { type: string, nullable: true, pattern: '^((0|[1-9][0-9]{0,6})(\.[0-9]{1,2})?)?$', description: 'USD, with at most two decimals; null or empty for none.' }
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PlatformBillingState' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/invoice-settings:
+    get:
+      operationId: getInvoiceSettings
+      summary: "The operator's details, tax and number prefix printed on customers' invoices (staff who handle money)."
+      security: []
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/InvoiceSettingsAnswer' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+    put:
+      operationId: setInvoiceSettings
+      summary: "Save them; the invoices issued from then on carry them (an invoice already issued never changes)."
+      description: >
+        Every field is sent (empty or null for none). A tax needs both its name and its rate, a percentage from 0 to 100 with at most two decimals
+        (0: no tax). The operator's name and email, when none, are the brand's name and support email.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/InvoiceSettings' }
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/InvoiceSettingsAnswer' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/admin/customers/{id}/invoices:
+    get:
+      operationId: listCustomerInvoices
+      summary: "A customer's invoices, newest first, a page at a time, and their billing details."
+      security: []
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: page, in: query, required: false, schema: { type: integer, minimum: 1 } }
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/InvoicePage' }
+                  - type: object
+                    required: [billingDetails]
+                    properties:
+                      billingDetails: { $ref: '#/components/schemas/BillingDetails' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/invoices/{id}:
+    get:
+      operationId: getCustomerInvoice
+      summary: One customer invoice, as its page shows it, with the customer it is for.
+      security: []
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/Invoice' }
+                  - type: object
+                    required: [customerId]
+                    properties:
+                      customerId: { type: string, format: uuid }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
 
   /api/kit/admin/telenow:
     get:
@@ -1832,6 +2241,75 @@ paths:
         '401': { $ref: '#/components/responses/Error' }
         '403': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/telenow/processing-country:
+    get:
+      operationId: getPlatformProcessingCountry
+      summary: "The operator's account's processing country on the voice platform, and where it comes from."
+      description: >
+        The platform serves an agent's language model from a region that holds this country when the agent leaves the
+        region to it: the account's declared country, else its sign-up time zone's. Set on the platform, not here. A
+        customer's account copies it when it is made and keeps it after (getCustomerProcessingCountry). Kept for a while;
+        `fresh` reads it now. 409 before the platform's key is set; 502 when it cannot be read. Ability `health`.
+      security: []
+      parameters:
+        - { name: fresh, in: query, required: false, description: Read it from the platform now., schema: { type: boolean } }
+      responses:
+        '200':
+          description: The country.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProcessingCountry' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/customers/{id}/call-health:
+    get:
+      operationId: getCustomerCallHealth
+      summary: "A customer's call health in detail: each failure with the platform's provider id, the cause as the platform says it, and its last error."
+      description: Read with the customer's own key and kept a minute. 404 for no such customer; 409 when it has no account on the voice platform yet; 502 when it cannot be read now. Ability `customers_read`.
+      security: []
+      parameters:
+        - { $ref: '#/components/parameters/CustomerId' }
+        - { name: minutes, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 1440 } }
+      responses:
+        '200':
+          description: The failures.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CallHealth' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '502': { $ref: '#/components/responses/Error' }
+
+  /api/kit/admin/customers/{id}/processing-country:
+    get:
+      operationId: getCustomerProcessingCountry
+      summary: "A customer's processing country on the voice platform: the operator's when the customer was made."
+      description: >
+        Read with the customer's own key. A customer made before the operator's country changed keeps the one it had.
+        Kept for a while; `fresh` reads it now. 404 for no such customer; 409 when the customer has no account on the
+        platform yet; 502 when it cannot be read. Ability `customers_read`.
+      security: []
+      parameters:
+        - { $ref: '#/components/parameters/CustomerId' }
+        - { name: fresh, in: query, required: false, description: Read it from the platform now., schema: { type: boolean } }
+      responses:
+        '200':
+          description: The country.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProcessingCountry' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
 
   /api/kit/admin/telenow/writes/{id}/retry:
     post:
@@ -2915,6 +3393,90 @@ paths:
         '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
 
+  /api/kit/console/starters:
+    get:
+      operationId: listOfferedStarterAgents
+      summary: The ready-made agents the operator offers, to start a new agent from.
+      security: []
+      responses:
+        '200':
+          description: The starters offered.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [starters]
+                properties:
+                  starters:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, name, description]
+                      properties:
+                        id: { type: string, format: uuid }
+                        name: { type: string }
+                        description: { type: string, nullable: true }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/starters/{starterId}/agents:
+    post:
+      operationId: createAgentFromStarter
+      summary: "A new agent in the current account, made from a starter the operator offers, and what is left to do on it."
+      description: >
+        Named as the starter ("… (2)" when that is taken). Made as createAgent makes one: a voice setup the operator does not offer gives the defaults
+        (`voiceSetup`), and call steps that cannot be published are left as a draft (`flow`). 404 for a starter not offered; 409 while the account is
+        not set up yet.
+      security: []
+      parameters:
+        - { name: starterId, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '201':
+          description: The new agent.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [agent, toRedo]
+                properties:
+                  agent: { $ref: '#/components/schemas/Agent' }
+                  toRedo: { type: array, items: { $ref: '#/components/schemas/AgentCopyToDo' } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/agents/{agentId}/duplicate:
+    post:
+      operationId: duplicateAgent
+      summary: "A copy of an agent in the same account, made and sent to the voice platform as the customer's own saves are."
+      description: >
+        Copies its name (as "… (copy)", numbered when that is taken), description, prompt, every call setting, voice setup, realtime voice,
+        after-call email, hand-overs, tools and look-ups, call steps, knowledge bases, webhook addresses and whether it is on. Keys are not
+        copied: the voice platform alone holds a tool's, a look-up's or a step's key, so each is to be typed again; each webhook address gets
+        its own new signing secret. Phone numbers, the web chat box, campaigns and calls stay with the source. `toRedo` lists what is left to
+        do. 404 for an agent that is not the account's; 409 while the account is not set up yet; 422 when the copy cannot be made as the
+        source is (reasons as createAgent's).
+      security: []
+      parameters: [{ $ref: '#/components/parameters/AgentId' }]
+      responses:
+        '201':
+          description: The copy, and what is left to do on it.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [agent, toRedo]
+                properties:
+                  agent: { $ref: '#/components/schemas/Agent' }
+                  toRedo: { type: array, items: { $ref: '#/components/schemas/AgentCopyToDo' } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
   /api/kit/console/agents/{agentId}/retry:
     post:
       operationId: retryAgent
@@ -2983,6 +3545,120 @@ paths:
         '409': { $ref: '#/components/responses/Error' }
         '429': { $ref: '#/components/responses/Error' }
         '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/agents/{agentId}/prompt-check:
+    post:
+      operationId: checkPrompt
+      summary: "Check an agent's instructions and opening line as the voice platform checks them, with its own variables, tools and call steps; with sample values, a preview."
+      description: >
+        Conditional sections (`{#if {plan} == "gold"}` … `{#else}` … `{/if}`) that do not open and close properly are
+        errors — a save of them is refused — the rest warnings, each with its line. Nothing is saved. 409 when the account
+        is not set up on the voice platform; 429 when the member checked many in a minute; 503 when it cannot be checked now.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/AgentId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PromptCheckInput' }
+      responses:
+        '200':
+          description: The check.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PromptCheck' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '429': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/agents/prompt-check:
+    post:
+      operationId: checkNewPrompt
+      summary: "Check a new agent's instructions and opening line before it is made (nothing of an agent's own is known yet)."
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PromptCheckInput' }
+      responses:
+        '200':
+          description: The check.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PromptCheck' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '429': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/agents/{agentId}/logo:
+    post:
+      operationId: setAgentLogo
+      summary: "Give the agent a logo: a PNG, JPEG or WebP image, kept by this platform and shown in the console and on the agent's chat box."
+      description: >
+        The image's type is read from its bytes (never an SVG); at most 512 kilobytes and 16 to 1024 pixels a side by
+        default. The image before is removed. Answers the agent.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/AgentId' }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        '200':
+          description: The agent, with its logo.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Agent' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/Error' }
+    delete:
+      operationId: removeAgentLogo
+      summary: "Take the agent's logo off (its image removed). Answers the agent."
+      security: []
+      parameters: [{ $ref: '#/components/parameters/AgentId' }]
+      responses:
+        '200':
+          description: The agent, with no logo.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Agent' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /api/kit/media/agent-logos/{agent}/{file}:
+    get:
+      operationId: getAgentLogo
+      summary: "An agent's logo, to anyone: only its current image, by the name it is kept under (its content's), cached for a year."
+      description: Sent as an image that runs nothing (`X-Content-Type-Options` nosniff, a policy that allows nothing). No session.
+      security: []
+      parameters:
+        - { name: agent, in: path, required: true, schema: { type: string } }
+        - { name: file, in: path, required: true, schema: { type: string, pattern: '^[0-9a-f]{32}\.(png|jpg|webp)$' } }
+      responses:
+        '200':
+          description: The image.
+          content:
+            image/png: { schema: { type: string, format: binary } }
+            image/jpeg: { schema: { type: string, format: binary } }
+            image/webp: { schema: { type: string, format: binary } }
+        '404': { $ref: '#/components/responses/Error' }
 
   /api/kit/console/agents/{agentId}/voice-preview:
     post:
@@ -3398,6 +4074,53 @@ paths:
         '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
 
+  /api/kit/console/agents/{agentId}/web-chat:
+    get:
+      operationId: getAgentWebChat
+      summary: This agent's chat box for the customer's own website.
+      description: >
+        Whether it is on, the websites it may show on, its words, and the code to put on a page (`snippet`, null until it is
+        first turned on). The chat box answers visitors with this agent through this platform, which passes every message on:
+        a visitor's browser never talks to the voice platform. `allowed` is false while the operator does not offer web chat;
+        `priced` is false while the account's plan has no price for a chat, while customers are charged.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/AgentId' }]
+      responses:
+        '200':
+          description: The chat box.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WebChat' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+    put:
+      operationId: updateAgentWebChat
+      summary: Turn the chat box on or off, and set its websites and words.
+      description: >
+        A website is its address alone (`https://www.example.com`, no path; `http://localhost` with any port for testing). 422 names
+        the field: an address that is not one, too many of them, or on with none. 409 when turning it on while the operator does
+        not offer web chat, the plan has no price for a chat, or the agent is not yet on the voice platform. Off stops new messages
+        at once; conversations open then end within minutes.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/AgentId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WebChatInput' }
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WebChat' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
   /api/kit/console/agents/{agentId}/knowledge:
     put:
       operationId: setAgentKnowledge
@@ -3511,8 +4234,10 @@ paths:
                   limits:
                     type: object
                     description: What a new campaign starts from and what this backend takes.
-                    required: [nameMaxLength, concurrency, maxAttempts, machineDetection, phoneColumns, importMaxBytes, importMaxRows]
+                    required: [nameMaxLength, concurrency, maxAttempts, machineDetection, phoneColumns, importMaxBytes, importMaxRows, linksAllowed, linkEveryMinutes]
                     properties:
+                      linksAllowed: { type: boolean, description: The operator lets campaigns take people from a link (setCampaignSource). }
+                      linkEveryMinutes: { type: integer, description: How often a campaign's link is read again. }
                       nameMaxLength: { type: integer }
                       concurrency: { $ref: '#/components/schemas/CampaignLimit' }
                       maxAttempts: { $ref: '#/components/schemas/CampaignLimit' }
@@ -3627,6 +4352,60 @@ paths:
         '403': { $ref: '#/components/responses/Error' }
         '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/campaigns/{campaignId}/source:
+    put:
+      operationId: setCampaignSource
+      summary: "Take a campaign's people from a link: a CSV at a web address (a spreadsheet published to the web as CSV, say), read now and again while the campaign runs."
+      description: >
+        Read as addCampaignTargets reads a CSV; each read adds only numbers the campaign does not have yet and never takes anyone off. This server
+        reads it, so only an https link to public addresses (each redirect too), at most `importMaxBytes`. Answers what this read added and the
+        campaign (its `source`). 403 until the operator allows it (`linksAllowed`); 404 for a campaign of another account; 409 for a finished
+        campaign; 422 when the link cannot be read or is not a call list (the reason says why).
+      security: []
+      parameters: [{ $ref: '#/components/parameters/CampaignId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url: { type: string, maxLength: 2048 }
+      responses:
+        '200':
+          description: Read, and followed from now on.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [added, campaign]
+                properties:
+                  added:
+                    type: object
+                    required: [added, alreadyThere, skipped, noCountryCode]
+                    properties:
+                      added: { type: integer }
+                      alreadyThere: { type: integer, description: Numbers the campaign has already (by their digits). }
+                      skipped: { type: integer, description: Lines with no number. }
+                      noCountryCode: { type: integer }
+                  campaign: { $ref: '#/components/schemas/Campaign' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+    delete:
+      operationId: removeCampaignSource
+      summary: Stop reading a campaign's link. The people it added stay.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/CampaignId' }]
+      responses:
+        '204': { description: No longer followed. }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
 
   /api/kit/console/campaigns/{campaignId}/targets:
     get:
@@ -4072,6 +4851,72 @@ paths:
         '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
 
+  /api/kit/console/knowledge/{knowledgeBaseId}/documents/{documentId}/table:
+    get:
+      operationId: getKnowledgeTable
+      summary: "A spreadsheet document as the agents use it: its columns, how each is read, and a page of its rows."
+      description: >
+        A CSV, JSON or Excel file is kept as a table (the document's `table`): on calls agents look rows up in it, and a small one
+        they also read whole (`inPrompt`). Read live from the voice platform, a page of rows at a time. 404 for a document that is
+        not a table; 409 for one that is not ready yet; 422 for a page that is not one; 503 when the voice platform cannot be reached.
+      security: []
+      parameters:
+        - { $ref: '#/components/parameters/KnowledgeBaseId' }
+        - { $ref: '#/components/parameters/DocumentId' }
+        - { name: offset, in: query, required: false, schema: { type: integer, minimum: 0, default: 0 } }
+        - { name: limit, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }
+      responses:
+        '200':
+          description: The table.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/KnowledgeTable' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/Error' }
+    patch:
+      operationId: setKnowledgeColumnTypes
+      summary: "Change how agents read some of a table's columns: as text, numbers, yes or no, or dates."
+      description: >
+        `types` names columns by their `key`. It takes effect on calls that start afterwards, and the rows themselves do not change:
+        when agents compare or add up a number column, its cells that are not numbers are left out, and so are a date column's cells
+        that are not dates. Answers the table's columns as they are now. 404 and 409 as getKnowledgeTable; 422 for a type that is not
+        one or a column the table does not have; 503 when the voice platform cannot be reached.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/KnowledgeBaseId' }, { $ref: '#/components/parameters/DocumentId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [types]
+              properties:
+                types:
+                  type: object
+                  minProperties: 1
+                  maxProperties: 256
+                  additionalProperties: { type: string, enum: [text, number, bool, date] }
+      responses:
+        '200':
+          description: The columns as they are now.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [columns]
+                properties:
+                  columns: { type: array, items: { $ref: '#/components/schemas/KnowledgeTableColumn' } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/Error' }
+
   /api/kit/console/knowledge/{knowledgeBaseId}/documents/{documentId}:
     delete:
       operationId: deleteKnowledgeDocument
@@ -4407,6 +5252,54 @@ paths:
         '409': { $ref: '#/components/responses/Error' }
         '503': { $ref: '#/components/responses/Error' }
 
+  /api/kit/telenow/routing/{token}:
+    parameters:
+      - { name: token, in: path, required: true, schema: { type: string, pattern: '^[a-z0-9]{16,64}$' } }
+    post:
+      operationId: answerRoutingRequest
+      summary: "The voice platform asking, on a call to one of an account's routed numbers, who takes it (signed; no session)."
+      description: >
+        Answered at once from the account's rules: `{}` for the number's own agent, `{action: reject}` for a refusal (the caller hears a busy
+        line), else `{action: route}` with the agent by the platform's id, the language and greeting (`overrides`) and the cap
+        (`limits.max_duration_secs`) the rule has. Verified with `X-Telenow-Signature-V2: t=<unix>,v2=<hex>` (HMAC-SHA256 under the account's
+        secret of "v2", t, the address and the raw body, a line each), t within a few minutes; 401 otherwise, and for a token of no account.
+        Past the time allowed, or on any failure, the platform gives the call to the number's own agent.
+      security: []
+      parameters:
+        - { name: X-Telenow-Signature-V2, in: header, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              properties:
+                to_number: { type: string }
+                caller_number: { type: string, nullable: true }
+                forwarded_from: { type: string, nullable: true, description: As the carrier reported it. }
+      responses:
+        '200':
+          description: Who takes the call.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  action: { type: string, enum: [route, reject] }
+                  agent_id: { type: string }
+                  overrides:
+                    type: object
+                    properties:
+                      language: { type: string }
+                      opener: { type: string }
+                  limits:
+                    type: object
+                    properties:
+                      max_duration_secs: { type: integer }
+        '401': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+
   /api/kit/payments/webhooks/{gatewayId}:
     parameters:
       - { name: gatewayId, in: path, required: true, schema: { type: string } }
@@ -4654,6 +5547,22 @@ paths:
         '409': { $ref: '#/components/responses/Error' }
         '422': { $ref: '#/components/responses/ValidationError' }
 
+  /api/kit/console/consent/export:
+    get:
+      operationId: exportConsent
+      summary: "The current account's consent records as a CSV file, withdrawn ones too."
+      description: Each number, the kind of consent and what it covers, where it came from, the disclosure's version, when it was given, when it ends, and when it was withdrawn.
+      security: []
+      responses:
+        '200':
+          description: The file.
+          content:
+            text/csv:
+              schema: { type: string }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+
   /api/kit/console/consent/import:
     post:
       operationId: importConsent
@@ -4799,6 +5708,22 @@ paths:
         '409': { $ref: '#/components/responses/Error' }
         '422': { $ref: '#/components/responses/ValidationError' }
 
+  /api/kit/console/dnc/export:
+    get:
+      operationId: exportDnc
+      summary: "The current account's do-not-call list as a CSV file, from the kit's own copy."
+      description: Each number, why it is on the list, where it came from, and when it was added.
+      security: []
+      responses:
+        '200':
+          description: The file.
+          content:
+            text/csv:
+              schema: { type: string }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+
   /api/kit/console/dnc/import:
     post:
       operationId: importDncEntries
@@ -4929,7 +5854,7 @@ paths:
     put:
       operationId: setPhoneNumberAgent
       summary: The agent that answers calls to the number, or none.
-      description: 409 while the number is still being bought.
+      description: 409 while the number is still being bought, and for none while its calls are routed (it takes the calls no rule does).
       security: []
       parameters: [{ $ref: '#/components/parameters/NumberId' }]
       requestBody:
@@ -4952,6 +5877,409 @@ paths:
         '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
         '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/numbers/{numberId}/routing:
+    put:
+      operationId: setNumberRouting
+      summary: Whether calls to the number follow the account's call routing rules (the account's managers).
+      description: >
+        Routed, each call to it asks this server which rule takes it (answerRoutingRequest); its own agent takes the calls no rule does, and
+        every call when this server cannot answer in time — so it needs one (409). The first number routed connects the account at the
+        voice platform, which reaches only a server at a public https address (409 otherwise; 502 while the platform cannot be reached).
+        403 for a member who does not manage the account.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/NumberId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [routed]
+              properties:
+                routed: { type: boolean }
+      responses:
+        '200':
+          description: Saved (see `syncState`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PhoneNumber' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '502': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/numbers/{numberId}/caller-id:
+    put:
+      operationId: setNumberCallerId
+      summary: Whether the number is its agent's caller id when a call names none.
+      description: >
+        The agent's calls come from it when they name no number (a call from the agent's page, a campaign with no caller id); the agent's other
+        number stops being its caller id. Only for a number with an agent (409); giving the number an agent again, even the same one, clears it.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/NumberId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [agentCallerId]
+              properties:
+                agentCallerId: { type: boolean }
+      responses:
+        '200':
+          description: Saved (see `syncState`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PhoneNumber' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/numbers/{numberId}/unanswered:
+    put:
+      operationId: setNumberUnanswered
+      summary: What a call to the number does while no agent answers it.
+      description: >
+        `message`: the caller hears that no one is available, then the call ends (the call is answered). `busy`: a busy line. `unavailable`: the
+        line is unavailable. Neither of the last two answers the call. Only for a number with no agent (409); giving it an agent clears it back to
+        `message`.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/NumberId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [unanswered]
+              properties:
+                unanswered: { type: string, enum: [message, busy, unavailable] }
+      responses:
+        '200':
+          description: Saved (see `syncState`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PhoneNumber' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/numbers/lost:
+    get:
+      operationId: listLostNumbers
+      summary: Numbers the voice platform gave up for the account that can still be got back, and what that costs.
+      description: >
+        Given up when their rent was not paid (or for another reason of the platform's), never ones the account released. Each can be got back
+        until `until`; the price is setup and a month's rent on the account's plan (null when charging is off or the plan cannot price it).
+        Read from the voice platform each time (503 while it cannot be reached).
+      security: []
+      responses:
+        '200':
+          description: The account's lost numbers.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [numbers]
+                properties:
+                  numbers: { type: array, items: { $ref: '#/components/schemas/LostNumber' } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/numbers/{numberId}/get-back:
+    post:
+      operationId: getLostNumberBack
+      summary: Get back a number the voice platform gave up.
+      description: >
+        The balance must cover setup and the first month first, while charging is on (409); the fees are then charged as a purchase's are.
+        `restored`: it is back at once, as a new number set up as the old one was (its agent, its caller id, and the campaigns and call routing
+        rules that named it). `requested`: the carrier would not give it back at once, so it is being got back by hand before `until`; it shows
+        among the numbers when it is back. 409 when it cannot be got back (too late, back already, not now), 404 for no such released number.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/NumberId' }]
+      responses:
+        '200':
+          description: What happened.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/GetBackOutcome' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/numbers/renewals:
+    get:
+      operationId: getNumberRenewals
+      summary: Whether the balance covers each number's next rent, in renewal order.
+      description: >
+        A number is `short` when the balance does not cover its rent once every renewal before it is charged too (`shortBy` is that running
+        shortfall: what to add to keep it), else `soon` when it renews within `soonDays`, else `ok`. The rent is charged all the same, and calls
+        stop when the balance reaches zero. Rent, balance and `short` only while charging is on (`charging`). The account's owners get one email
+        for each renewal that will be short, up to `soonDays` ahead.
+      security: []
+      responses:
+        '200':
+          description: The account's numbers' next rent.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/NumberRenewals' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/invoices:
+    get:
+      operationId: listAccountInvoices
+      summary: "The account's invoices, one per payment credited to its wallet, newest first, a page at a time, with its billing details."
+      description: Every member sees them, as they see the wallet; `canEdit` says whether this member may change the billing details.
+      security: []
+      parameters: [{ name: page, in: query, required: false, schema: { type: integer, minimum: 1 } }]
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/InvoicePage' }
+                  - type: object
+                    required: [billingDetails, canEdit]
+                    properties:
+                      billingDetails: { $ref: '#/components/schemas/BillingDetails' }
+                      canEdit: { type: boolean }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/invoices/{id}:
+    get:
+      operationId: getAccountInvoice
+      summary: One invoice of any account the person belongs to, as its printable page shows it.
+      description: "Any of their accounts, not only the one open: the payment email's link names no account."
+      security: []
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Invoice' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/billing-details:
+    get:
+      operationId: getBillingDetails
+      summary: "The account's billing details: printed on its invoices as the customer (else the account's name)."
+      security: []
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/BillingDetails' }
+                  - type: object
+                    required: [canEdit]
+                    properties:
+                      canEdit: { type: boolean }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+    put:
+      operationId: setBillingDetails
+      summary: Save the account's billing details (its owners and admins); the invoices issued from then on carry them.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BillingDetails' }
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/BillingDetails' }
+                  - type: object
+                    required: [canEdit]
+                    properties:
+                      canEdit: { type: boolean }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/routing:
+    get:
+      operationId: getRouting
+      summary: "Call routing: the account's rules in order, its numbers and which are routed, and whether the voice platform asks this server."
+      description: Every member sees them; `canManage` says whether this member may change them.
+      security: []
+      responses:
+        '200':
+          description: The account's call routing.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RoutingPage' }
+        '401': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/routing/rules:
+    post:
+      operationId: createRoutingRule
+      summary: A rule for who takes a call to a routed number, last in the order (the account's managers).
+      description: >
+        Every condition given must hold for the rule to take a call; a list left empty holds for any. 403 for a member who does not manage
+        the account; 409 past `limits.rulesMax`; 422 for what a rule cannot hold (the field says why).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf: [{ $ref: '#/components/schemas/RoutingRuleInput' }]
+              required: [name, action]
+      responses:
+        '201':
+          description: Made.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RoutingRule' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/routing/rules/{ruleId}:
+    parameters:
+      - { name: ruleId, in: path, required: true, schema: { type: string } }
+    patch:
+      operationId: updateRoutingRule
+      summary: Change a rule; what is not sent stays (the account's managers).
+      description: A rule that refuses keeps no agent, language, greeting or cap. 403 for a member who does not manage the account; 404 for a rule of another account.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RoutingRuleInput' }
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RoutingRule' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+    delete:
+      operationId: deleteRoutingRule
+      summary: Delete a rule (the account's managers).
+      security: []
+      responses:
+        '204': { description: Deleted. }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/routing/order:
+    put:
+      operationId: orderRoutingRules
+      summary: The order the rules are tried in (the account's managers); every rule of the account, each once.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ids]
+              properties:
+                ids: { type: array, items: { type: string } }
+      responses:
+        '200':
+          description: The rules in their new order.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [rules]
+                properties:
+                  rules: { type: array, items: { $ref: '#/components/schemas/RoutingRule' } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/routing/try:
+    post:
+      operationId: tryRouting
+      summary: A pretend call to one of the account's numbers, against the rules as saved, now or at a time given.
+      description: Which rule takes it (none — the number's own agent) and what happens. Asks no one; works for a number not routed yet.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [numberId]
+              properties:
+                numberId: { type: string }
+                callerNumber: { type: string, nullable: true, maxLength: 32 }
+                forwardedFrom: { type: string, nullable: true, maxLength: 64, description: As the carrier might report it. }
+                at: { type: string, format: date-time, nullable: true }
+      responses:
+        '200':
+          description: What would happen.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RoutingTry' }
+        '401': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/routing/check:
+    post:
+      operationId: checkRouting
+      summary: The voice platform's own test of a routed number, through this server (the account's managers).
+      description: >
+        The platform asks this server about a pretend call to the number, as it does on a real one: whether it had an answer in the time
+        allowed, how long it took, and the action. 403 for a member who does not manage the account; 409 for a number not routed; 429 past
+        a few a minute; 502 while the platform cannot be reached.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [numberId]
+              properties:
+                numberId: { type: string }
+      responses:
+        '200':
+          description: What the platform found.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RoutingCheck' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '429': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
 
   /api/kit/console/numbers/{numberId}:
     delete:
@@ -4980,6 +6308,11 @@ paths:
         - { name: agentId, in: query, required: false, description: Only this agent's calls., schema: { type: string } }
         - { name: number, in: query, required: false, description: 'Only calls from or to this number, by its digits however it is written.', schema: { type: string } }
         - { name: placedBy, in: query, required: false, description: 'Only the calls the signed-in member placed from the browser.', schema: { type: string, enum: [me] } }
+        - { name: from, in: query, required: false, description: 'The first day, in `timeZone` (YYYY-MM-DD).', schema: { type: string, format: date } }
+        - { name: to, in: query, required: false, description: 'The last day, in `timeZone` (YYYY-MM-DD); at most `kit.insights.max_days` days after `from`.', schema: { type: string, format: date } }
+        - { name: timeZone, in: query, required: false, description: 'An IANA time zone (`Asia/Kolkata`) the days are in; UTC when none.', schema: { type: string, maxLength: 64 } }
+        - { name: outcome, in: query, required: false, description: "Only calls with this outcome, one of the list's `outcomes`: the voice platform's words, an agent's own too (`completed`, `no_answer`, `booked`, …).", schema: { type: string, maxLength: 64 } }
+        - { name: channel, in: query, required: false, description: 'Only calls on this channel (`telephony`, `web_call`, `softphone`, `chat`, …).', schema: { type: string, maxLength: 64 } }
       responses:
         '200':
           description: One page of calls.
@@ -4987,15 +6320,148 @@ paths:
             application/json:
               schema:
                 type: object
-                required: [calls, total, page, perPage]
+                required: [calls, total, page, perPage, outcomes]
                 properties:
                   calls: { type: array, items: { $ref: '#/components/schemas/CallSummary' } }
                   total: { type: integer }
                   page: { type: integer }
                   perPage: { type: integer }
+                  outcomes: { type: array, items: { type: string }, description: "The outcomes the account's calls have, most calls first (at most `kit.calls.outcomes_max`): what the outcome filter offers." }
         '401': { $ref: '#/components/responses/Error' }
         '403': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/calls/export:
+    get:
+      operationId: exportCalls
+      summary: "The current account's calls as a CSV file, newest first, with the same filters as the list."
+      description: >
+        From the kit's own copy: when each started (in `timeZone`), its agent, direction and channel, the numbers, how long it
+        lasted, its outcome, who answered, its sentiment and summary, and what the account was charged for it, in its currency.
+        Nothing of the voice platform is in it. 422 names a filter that is not one (a day, a time zone, a period too long).
+      security: []
+      parameters:
+        - { name: agentId, in: query, required: false, description: Only this agent's calls., schema: { type: string } }
+        - { name: number, in: query, required: false, description: 'Only calls from or to this number.', schema: { type: string } }
+        - { name: from, in: query, required: false, description: 'The first day, in `timeZone` (YYYY-MM-DD).', schema: { type: string, format: date } }
+        - { name: to, in: query, required: false, description: 'The last day, in `timeZone` (YYYY-MM-DD); at most `kit.insights.max_days` days after `from`.', schema: { type: string, format: date } }
+        - { name: timeZone, in: query, required: false, description: 'An IANA time zone (`Asia/Kolkata`) the days are in; UTC when none.', schema: { type: string, maxLength: 64 } }
+        - { name: outcome, in: query, required: false, description: "Only calls with this outcome, one of the list's `outcomes`: the voice platform's words, an agent's own too (`completed`, `no_answer`, `booked`, …).", schema: { type: string, maxLength: 64 } }
+        - { name: channel, in: query, required: false, description: 'Only calls on this channel (`telephony`, `web_call`, `softphone`, `chat`, …).', schema: { type: string, maxLength: 64 } }
+      responses:
+        '200':
+          description: The file.
+          content:
+            text/csv:
+              schema: { type: string }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/call-health:
+    get:
+      operationId: getCallHealth
+      summary: "The providers that failed on the account's recent calls, under the operator's names, with the agents whose calls they were."
+      description: >
+        From the voice platform's own record of each failure, read with the account's own key and kept a minute. Never
+        the provider's raw error or the platform's ids. 409 when the account is not set up on the voice platform; 502
+        when it cannot be read now. Every member.
+      security: []
+      parameters:
+        - { name: minutes, in: query, required: false, description: 'The window: 1 to 1440 minutes (60 when none).', schema: { type: integer, minimum: 1, maximum: 1440 } }
+      responses:
+        '200':
+          description: The failures.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CallHealth' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '502': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/insights:
+    get:
+      operationId: getInsights
+      summary: "How the current account's calls went over a period: counts, minutes, outcomes, sentiment, channels, spend, each day and each agent."
+      description: >
+        From the kit's own copy of the calls, so it is the same everywhere a call shows. A period is whole days in `timeZone`
+        (the last 30 when none is asked), at most `kit.insights.max_days` days. A call is answered when it lasted and no
+        machine picked up. Spend is what the account was charged, in each currency it was charged in. 422 names a filter that
+        is not one.
+      security: []
+      parameters:
+        - { name: from, in: query, required: false, schema: { type: string, format: date } }
+        - { name: to, in: query, required: false, schema: { type: string, format: date } }
+        - { name: timeZone, in: query, required: false, schema: { type: string, maxLength: 64 } }
+        - { name: agentId, in: query, required: false, description: Only this agent's calls., schema: { type: string } }
+      responses:
+        '200':
+          description: The period.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Insights' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /api/kit/console/memory:
+    get:
+      operationId: getCallerMemory
+      summary: "What the account's agents remember about each caller, most recent first."
+      description: >
+        An agent that remembers callers (its behaviour: remember callers) keeps, after each call, a short summary and some
+        facts about the person, used on their next call until it ends (`expiresAt`); one ended is kept here but no longer used
+        (`expired`). A phone caller is named by their number, a web chat visitor by the website they chatted on. At most the
+        `limit` most recent are listed; any caller can be forgotten, listed or not. `canForget` says whether this member may.
+        503 when the voice platform cannot be reached.
+      security: []
+      responses:
+        '200':
+          description: The callers remembered.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [callers, limit, canForget]
+                properties:
+                  callers: { type: array, items: { $ref: '#/components/schemas/RememberedCaller' } }
+                  limit: { type: integer, description: The most this lists. }
+                  canForget: { type: boolean, description: Whether this member may forget a caller (one who manages the account). }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+    delete:
+      operationId: forgetCaller
+      summary: "Forget everything the account's agents remember about one caller. It cannot be undone."
+      description: >
+        `caller` is a phone number however it is written, or a remembered caller's `key` as listed (any other text is taken as a key,
+        never cut down to its digits). `removed` is false when nothing was
+        remembered about them. Only someone who manages the account may (403 otherwise). 422 for no caller; 503 when the voice
+        platform cannot be reached.
+      security: []
+      parameters:
+        - { name: caller, in: query, required: true, schema: { type: string, maxLength: 128 } }
+      responses:
+        '200':
+          description: Forgotten.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [removed]
+                properties:
+                  removed: { type: boolean }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/Error' }
 
   /api/kit/console/calls/live:
     get:
@@ -5084,6 +6550,46 @@ paths:
         '403': { $ref: '#/components/responses/Error' }
         '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /api/kit/console/calls/{callId}/agent-notes:
+    post:
+      operationId: tellAgent
+      summary: "Tell the agent something during one of the account's live calls: it sees it from its next reply, never as the caller's words."
+      description: >
+        With `sayNow`, on a phone call the agent says it in its own words as soon as nobody is speaking; in a chat it waits for the next reply.
+        While the agent is away (the caller on hold, a transfer that may come back) it waits until the agent has the call again. Notes add up for
+        the call; each is kept and shown on the call (`agentNotes`). Only someone who manages the account (403 otherwise). 409 for a call that is
+        over, one a person has (a call placed from the Phone page), an agent that cannot be told anything, or an account not set up; 422 for an
+        empty note or one longer than the agent can take in beside the call so far (how much depends on the agent's model; the reason says how
+        many characters fit); 503 when it cannot be told just now.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/CallId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string, maxLength: 2000 }
+                sayNow: { type: boolean, default: false }
+      responses:
+        '202':
+          description: Told.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [note]
+                properties:
+                  note: { $ref: '#/components/schemas/AgentNote' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/ValidationError' }
         '503': { $ref: '#/components/responses/Error' }
 
   /api/kit/console/calls/{callId}/work:
@@ -5365,6 +6871,12 @@ components:
       in: path
       required: true
       schema: { type: string, format: uuid }
+    ChatKey:
+      name: chatKey
+      in: path
+      required: true
+      description: The chat box's public key, from its snippet.
+      schema: { type: string, maxLength: 64 }
     OwnVoiceId:
       name: ownVoiceId
       in: path
@@ -5768,10 +7280,18 @@ components:
 
     CostReport:
       type: object
-      required: [period, by, groups, rows, totals, page, perPage, total]
+      required: [period, by, customer, groups, rows, totals, page, perPage, total]
       properties:
         period: { $ref: '#/components/schemas/ReportPeriod' }
         by: { type: string }
+        customer:
+          type: object
+          nullable: true
+          description: The customer the report is limited to, or null for every customer.
+          required: [id, name]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
         groups: { type: array, items: { $ref: '#/components/schemas/Option' } }
         rows:
           type: array
@@ -5787,6 +7307,140 @@ components:
         page: { type: integer }
         perPage: { type: integer }
         total: { type: integer }
+
+    BillingDetails:
+      type: object
+      required: [name, address, taxNumber]
+      properties:
+        name: { type: string, nullable: true, maxLength: 120 }
+        address: { type: string, nullable: true, maxLength: 500 }
+        taxNumber: { type: string, nullable: true, maxLength: 64 }
+
+    InvoiceSettings:
+      type: object
+      required: [prefix, name, address, taxNumber, email, taxName, taxRate]
+      properties:
+        prefix: { type: string, nullable: true, pattern: '^[A-Za-z0-9/_-]{0,16}$', description: 'Before the year and the number: INV-2026-000001.' }
+        name: { type: string, nullable: true, maxLength: 120 }
+        address: { type: string, nullable: true, maxLength: 500 }
+        taxNumber: { type: string, nullable: true, maxLength: 64 }
+        email: { type: string, nullable: true }
+        taxName: { type: string, nullable: true, maxLength: 32, description: 'GST, VAT…' }
+        taxRate: { type: string, nullable: true, description: 'A percentage, from 0 to 100, with at most two decimals.' }
+
+    InvoiceSettingsAnswer:
+      allOf:
+        - { $ref: '#/components/schemas/InvoiceSettings' }
+        - type: object
+          required: [sequenceDigits]
+          properties:
+            sequenceDigits: { type: integer, description: "How many digits the year's number has (the server's setting): INV-2026-000001 for 6." }
+
+    InvoicePage:
+      type: object
+      required: [invoices, page, perPage, total]
+      properties:
+        invoices: { type: array, items: { $ref: '#/components/schemas/InvoiceSummary' } }
+        page: { type: integer }
+        perPage: { type: integer }
+        total: { type: integer }
+
+    InvoiceParty:
+      type: object
+      required: [name, address, taxNumber, email]
+      properties:
+        name: { type: string }
+        address: { type: string, nullable: true }
+        taxNumber: { type: string, nullable: true }
+        email: { type: string, nullable: true }
+
+    InvoiceSummary:
+      type: object
+      required: [id, number, issuedAt, currency, amount, refunded]
+      properties:
+        id: { type: string, format: uuid }
+        number: { type: string }
+        issuedAt: { type: string, format: date-time }
+        currency: { type: string }
+        amount: { type: string, description: 'The amount paid, tax included.' }
+        refunded: { type: string, nullable: true, description: 'What has been refunded of the payment since (the invoice itself never changes).' }
+
+    Invoice:
+      allOf:
+        - { $ref: '#/components/schemas/InvoiceSummary' }
+        - type: object
+          required: [description, net, tax, seller, buyer, paidWith]
+          properties:
+            description: { type: string }
+            net: { type: string, description: 'The amount less its tax; the amount itself when there is no tax.' }
+            tax:
+              type: object
+              nullable: true
+              required: [name, rate, amount]
+              properties:
+                name: { type: string }
+                rate: { type: string, description: A percentage. }
+                amount: { type: string }
+            seller: { $ref: '#/components/schemas/InvoiceParty' }
+            buyer: { $ref: '#/components/schemas/InvoiceParty' }
+            paidWith: { type: string, nullable: true, description: 'The way to pay the operator it was paid with.' }
+
+    PlatformBillingState:
+      type: object
+      required: [state, checkedAt]
+      properties:
+        state:
+          type: object
+          nullable: true
+          description: The voice platform's spend state for the operator's account, as last read. Money is USD, as decimal strings.
+          required: [state, canSpend, stoppedBy, mode, balanceUsd, periodStart, periodSpendUsd, monthlySpendLimitUsd, headroomUsd, lowThresholdUsd]
+          properties:
+            state: { type: string, enum: [ok, low, stopped] }
+            canSpend: { type: boolean }
+            stoppedBy: { type: string, nullable: true, enum: [suspended, out_of_credit, spend_cap, null] }
+            mode: { type: string, enum: [prepaid, postpaid] }
+            balanceUsd: { type: string }
+            periodStart: { type: string, format: date-time }
+            periodSpendUsd: { type: string }
+            monthlySpendLimitUsd: { type: string, nullable: true }
+            headroomUsd: { type: string, nullable: true }
+            lowThresholdUsd: { type: string, nullable: true }
+        checkedAt: { type: string, format: date-time, nullable: true }
+
+    PlatformBilling:
+      allOf:
+        - { $ref: '#/components/schemas/PlatformBillingState' }
+        - type: object
+          required: [invoices, invoicesError]
+          properties:
+            invoicesError: { type: string, nullable: true }
+            invoices:
+              type: array
+              nullable: true
+              items:
+                type: object
+                required: [id, periodStart, periodEnd, status, issuedAt, dueAt, paidAt, currency, total, totalUsd, lines, rest]
+                properties:
+                  id: { type: string }
+                  periodStart: { type: string, format: date, nullable: true }
+                  periodEnd: { type: string, format: date, nullable: true }
+                  status: { type: string, enum: [draft, issued, paid, overdue, void, other] }
+                  issuedAt: { type: string, format: date-time, nullable: true }
+                  dueAt: { type: string, format: date-time, nullable: true }
+                  paidAt: { type: string, format: date-time, nullable: true }
+                  currency: { type: string }
+                  total: { type: string, nullable: true }
+                  totalUsd: { type: string, nullable: true }
+                  rest: { type: string, nullable: true, description: 'What the total holds beyond the lines (tax), when anything.' }
+                  lines:
+                    type: array
+                    items:
+                      type: object
+                      required: [kind, description, amount]
+                      properties:
+                        kind: { type: string }
+                        description: { type: string }
+                        amount: { type: string, nullable: true }
 
     AdminDashboard:
       type: object
@@ -5857,7 +7511,7 @@ components:
                 lowThresholdUsd: { type: string, nullable: true }
         attention:
           type: object
-          required: [callsNotCharged, failedWrites, paymentsToReview, customersNotSynced, eventsFailed, customersDrifting, jobsNotRunning]
+          required: [callsNotCharged, failedWrites, paymentsToReview, customersNotSynced, eventsFailed, customersDrifting, jobsNotRunning, providersFailing]
           properties:
             callsNotCharged: { type: integer }
             failedWrites: { type: integer }
@@ -5866,11 +7520,126 @@ components:
             eventsFailed: { type: integer }
             customersDrifting: { type: integer }
             jobsNotRunning: { type: boolean }
+            providersFailing: { type: integer, description: "Providers that failed on as many of customers' recent calls as the alert level, or more, at call health's last sweep (getVoicePlatformHealth's `callHealth`)." }
+
+    PromptFinding:
+      type: object
+      required: [field, code, line, column, message]
+      properties:
+        field: { type: string, enum: [systemPrompt, greeting] }
+        code: { type: string, description: "The voice platform's code for it (section_unclosed, section_near_miss, missing_braces, section_unknown_var, …)." }
+        line: { type: integer }
+        column: { type: integer }
+        message: { type: string }
+
+    PromptCheckInput:
+      type: object
+      required: [systemPrompt]
+      properties:
+        systemPrompt: { type: string, nullable: true, description: 'The instructions as they are being written.' }
+        greeting: { type: string, nullable: true, description: 'The opening line, checked as a spoken line (warnings only).' }
+        values:
+          type: object
+          nullable: true
+          description: 'Sample values by variable name (at most 50, each at most 1000 characters); when sent, even `{}`, the answer carries a preview.'
+          additionalProperties: { type: string, nullable: true }
+        channel: { type: string, nullable: true, enum: [phone_inbound, phone_outbound, chat], description: 'The call the preview is for.' }
+
+    PromptCheck:
+      type: object
+      required: [checked, valid, errors, warnings, preview]
+      properties:
+        checked: { type: boolean, description: 'False for instructions longer than the voice platform checks (saved unchecked: its own save still refuses broken sections).' }
+        valid: { type: boolean, description: 'Whether a save would be taken: false when the conditional sections do not open and close properly.' }
+        errors: { type: array, items: { $ref: '#/components/schemas/PromptFinding' } }
+        warnings: { type: array, items: { $ref: '#/components/schemas/PromptFinding' }, description: "Never stop a save. The opening line's are always warnings." }
+        preview:
+          type: object
+          nullable: true
+          description: 'Only when sample values were sent: the instructions as a call with them would get them.'
+          required: [text, sections]
+          properties:
+            text: { type: string }
+            sections:
+              type: array
+              items:
+                type: object
+                required: [line, branch, branches]
+                properties:
+                  line: { type: integer }
+                  branch: { type: integer, nullable: true, description: 'Which branch was kept, from 1; null for none.' }
+                  branches: { type: integer }
+
+    CallHealth:
+      type: object
+      required: [windowMinutes, callsAffected, checkedAt, failures]
+      properties:
+        windowMinutes: { type: integer }
+        callsAffected: { type: integer, description: 'Calls with a failure, each once however many parts failed.' }
+        checkedAt: { type: string, format: date-time, description: 'When it was read from the voice platform (kept a minute).' }
+        failures:
+          type: array
+          items:
+            type: object
+            required: [part, provider, cause, calls, lastAt, agents]
+            properties:
+              part: { type: string, enum: [stt, tts, llm, other] }
+              provider: { type: string, description: "The operator's name for the provider, or, when there is none to show, its part ('the voice provider')." }
+              cause: { type: string, enum: [provider, setup, platform, unknown], description: "The provider's fault, the agent's own setup, the platform's, or not known." }
+              calls: { type: integer }
+              lastAt: { type: string, nullable: true }
+              agents:
+                type: array
+                items:
+                  type: object
+                  required: [id, name]
+                  properties:
+                    id: { type: string, format: uuid }
+                    name: { type: string }
+              providerId: { type: string, description: "Staff only: the platform's id." }
+              attribution: { type: string, description: 'Staff only: the cause as the platform says it.' }
+              keySource: { type: string, description: 'Staff only.' }
+              incidents: { type: integer, description: 'Staff only: failures counted, a call once per failure.' }
+              error: { type: string, nullable: true, description: "Staff only: the provider's last error as the platform kept it." }
 
     VoicePlatformHealth:
       type: object
-      required: [telenow, events, writes, jobs, reconciliation]
+      required: [telenow, callHealth, events, writes, jobs, reconciliation]
       properties:
+        callHealth:
+          type: object
+          nullable: true
+          description: "The providers that failed on customers' recent calls, added up by `kit:call-health` from each account with calls in the window (the busiest first, at most so many a run); null before its first run."
+          required: [checkedAt, windowMinutes, accountsActive, accountsChecked, accountsUnread, alertCalls, providers]
+          properties:
+            checkedAt: { type: string, format: date-time }
+            windowMinutes: { type: integer }
+            accountsActive: { type: integer, description: 'Accounts with calls in the window.' }
+            accountsChecked: { type: integer }
+            accountsUnread: { type: integer, description: "Accounts whose failures could not be read." }
+            alertCalls: { type: integer, description: 'A provider with this many calls failed or more is flagged on the dashboard.' }
+            providers:
+              type: array
+              items:
+                type: object
+                required: [part, providerId, provider, calls, customerCount, customers, lastAt]
+                properties:
+                  part: { type: string, enum: [stt, tts, llm, other] }
+                  providerId: { type: string, description: "The platform's id." }
+                  provider: { type: string, description: 'The name customers know it by (Admin → Catalog), or its part.' }
+                  calls: { type: integer }
+                  customerCount: { type: integer }
+                  customers:
+                    type: array
+                    description: 'The customers with the most such calls first (at most so many).'
+                    items:
+                      type: object
+                      required: [id, name, calls]
+                      properties:
+                        id: { type: string, format: uuid }
+                        name: { type: string }
+                        calls: { type: integer }
+                  lastAt: { type: string, nullable: true }
         telenow:
           type: object
           required: [name, connected, account, keyRejected, error, checkedAt]
@@ -6859,15 +8628,79 @@ components:
       properties:
         values: { type: object, additionalProperties: true }
 
+    StarterAgent:
+      type: object
+      required: [id, name, description, offered, steps, from, publishedBy, publishedAt]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        description: { type: string, nullable: true }
+        offered: { type: boolean }
+        steps: { type: integer, description: How many call steps it carries. }
+        from:
+          type: object
+          required: [agent, account]
+          description: The agent and account it was made from, as they were named then.
+          properties:
+            agent: { type: string, nullable: true }
+            account: { type: string, nullable: true }
+        publishedBy: { type: string, nullable: true }
+        publishedAt: { type: string, format: date-time }
+    StarterAgentPreview:
+      type: object
+      required: [agent, texts, leftOut, steps]
+      properties:
+        agent:
+          type: object
+          required: [id, name, account]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
+            account: { type: string }
+        texts:
+          type: array
+          description: "Every piece of free text it would carry, in full: where it is (`description`, `prompt`, a `setting` or `analysis` field by its key, a `step`'s name, instructions or line, an `exit`'s label or when)."
+          items:
+            type: object
+            required: [where, key, of, text]
+            properties:
+              where: { type: string, enum: [description, prompt, setting, analysis, step, exit] }
+              key: { type: string, nullable: true }
+              of: { type: string, nullable: true, description: "For a step's text, the step (its name); for an exit's, the steps it joins (\"from → to\")." }
+              text: { type: string }
+        leftOut:
+          type: array
+          description: What of the agent it does not carry, with how many and their names where they have them; `steps` are the tool, hand-over and transfer steps made endings.
+          items:
+            type: object
+            required: [kind, count, names]
+            properties:
+              kind: { type: string, enum: [ownVoice, tools, lookups, handoff, transfer, emailAfterCall, knowledge, webhooks, steps] }
+              count: { type: integer }
+              names: { type: array, items: { type: string } }
+        steps: { type: integer }
+    AgentCopyToDo:
+      type: object
+      required: [kind, name]
+      properties:
+        kind:
+          type: string
+          enum: [key, flow, voiceSetup, webhooks, tools, lookups, handoff]
+          description: >
+            `key`: type again the key of the tool or look-up `name`. `flow`: the call steps are a draft to finish and publish (a step's key to type
+            again). `voiceSetup`: the source's voice setup is no longer offered, so the copy has the defaults. `webhooks`: each address has its own
+            new signing secret. `tools`, `lookups`, `handoff`: these could not be copied as they are and are to be set again.
+        name: { type: string, nullable: true, description: "For `key`: the tool's or look-up's name." }
     Agent:
       type: object
-      required: [id, name, description, systemPrompt, isActive, stack, stackNames, settings, stackCheck, knowledgeBases, syncState, syncError, createdAt, updatedAt]
+      required: [id, name, description, systemPrompt, isActive, logoUrl, stack, stackNames, settings, stackCheck, knowledgeBases, syncState, syncError, createdAt, updatedAt]
       properties:
         id: { type: string, format: uuid }
         name: { type: string }
         description: { type: string, nullable: true }
         systemPrompt: { type: string, nullable: true }
         isActive: { type: boolean }
+        logoUrl: { type: string, nullable: true, description: "Where the agent's logo is served (getAgentLogo): this platform's own address; null for none." }
         stack:
           type: object
           description: >
@@ -7071,6 +8904,80 @@ components:
         token: { type: string }
         room: { type: string }
 
+    RememberedCaller:
+      type: object
+      required: [key, kind, caller, website, summary, facts, calls, updatedAt, expiresAt, expired, lastCallId]
+      properties:
+        key: { type: string, description: What forgetCaller takes to forget them. }
+        kind: { type: string, enum: [phone, chat, other], description: A phone caller, a web chat visitor, or another kind of caller. }
+        caller: { type: string, description: "The number with its +, or the key for a caller that is not a phone." }
+        website: { type: string, nullable: true, description: "For a web chat visitor, the website they chatted on, when the kit still has the conversation." }
+        summary: { type: string, nullable: true }
+        facts:
+          type: array
+          description: The facts kept about them, by name.
+          items:
+            type: object
+            required: [name, value]
+            properties:
+              name: { type: string }
+              value: { type: string }
+        calls: { type: integer, description: How many of their calls it was made from. }
+        updatedAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time, nullable: true, description: When it stops being used on calls; null for never. }
+        expired: { type: boolean, description: No longer used on calls. }
+        lastCallId: { type: string, nullable: true, description: "The kit's call it was last made from, when the kit has it." }
+    InsightCount:
+      type: object
+      required: [key, count]
+      properties:
+        key: { type: string, nullable: true, description: "The outcome, sentiment or channel as the voice platform words it; null for none." }
+        count: { type: integer }
+    InsightSpend:
+      type: object
+      required: [currency, amount]
+      properties:
+        currency: { type: string }
+        amount: { type: string, description: A decimal in the currency's own units. }
+    Insights:
+      type: object
+      required: [from, to, timeZone, calls, answered, seconds, averageSeconds, outcomes, sentiments, channels, spend, days, agents]
+      properties:
+        from: { type: string, format: date }
+        to: { type: string, format: date }
+        timeZone: { type: string }
+        calls: { type: integer }
+        answered: { type: integer, description: Calls that lasted and that no machine picked up. }
+        seconds: { type: integer, description: How long all the calls lasted. }
+        averageSeconds: { type: integer, description: How long an answered call lasted on average; 0 with none. }
+        outcomes: { type: array, items: { $ref: '#/components/schemas/InsightCount' }, description: Most first. }
+        sentiments: { type: array, items: { $ref: '#/components/schemas/InsightCount' }, description: "Over the calls with an analysis; most first." }
+        channels: { type: array, items: { $ref: '#/components/schemas/InsightCount' }, description: Most first. }
+        spend: { type: array, items: { $ref: '#/components/schemas/InsightSpend' } }
+        days:
+          type: array
+          description: Every day of the period, oldest first, those with no call too.
+          items:
+            type: object
+            required: [day, calls, answered, seconds]
+            properties:
+              day: { type: string, format: date }
+              calls: { type: integer }
+              answered: { type: integer }
+              seconds: { type: integer }
+        agents:
+          type: array
+          description: "Each agent with a call in the period, most calls first; `agentId` null for calls with no agent."
+          items:
+            type: object
+            required: [agentId, name, calls, answered, seconds, spend]
+            properties:
+              agentId: { type: string, nullable: true }
+              name: { type: string, nullable: true }
+              calls: { type: integer }
+              answered: { type: integer }
+              seconds: { type: integer }
+              spend: { type: array, items: { $ref: '#/components/schemas/InsightSpend' } }
     CallSummary:
       type: object
       required: [id, agent, placedBy, requestedBy, status, outcome, direction, channel, from, to, startedAt, endedAt, durationSec, complete, charge, wrapup]
@@ -7103,7 +9010,7 @@ components:
         status: { type: string, nullable: true, description: 'The voice platform''s status of the call (`ended` once over).' }
         outcome: { type: string, nullable: true, description: '`completed`, `no_answer`, `busy`, `failed`, … as the voice platform reports it.' }
         direction: { type: string, nullable: true, description: '`inbound`, `outbound`, `web`, …' }
-        channel: { type: string, nullable: true, description: '`telephony`, `web_call`, `softphone` (placed from the browser), …' }
+        channel: { type: string, nullable: true, description: '`telephony`, `web_call`, `softphone` (placed from the browser), `chat` (a conversation in a chat box on the customer''s website: no number, no recording), …' }
         from: { type: string, nullable: true }
         to: { type: string, nullable: true }
         startedAt: { type: string, format: date-time, nullable: true }
@@ -7120,12 +9027,29 @@ components:
             currency: { type: string }
         wrapup: { type: string, nullable: true, description: 'How it went, in a member''s words (setCallWrapup).' }
 
+    AgentNote:
+      type: object
+      required: [by, at, text, sayNow, delivery]
+      properties:
+        by: { type: string, nullable: true, description: 'Who told it. Null once they are no longer a user here.' }
+        at: { type: string, format: date-time }
+        text: { type: string }
+        sayNow: { type: boolean, description: The agent was asked to say it at once. }
+        delivery:
+          type: string
+          enum: [nextReply, whenBack, sayingNow]
+          description: "`nextReply`: from the agent's next reply. `whenBack`: when the agent has the call again (on hold, a transfer under way). `sayingNow`: it is saying it now."
     Call:
       allOf:
         - { $ref: '#/components/schemas/CallSummary' }
         - type: object
-          required: [answeredBy, transcript, recordings, analysis, canListen, listens]
+          required: [answeredBy, transcript, recordings, analysis, canListen, listens, canTellAgent, agentNotes]
           properties:
+            canTellAgent: { type: boolean, description: 'The signed-in member may tell the agent something now (tellAgent).' }
+            agentNotes:
+              type: array
+              description: What the agent was told during the call, newest first.
+              items: { $ref: '#/components/schemas/AgentNote' }
             canListen: { type: boolean, description: 'The signed-in member may listen in to it now (listenToLiveCall).' }
             listens:
               type: array
@@ -7143,7 +9067,7 @@ components:
                 type: object
                 required: [role, text, at]
                 properties:
-                  role: { type: string, nullable: true, description: '`user` (the caller) or `assistant` (the agent).' }
+                  role: { type: string, nullable: true, description: '`user` (the caller, or on a chat the visitor) or `assistant` (the agent).' }
                   text: { type: string }
                   at: { type: string, format: date-time, nullable: true }
             recordings:
@@ -7477,7 +9401,7 @@ components:
 
     PhoneNumber:
       type: object
-      required: [id, number, country, region, type, agent, monthlyPrice, nextRenewalAt, releasing, syncState, syncError, createdAt]
+      required: [id, number, country, region, type, agent, routed, agentCallerId, unanswered, monthlyPrice, nextRenewalAt, releasing, syncState, syncError, createdAt]
       properties:
         id: { type: string, format: uuid }
         number: { type: string, description: 'E.164, with its +.' }
@@ -7495,9 +9419,201 @@ components:
         monthlyPrice: { allOf: [{ $ref: '#/components/schemas/Price' }], nullable: true, description: 'Its rent when it was bought here (null for one bought elsewhere).' }
         nextRenewalAt: { type: string, format: date-time, nullable: true }
         releasing: { type: boolean, description: Released; listed until the voice platform has it back. }
+        routed: { type: boolean, description: "Calls to it follow the account's call routing rules (setNumberRouting)." }
+        agentCallerId: { type: boolean, description: "Its agent's calls come from it when they name no number (setNumberCallerId)." }
+        unanswered: { type: string, enum: [message, busy, unavailable], description: 'What a call to it does while no agent answers it (setNumberUnanswered).' }
         syncState: { type: string, enum: [pending, synced, failed] }
         syncError: { type: string, nullable: true }
         createdAt: { type: string, format: date-time }
+
+    LostNumber:
+      type: object
+      required: [id, number, releasedAt, until, askedAt, reason, agent, wasCallerId, setupPrice, monthlyPrice]
+      properties:
+        id: { type: string, format: uuid, description: 'The released number (getLostNumberBack).' }
+        number: { type: string, description: 'E.164, with its +.' }
+        releasedAt: { type: string, format: date-time, nullable: true }
+        until: { type: string, format: date-time, nullable: true, description: 'It can be got back until then.' }
+        askedAt: { type: string, format: date-time, nullable: true, description: 'When the account asked for it back, while it is being got back by hand.' }
+        reason: { type: string, enum: [unpaid, other], description: '`unpaid`: given up when its rent was not paid.' }
+        agent:
+          type: object
+          nullable: true
+          description: The agent that answered it then (null when none, or since deleted).
+          required: [id, name]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
+        wasCallerId: { type: boolean, description: "It was that agent's caller id." }
+        setupPrice: { allOf: [{ $ref: '#/components/schemas/Price' }], nullable: true }
+        monthlyPrice: { allOf: [{ $ref: '#/components/schemas/Price' }], nullable: true }
+
+    GetBackOutcome:
+      type: object
+      required: [outcome]
+      properties:
+        outcome: { type: string, enum: [restored, requested] }
+        number: { allOf: [{ $ref: '#/components/schemas/PhoneNumber' }], description: 'Always given with `restored` (never with `requested`): the number it came back as.' }
+        until: { type: string, format: date-time, nullable: true, description: 'Always given with `requested` (never with `restored`): it is being got back by hand until then; null when the platform gave no date.' }
+
+    NumberRenewals:
+      type: object
+      required: [charging, balance, soonDays, numbers]
+      properties:
+        charging: { type: boolean, description: 'Whether customers are charged (rent, balance and `short` only then).' }
+        balance: { allOf: [{ $ref: '#/components/schemas/Price' }], nullable: true }
+        soonDays: { type: integer }
+        numbers:
+          type: array
+          items:
+            type: object
+            required: [id, number, renewsAt, rent, status, shortBy]
+            properties:
+              id: { type: string, format: uuid }
+              number: { type: string }
+              renewsAt: { type: string, format: date-time }
+              rent: { allOf: [{ $ref: '#/components/schemas/Price' }], nullable: true }
+              status: { type: string, enum: [ok, soon, short] }
+              shortBy: { allOf: [{ $ref: '#/components/schemas/Price' }], nullable: true }
+
+    RoutingRuleInput:
+      type: object
+      description: >
+        What a rule matches (a list left empty: any) and what it does. Days are ISO (1 = Monday); hours run from `from` until `until` (not
+        included), past midnight when `until` comes first — those hours after midnight belong to the day they began. Days or hours need a
+        timezone. A forwarded-from line is the same as the one the carrier reports however it writes it (a leading 0, no country code).
+      properties:
+        name: { type: string, maxLength: 120 }
+        enabled: { type: boolean }
+        numberIds: { type: array, items: { type: string }, description: The account's numbers it takes calls to. }
+        forwardedFrom: { type: array, items: { type: string }, description: 'Lines that forwarded the call, E.164.' }
+        callerStartsWith: { type: array, items: { type: string }, description: 'How the caller''s number starts: + and digits (+44), or a whole number.' }
+        days: { type: array, items: { type: integer, minimum: 1, maximum: 7 } }
+        from: { type: string, nullable: true, pattern: '^[0-2][0-9]:[0-5][0-9]$' }
+        until: { type: string, nullable: true, pattern: '^[0-2][0-9]:[0-5][0-9]$' }
+        timezone: { type: string, nullable: true, description: An IANA timezone. }
+        action: { type: string, enum: [answer, refuse] }
+        agentId: { type: string, nullable: true, description: 'One of the account''s saved agents; null: the number''s own.' }
+        language: { type: string, nullable: true, maxLength: 32, description: 'A language code (en-US, hi-IN) for the call.' }
+        greeting: { type: string, nullable: true, maxLength: 500, description: "The agent's first line on the call." }
+        maxMinutes: { type: integer, nullable: true, minimum: 1, maximum: 240, description: "The call's longest, when shorter than the agent's own." }
+
+    RoutingRule:
+      type: object
+      required: [id, name, enabled, numberIds, forwardedFrom, callerStartsWith, days, from, until, timezone, action, agent, agentGone, language, greeting, maxMinutes]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        enabled: { type: boolean }
+        numberIds: { type: array, items: { type: string } }
+        forwardedFrom: { type: array, items: { type: string } }
+        callerStartsWith: { type: array, items: { type: string } }
+        days: { type: array, items: { type: integer } }
+        from: { type: string, nullable: true }
+        until: { type: string, nullable: true }
+        timezone: { type: string, nullable: true }
+        action: { type: string, enum: [answer, refuse] }
+        agent:
+          type: object
+          nullable: true
+          description: "The agent that takes the call; null: the number's own."
+          required: [id, name]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
+        agentGone: { type: boolean, description: "Its agent was deleted: the number's own takes the call." }
+        language: { type: string, nullable: true }
+        greeting: { type: string, nullable: true }
+        maxMinutes: { type: integer, nullable: true }
+
+    RoutingPage:
+      type: object
+      required: [rules, numbers, connection, canManage, limits]
+      properties:
+        rules: { type: array, items: { $ref: '#/components/schemas/RoutingRule' } }
+        numbers:
+          type: array
+          description: The account's numbers that can take calls.
+          items:
+            type: object
+            required: [id, number, agent, routed, syncState, syncError]
+            properties:
+              id: { type: string, format: uuid }
+              number: { type: string }
+              agent:
+                type: object
+                nullable: true
+                required: [id, name]
+                properties:
+                  id: { type: string, format: uuid }
+                  name: { type: string }
+              routed: { type: boolean }
+              syncState: { type: string, enum: [pending, synced, failed] }
+              syncError: { type: string, nullable: true }
+        connection:
+          type: object
+          nullable: true
+          description: >
+            Whether the voice platform asks this server (null until a number was first routed): `connected`; `off`; `elsewhere` (it asks
+            another address); `not_connected`; `unknown` (the platform not reached just now). With when it last had an answer, and its last
+            problem — `off`, `not_connected`, `slow` (past the time allowed), `refused` (this server answered with an error), `unreachable`,
+            `bad_answer` (the platform would not take the answer), `address`, `other`.
+          required: [state, lastAnsweredAt, problem, problemAt]
+          properties:
+            state: { type: string, enum: [connected, off, elsewhere, not_connected, unknown] }
+            lastAnsweredAt: { type: string, format: date-time, nullable: true }
+            problem: { $ref: '#/components/schemas/RoutingProblem' }
+            problemAt: { type: string, format: date-time, nullable: true }
+        canManage: { type: boolean }
+        limits:
+          type: object
+          required: [rulesMax, numbersPerRule, nameMaxLength, greetingMaxLength, languageMaxLength, maxMinutes]
+          properties:
+            rulesMax: { type: integer }
+            numbersPerRule: { type: integer }
+            nameMaxLength: { type: integer }
+            greetingMaxLength: { type: integer }
+            languageMaxLength: { type: integer }
+            maxMinutes: { type: integer }
+
+    RoutingProblem:
+      type: string
+      nullable: true
+      enum: [off, not_connected, slow, refused, unreachable, bad_answer, address, other, null]
+
+    RoutingTry:
+      type: object
+      required: [rule, outcome, agent, language, greeting, maxMinutes, routed]
+      properties:
+        rule:
+          type: object
+          nullable: true
+          required: [id, name]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
+        outcome: { type: string, enum: [answer, refuse, own_agent] }
+        agent:
+          type: object
+          nullable: true
+          description: Who takes the call (none for a refusal).
+          required: [id, name]
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: string }
+        language: { type: string, nullable: true }
+        greeting: { type: string, nullable: true }
+        maxMinutes: { type: integer, nullable: true }
+        routed: { type: boolean, description: "Whether calls to the number follow the rules yet." }
+
+    RoutingCheck:
+      type: object
+      required: [answered, elapsedMs, action, problem]
+      properties:
+        answered: { type: boolean }
+        elapsedMs: { type: integer }
+        action: { type: string, nullable: true, enum: [answer, refuse, null] }
+        problem: { $ref: '#/components/schemas/RoutingProblem' }
 
     StackIds:
       type: object
@@ -7581,9 +9697,76 @@ components:
               id: { type: string, format: uuid }
               name: { type: string }
 
+    WebChat:
+      type: object
+      required: [allowed, priced, enabled, websites, title, greeting, snippet]
+      properties:
+        allowed: { type: boolean, description: Whether the operator offers web chat. }
+        priced: { type: boolean, description: "Whether the account's plan has a price for a chat (always true while customers are not charged)." }
+        enabled: { type: boolean }
+        websites: { type: array, items: { type: string }, description: The websites the chat box may show on, each by its address alone. }
+        title: { type: string, nullable: true, description: "The chat box's heading; null shows the agent's name." }
+        greeting: { type: string, nullable: true, description: The first message a visitor sees, before writing anything. It is never sent to the agent. }
+        snippet: { type: string, nullable: true, description: "The code to put on each page, before `</body>`; null until the chat box is first turned on." }
+    WebChatInput:
+      type: object
+      required: [enabled, websites]
+      properties:
+        enabled: { type: boolean }
+        websites: { type: array, maxItems: 20, items: { type: string, maxLength: 255 } }
+        title: { type: string, nullable: true, maxLength: 80 }
+        greeting: { type: string, nullable: true, maxLength: 500 }
+    ChatBox:
+      type: object
+      required: [title, logoUrl, greeting, colors, words, messageMaxLength]
+      properties:
+        title: { type: string }
+        logoUrl: { type: string, nullable: true, description: "The agent's logo, from this platform (getAgentLogo); null for none." }
+        greeting: { type: string, nullable: true }
+        colors: { type: object, additionalProperties: { type: string }, description: "The operator's brand colours, by role (getBrand)." }
+        words:
+          type: object
+          description: "The chat box's own words (buttons, notices), in the operator's language; the script shows them as they are."
+          required: [open, close, placeholder, send, waiting, failed, busy, tooFast, ended, newChat, endChat, tooLong, unavailable, you]
+          properties:
+            open: { type: string }
+            close: { type: string }
+            placeholder: { type: string }
+            send: { type: string }
+            waiting: { type: string }
+            failed: { type: string }
+            busy: { type: string }
+            tooFast: { type: string }
+            ended: { type: string }
+            newChat: { type: string }
+            endChat: { type: string }
+            tooLong: { type: string }
+            unavailable: { type: string }
+            you: { type: string }
+        messageMaxLength: { type: integer, description: The longest message a visitor may send. }
+    ChatReply:
+      type: object
+      required: [conversation, reply]
+      properties:
+        conversation: { type: string, description: The conversation to send with the next message. }
+        reply: { type: string }
+    ChatConversation:
+      type: object
+      required: [conversation, messages]
+      properties:
+        conversation: { type: string }
+        messages:
+          type: array
+          items:
+            type: object
+            required: [role, text, at]
+            properties:
+              role: { type: string, enum: [visitor, agent] }
+              text: { type: string }
+              at: { type: string, format: date-time, nullable: true }
     CatalogCuration:
       type: object
-      required: [fetchedAt, error, platformName, kinds, defaults, recommended, voiceNames, transferAllowed, transferStillOn, browserCallsAllowed, browserCallsUnpriced, consentRequired, consentStillToTell, cloningAllowed, clonesPerAccount, clonesMost, realtime]
+      required: [fetchedAt, error, platformName, kinds, defaults, recommended, voiceNames, transferAllowed, transferStillOn, browserCallsAllowed, browserCallsUnpriced, webChatAllowed, webChatUnpriced, campaignLinksAllowed, consentRequired, consentStillToTell, cloningAllowed, clonesPerAccount, clonesMost, realtime]
       properties:
         fetchedAt: { type: string, format: date-time, nullable: true, description: 'When the catalog was last read; null before the first read.' }
         error:
@@ -7618,6 +9801,17 @@ components:
         browserCallsUnpriced:
           type: array
           description: 'The price lists with no price for a call from the browser, while customers are charged: a customer on one cannot place them.'
+          items:
+            type: object
+            required: [id, name]
+            properties:
+              id: { type: string }
+              name: { type: string }
+        webChatAllowed: { type: boolean, description: "Whether customers may put a chat box on their websites, answered by their agents. Each conversation is charged as a call with the channel `chat`: by its language model, knowledge look-ups and platform fee." }
+        campaignLinksAllowed: { type: boolean, description: "Whether campaigns may take their people from a link this server reads (only https links to public addresses)." }
+        webChatUnpriced:
+          type: array
+          description: 'The price lists with no price for a chat, while customers are charged: a customer on one cannot turn a chat box on, and one on stops answering.'
           items:
             type: object
             required: [id, name]
@@ -7663,9 +9857,49 @@ components:
                         offered: { type: boolean }
                         voiceCount: { type: integer }
 
+    OpenModelPage:
+      type: object
+      required: [provider, models, page, perPage, total, max]
+      properties:
+        provider: { type: string, description: "The platform's id for the provider the models are added to." }
+        models:
+          type: array
+          items:
+            type: object
+            required: [id, name, added, inCatalog]
+            properties:
+              id: { type: string, description: "OpenRouter's model id." }
+              name: { type: string, description: "OpenRouter's name for it." }
+              added: { type: boolean, description: 'Added by the operator (saveCatalogCuration `extraModels`).' }
+              inCatalog: { type: boolean, description: "In the catalog already: chosen there, not added." }
+        page: { type: integer }
+        perPage: { type: integer }
+        total: { type: integer, description: 'How many match the search.' }
+        max: { type: integer, description: 'How many models may be added in all.' }
+
+    OpenModelPrice:
+      type: object
+      required: [model, found, inputPerM, outputPerM]
+      properties:
+        model: { type: string }
+        found: { type: boolean, description: 'Whether the platform has a price for it.' }
+        inputPerM: { type: number, nullable: true, description: 'US dollars per million tokens read; null when not found.' }
+        outputPerM: { type: number, nullable: true, description: 'US dollars per million tokens written; null when not found.' }
+
+    ProcessingCountry:
+      type: object
+      required: [country, source, checkedAt]
+      properties:
+        country: { type: string, nullable: true, pattern: '^[A-Z]{2}$', description: 'Two letters; null when the platform has none for the account.' }
+        source:
+          type: string
+          enum: [country, time_zone, unknown]
+          description: "Where it comes from: the account's declared country, its sign-up time zone's, or neither."
+        checkedAt: { type: string, format: date-time, description: 'When it was read from the platform.' }
+
     CuratedProvider:
       type: object
-      required: [id, catalogName, name, ownName, namesPlatform, offered, enabled, status, recommended, models, voiceCount, settings]
+      required: [id, catalogName, name, ownName, namesPlatform, offered, enabled, status, recommended, models, openModels, voiceCount, settings]
       properties:
         id: { type: string, description: "The platform's id." }
         catalogName: { type: string }
@@ -7681,14 +9915,16 @@ components:
           description: Language models only.
           items:
             type: object
-            required: [id, catalogName, name, ownName, namesPlatform, offered]
+            required: [id, catalogName, name, ownName, namesPlatform, offered, added]
             properties:
               id: { type: string }
-              catalogName: { type: string }
+              catalogName: { type: string, description: "The catalog's name for it; of an added model, OpenRouter's name when it was added." }
               name: { type: string }
               ownName: { type: string, nullable: true }
               namesPlatform: { type: boolean }
               offered: { type: boolean }
+              added: { type: boolean, description: "Added by the operator from OpenRouter's list (`extraModels`), after the catalog's own." }
+        openModels: { type: boolean, description: "Models may be added to it from OpenRouter's own list (listOpenModels; saveCatalogCuration `extraModels`). Language models only." }
         voiceCount: { type: integer, description: 'Voice providers only: how many voices it has (listCatalogVoices lists them). 0 for the others.' }
         settings:
           type: array
@@ -7882,7 +10118,7 @@ components:
 
     KnowledgeDocument:
       type: object
-      required: [id, title, kind, source, chars, state, problem, createdAt]
+      required: [id, title, kind, source, chars, state, problem, createdAt, table]
       properties:
         id: { type: string, format: uuid }
         title: { type: string }
@@ -7895,6 +10131,35 @@ components:
           description: '`saving`: not at the voice platform yet. `working`: being read for the agents. `failed`: see `problem`.'
         problem: { type: string, nullable: true, description: Why it failed, in words for the customer. }
         createdAt: { type: string, format: date-time }
+        table: { type: boolean, description: "A CSV, JSON or Excel file, kept as a table agents look rows up in (getKnowledgeTable)." }
+    KnowledgeTableColumn:
+      type: object
+      required: [key, name, type]
+      properties:
+        key: { type: string, description: "How the column is named to agents and in `rows` and setKnowledgeColumnTypes: its heading in plain letters." }
+        name: { type: string, description: The column's heading in the file. }
+        type:
+          type: string
+          enum: [text, number, bool, date]
+          description: "How agents read it: `number` and `date` columns are compared (and numbers added up) as such; `text` and `bool` by their words."
+    KnowledgeTable:
+      type: object
+      required: [columns, rows, rowCount, offset, limit, format, inPrompt, searchByMeaningRows]
+      properties:
+        columns: { type: array, items: { $ref: '#/components/schemas/KnowledgeTableColumn' } }
+        rows:
+          type: array
+          description: "This page's rows, each its cells in the order of `columns`: text, a number, true or false, or null (none)."
+          items: { type: array, items: {} }
+        rowCount: { type: integer }
+        offset: { type: integer }
+        limit: { type: integer }
+        format: { type: string, enum: [csv, json, xlsx] }
+        inPrompt: { type: boolean, description: Small enough that agents read it whole on every call (and still look rows up in it). }
+        searchByMeaningRows:
+          type: integer
+          nullable: true
+          description: "For a table too big to read whole: finding rows by meaning covers only its first this many rows (exact look-ups cover all). Null when it covers them all."
 
     CampaignLimit:
       type: object
@@ -7904,7 +10169,7 @@ components:
         max: { type: integer }
     Campaign:
       type: object
-      required: [id, name, agent, callerId, settings, status, waiting, counts, pushed, syncState, syncError, startedAt, completedAt, createdAt]
+      required: [id, name, agent, callerId, settings, status, waiting, counts, pushed, syncState, syncError, source, startedAt, completedAt, createdAt]
       properties:
         id: { type: string, format: uuid }
         name: { type: string }
@@ -7964,6 +10229,16 @@ components:
             skipped: { type: integer, description: Without a number. }
         syncState: { type: string, enum: [pending, synced, failed] }
         syncError: { type: string, nullable: true }
+        source:
+          type: object
+          nullable: true
+          description: "People from a link (setCampaignSource): read again every `linkEveryMinutes` while the campaign is not finished, adding only new numbers."
+          required: [url, checkedAt, problem, added]
+          properties:
+            url: { type: string }
+            checkedAt: { type: string, format: date-time, nullable: true }
+            problem: { type: string, nullable: true, description: Why it could not be read last time, in words for the customer. }
+            added: { type: integer, description: How many people it has added. }
         startedAt: { type: string, format: date-time, nullable: true }
         completedAt: { type: string, format: date-time, nullable: true }
         createdAt: { type: string, format: date-time }

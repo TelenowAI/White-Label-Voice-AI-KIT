@@ -3,7 +3,7 @@
  * picked (this month so far until changed), what customers were charged beside what the voice platform charged the
  * operator, top-ups and credits by hand, customers and calls; and now, the calls live, the operator's own account at
  * the voice platform (whether it may spend, its balance or this month's usage against the cap, a link to its Billing
- * page) and what needs a look, each with a link to where it is handled.
+ * page) and what needs a look, each with a link to where it is handled (providers failing on customers' calls: Voice platform).
  *
  * Not here: the figures (the backend's App\Kit\Reports), the groups of charges (CostsPage.tsx).
  */
@@ -183,6 +183,7 @@ function Attention({ attention }: { attention: AdminDashboard["attention"] }) {
     { count: attention.failedWrites, text: "attentionWrites", to: "/admin/telenow" },
     { count: attention.eventsFailed, text: "attentionEvents", to: "/admin/telenow" },
     { count: attention.customersDrifting, text: "attentionDrifting", to: "/admin/telenow" },
+    { count: attention.providersFailing, text: "attentionProvidersFailing", to: "/admin/telenow" },
   ];
   const items = all.filter((i) => i.count > 0);
   return (

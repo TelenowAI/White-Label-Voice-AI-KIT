@@ -1,0 +1,18 @@
+{
+  "operationId": "setKnowledgeColumnTypes",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the files and their contents are ours (contract_k19tables.py)",
+  "request": {
+    "method": "PATCH",
+    "path": "/api/orgs/729a0044-1514-5c8c-aca0-8c72cbb852aa/knowledge-bases/f48b5734-34b7-5ab1-aad1-eed0b8518292/documents/e3dc1d96-d54b-5059-bd38-533136fe6b1b/dataset",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": "This API key is scoped to a different organization.",
+      "success": false
+    }
+  },
+  "serve": false
+}

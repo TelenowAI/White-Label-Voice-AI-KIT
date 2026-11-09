@@ -86,6 +86,7 @@ describe("the console's wallet", () => {
       id: "c1", agent: null, status: "ended", outcome: "completed", direction: "inbound", channel: "telephony", from: "+14155550123",
       to: "+14155550100", startedAt: "2026-10-30T11:35:57Z", endedAt: "2026-10-30T11:36:47Z", durationSec: 50, complete: true,
       charge: { amount: "3.42", currency: "INR" }, answeredBy: "human", transcript: [], recordings: [], analysis: null, placedBy: null, requestedBy: null, wrapup: null, canListen: false, listens: [],
+      canTellAgent: false, agentNotes: [],
     };
     fakeKit({ ...signedIn, "GET /api/kit/console/calls/c1": call });
     open(<ConsoleArea />, "/console/calls/c1", "/console");

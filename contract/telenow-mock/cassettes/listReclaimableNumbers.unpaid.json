@@ -1,0 +1,44 @@
+{
+  "operationId": "listReclaimableNumbers",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; a number's release for unpaid rent (release_reason, reclaim_deadline_at) and the parent's empty wallet set by SQL on that database (contract_k27numbers.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/voice/numbers/reclaimable",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "numbers": [
+          {
+            "binding": {
+              "agentId": "5b2c9c98-5fa1-50b9-bc46-a37f5c4bea3b",
+              "campaignIds": [],
+              "isDefaultOutbound": true,
+              "monthlyRent": "499.00000",
+              "setupPrice": "0.00000"
+            },
+            "e164": "918045671001",
+            "id": "c90520dc-eff2-5a2b-8fba-9bbc3bc6eaf8",
+            "lastMonthlyRent": "499.00000",
+            "lastMonthlyRentUsd": "5.25",
+            "lastSetupPrice": "0.00000",
+            "lastSetupPriceUsd": "0",
+            "priceCurrency": "INR",
+            "provider": "teleone",
+            "reclaimDeadlineAt": "2026-11-13T15:54:15.284907Z",
+            "reclaimIsManual": true,
+            "reclaimRequestedAt": null,
+            "releaseReason": "renewal_unpaid",
+            "releasedAt": "2026-11-08T15:54:15.250577Z"
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

@@ -6,8 +6,11 @@
  * language models), under which names (a name that carries the platform's own is flagged and cannot be offered), and
  * what a new agent starts with, beside the platform's own recommendation. Saved all at once; the backend's word on a
  * field shows at that field. Also what customers may use: transfers to a person, calls from the browser (with the plans
- * that have no price for one), whether every customer's calls need consent, and whether customers may clone voices of
+ * that have no price for one), a chat box on their own websites answered by their agents (with the plans that have no price
+ * for a chat), campaigns taking their people from a link this server reads, whether every customer's calls need consent, and whether customers may clone voices of
  * their own, with how many clones an account may have; and which realtime voices customers may pick (RealtimeCuration.tsx).
+ * On the language model provider that offers its whole list (`openModels`), the models the operator adds from that list
+ * beyond the catalog's, listed after its own and sent as its `extraModels`, and the area to add them (OpenModels.tsx).
  *
  * Not here: what customers see (the console's Voices page and an agent's voice setup).
  */
@@ -15,10 +18,15 @@ import { useEffect, useState, type FormEvent } from "react";
 import { KitApiError, kitApi, type CatalogCuration, type CatalogKind, type CurationInput, type StackIds } from "../api";
 import { t, type TextKey } from "../text";
 import { VoicePicker } from "../voices/VoicePicker";
+import { AddedModels, OpenModels, extraBody, extraFormOf, type ExtraForm } from "./OpenModels";
 import { RealtimeCuration, realtimeBody, realtimeFormOf, type RealtimeForm } from "./RealtimeCuration";
 
 type SettingChoice = { offered: boolean; options: Record<string, boolean> };
-type Choice = { offered: boolean; name: string; models: Record<string, { offered: boolean; name: string }>; settings: Record<string, SettingChoice> };
+type Choice = {
+  offered: boolean; name: string; models: Record<string, { offered: boolean; name: string }>; settings: Record<string, SettingChoice>;
+  /** The provider with `openModels` only: the models added from its own list (none else has the key). */
+  extra?: ExtraForm;
+};
 
 /** How the backend names an option in the operator's choices: its value, as text. */
 const optionKey = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
@@ -40,7 +48,8 @@ function formOf(c: CatalogCuration): Form {
     out[kind] = Object.fromEntries(c.kinds[kind].map((p) => [p.id, {
       offered: p.offered,
       name: p.ownName ?? "",
-      models: Object.fromEntries(p.models.map((m) => [m.id, { offered: m.offered, name: m.ownName ?? "" }])),
+      models: Object.fromEntries(p.models.filter((m) => !m.added).map((m) => [m.id, { offered: m.offered, name: m.ownName ?? "" }])),
+      ...(p.openModels ? { extra: extraFormOf(p.models) } : {}),
       settings: Object.fromEntries((p.settings ?? []).map((f) => [f.key, { offered: f.offered, options: Object.fromEntries((f.options ?? []).map((o) => [optionKey(o.value), o.offered])) }])),
     }]));
   }
@@ -54,6 +63,8 @@ export function Catalog() {
   const [transferAllowed, setTransferAllowed] = useState(false);
   const [consentRequired, setConsentRequired] = useState(false);
   const [browserCallsAllowed, setBrowserCallsAllowed] = useState(false);
+  const [webChatAllowed, setWebChatAllowed] = useState(false);
+  const [campaignLinksAllowed, setCampaignLinksAllowed] = useState(false);
   const [cloningAllowed, setCloningAllowed] = useState(false);
   const [clonesPerAccount, setClonesPerAccount] = useState("");
   const [realtime, setRealtime] = useState<RealtimeForm>({});
@@ -69,6 +80,8 @@ export function Catalog() {
     setTransferAllowed(c.transferAllowed);
     setConsentRequired(c.consentRequired);
     setBrowserCallsAllowed(c.browserCallsAllowed);
+    setWebChatAllowed(c.webChatAllowed);
+    setCampaignLinksAllowed(c.campaignLinksAllowed);
     setCloningAllowed(c.cloningAllowed);
     setClonesPerAccount(String(c.clonesPerAccount));
     setRealtime(realtimeFormOf(c));
@@ -98,12 +111,13 @@ export function Catalog() {
     setErrors({});
     setFailure(null);
     setNotice(null);
-    const body: CurationInput = { kinds: {}, defaults, transferAllowed, browserCallsAllowed, consentRequired, cloningAllowed, clonesPerAccount: Number(clonesPerAccount), realtime: realtimeBody(realtime) };
+    const body: CurationInput = { kinds: {}, defaults, transferAllowed, browserCallsAllowed, webChatAllowed, campaignLinksAllowed, consentRequired, cloningAllowed, clonesPerAccount: Number(clonesPerAccount), realtime: realtimeBody(realtime) };
     for (const { kind } of kinds) {
       body.kinds[kind] = Object.fromEntries(Object.entries(form[kind]).map(([id, c]) => [id, {
         offered: c.offered,
         name: c.name.trim() || null,
         ...(kind === "llm" ? { models: Object.fromEntries(Object.entries(c.models).map(([m, mc]) => [m, { offered: mc.offered, name: mc.name.trim() || null }])) } : {}),
+        ...(c.extra ? { extraModels: extraBody(c.extra) } : {}),
         settings: c.settings,
       }]));
     }
@@ -122,6 +136,8 @@ export function Catalog() {
     setForm((f) => f && { ...f, [kind]: { ...f[kind], [id]: { ...f[kind][id], ...change } } });
   const chooseModel = (id: string, model: string, change: Partial<{ offered: boolean; name: string }>) =>
     setForm((f) => f && { ...f, llm: { ...f.llm, [id]: { ...f.llm[id], models: { ...f.llm[id].models, [model]: { ...f.llm[id].models[model], ...change } } } } });
+  const chooseExtra = (id: string) => (update: (extra: ExtraForm) => ExtraForm) =>
+    setForm((f) => f && { ...f, llm: { ...f.llm, [id]: { ...f.llm[id], extra: update(f.llm[id].extra ?? {}) } } });
   const chooseSetting = (kind: CatalogKind, id: string, key: string, change: Partial<SettingChoice>) =>
     setForm((f) => f && { ...f, [kind]: { ...f[kind], [id]: { ...f[kind][id], settings: { ...f[kind][id].settings, [key]: { ...f[kind][id].settings[key], ...change } } } } });
   const error = (key: string) => errors[key] && <small className="error">{errors[key].join(" ")}</small>;
@@ -180,7 +196,7 @@ export function Catalog() {
                           </td>
                           {kind === "llm" && (
                             <td>
-                              {p.models.map((m) => (
+                              {p.models.filter((m) => !m.added).map((m) => (
                                 <div key={m.id} className="model-choice">
                                   <input type="checkbox" aria-label={t("offerName", { name: m.catalogName })} checked={c.models[m.id]?.offered ?? true}
                                     onChange={(e) => chooseModel(p.id, m.id, { offered: e.target.checked })} />
@@ -189,6 +205,7 @@ export function Catalog() {
                                   {error(`kinds.llm.${p.id}.models.${m.id}.name`)}
                                 </div>
                               ))}
+                              {c.extra && <AddedModels providerId={p.id} extra={c.extra} onChange={chooseExtra(p.id)} errors={errors} />}
                             </td>
                           )}
                           {kind === "tts" && <td>{t("catalogVoicesCount", { count: String(p.voiceCount) })}</td>}
@@ -226,6 +243,10 @@ export function Catalog() {
                   </tbody>
                 </table>
               </div>
+              {kind === "llm" && data.kinds.llm.map((p) => form.llm[p.id]?.extra && (
+                <OpenModels key={p.id} provider={p.catalogName} extra={form.llm[p.id].extra!} onChange={chooseExtra(p.id)}
+                  refused={errors[`kinds.llm.${p.id}.extraModels`]} />
+              ))}
             </fieldset>
           ))}
           <Defaults data={data} form={form} defaults={defaults} onChange={setDefaults} errors={errors} />
@@ -249,6 +270,25 @@ export function Catalog() {
             {data.browserCallsUnpriced.length > 0 && (
               <p className="note">{t("catalogBrowserCallsUnpriced", { plans: data.browserCallsUnpriced.map((p) => p.name).join(", ") })}</p>
             )}
+          </fieldset>
+          <fieldset>
+            <legend>{t("catalogWebChat")}</legend>
+            <label className="checkbox">
+              <input type="checkbox" checked={webChatAllowed} onChange={(e) => setWebChatAllowed(e.target.checked)} />
+              {t("catalogWebChatAllowed")}
+            </label>
+            <small className="muted">{t("catalogWebChatHelp")}</small>
+            {data.webChatUnpriced.length > 0 && (
+              <p className="note">{t("catalogWebChatUnpriced", { plans: data.webChatUnpriced.map((p) => p.name).join(", ") })}</p>
+            )}
+          </fieldset>
+          <fieldset>
+            <legend>{t("catalogCampaignLinks")}</legend>
+            <label className="checkbox">
+              <input type="checkbox" checked={campaignLinksAllowed} onChange={(e) => setCampaignLinksAllowed(e.target.checked)} />
+              {t("catalogCampaignLinksAllowed")}
+            </label>
+            <small className="muted">{t("catalogCampaignLinksHelp")}</small>
           </fieldset>
           <fieldset>
             <legend>{t("catalogConsent")}</legend>
@@ -287,6 +327,13 @@ function Defaults({ data, form, defaults, onChange, errors }: {
 }) {
   const offered = (kind: CatalogKind) => data.kinds[kind].filter((p) => form[kind][p.id]?.offered);
   const llm = data.kinds.llm.find((p) => p.id === defaults.llmProvider);
+  /** The default provider's models as the form stands: the catalog's own (as switched and named), then the added ones — saved or added just now, in
+   *  the order added, under their own name or the list's, none switched off or removed. */
+  const models = llm ? [
+    ...llm.models.filter((m) => !m.added).filter((m) => form.llm[llm.id]?.models[m.id]?.offered ?? true)
+      .map((m) => ({ id: m.id, name: form.llm[llm.id]?.models[m.id]?.name.trim() || m.catalogName })),
+    ...Object.entries(form.llm[llm.id]?.extra ?? {}).filter(([, c]) => c.offered).map(([id, c]) => ({ id, name: c.name.trim() || c.listName })),
+  ] : [];
   const set = (key: keyof StackIds, also: Partial<StackIds> = {}) => (e: { target: { value: string } }) => onChange({ ...defaults, ...also, [key]: e.target.value || null });
   const select = (key: keyof StackIds, label: TextKey, options: { id: string; name: string }[], onSet = set(key)) => (
     <div className="field">
@@ -307,8 +354,7 @@ function Defaults({ data, form, defaults, onChange, errors }: {
     <fieldset>
       <legend>{t("defaultsTitle")}</legend>
       {select("llmProvider", "stackLlm", named("llm"), set("llmProvider", { llmModel: null }))}
-      {select("llmModel", "stackLlmModel", (llm?.models ?? []).filter((m) => form.llm[llm!.id]?.models[m.id]?.offered ?? true)
-        .map((m) => ({ id: m.id, name: form.llm[llm!.id]?.models[m.id]?.name.trim() || m.catalogName })))}
+      {select("llmModel", "stackLlmModel", models)}
       {select("sttProvider", "stackStt", named("stt"))}
       {select("ttsProvider", "stackTtsProvider", named("tts"), set("ttsProvider", { ttsVoice: null }))}
       <VoicePicker id="default-ttsVoice" label={t("stackTts")} emptyLabel={t("noneOption")} load={kitApi.catalogVoices}

@@ -160,7 +160,22 @@ final class Campaigns
         if (in_array($campaign->status, $c['finished_statuses'], true)) {
             throw new CampaignRefused(409, __('campaigns.finished'));
         }
-        $lines = preg_split('/\r\n|\n|\r/', preg_replace('/^\xEF\xBB\xBF/', '', $values['csv']));
+        [$rows, $skipped] = $this->parse($values['csv'], 'csv');
+        $this->insert($campaign, $rows);
+
+        return ['added' => count($rows), 'skipped' => $skipped, 'noCountryCode' => count(array_filter($rows, fn (array $r) => ! str_starts_with($r['phone'], '+')))];
+    }
+
+    /**
+     * A call list as CSV, read as addTargets reads it: a header row, the number in one of config('kit.campaigns.phone_columns'), every other column a
+     * variable; refused (at `$field`) with no number column or too many people.
+     *
+     * @return array{0: list<array{phone: string, variables: array<string, string>}>, 1: int} the people, and the lines with no number
+     */
+    public function parse(string $csv, string $field): array
+    {
+        $c = config('kit.campaigns');
+        $lines = preg_split('/\r\n|\n|\r/', preg_replace('/^\xEF\xBB\xBF/', '', $csv));
         $header = array_map(fn ($h) => mb_strtolower(trim((string) $h)), str_getcsv((string) array_shift($lines), escape: '\\'));
         $phoneAt = null;
         foreach ($c['phone_columns'] as $name) {
@@ -170,7 +185,7 @@ final class Campaigns
             }
         }
         if ($phoneAt === null) {
-            throw ValidationException::withMessages(['csv' => [__('campaigns.no_phone_column', ['columns' => implode(', ', $c['phone_columns'])])]]);
+            throw ValidationException::withMessages([$field => [__('campaigns.no_phone_column', ['columns' => implode(', ', $c['phone_columns'])])]]);
         }
         [$rows, $skipped] = [[], 0];
         foreach ($lines as $line) {
@@ -194,24 +209,31 @@ final class Campaigns
             $rows[] = ['phone' => $phone, 'variables' => $variables];
         }
         if (count($rows) > $c['import_max_rows']) {
-            throw ValidationException::withMessages(['csv' => [__('campaigns.too_many_rows', ['max' => $c['import_max_rows']])]]);
-        }
-        if ($rows !== []) {
-            DB::transaction(function () use ($campaign, $rows, $c) {
-                $now = now();
-                foreach (array_chunk($rows, $c['insert_batch']) as $chunk) {
-                    CampaignTarget::query()->insert(array_map(fn (array $r) => [
-                        'id' => (string) Str::uuid(), 'campaign_id' => $campaign->id, 'workspace_id' => $campaign->workspace_id,
-                        'phone_number' => $r['phone'], 'variables' => $r['variables'] === [] ? null : json_encode($r['variables']),
-                        'created_at' => $now, 'updated_at' => $now,
-                    ], $chunk));
-                }
-                $this->outbox->enqueue(CampaignWrite::RESOURCE, $campaign->id, 'targets', null);
-            });
-            $this->send($campaign);
+            throw ValidationException::withMessages([$field => [__('campaigns.too_many_rows', ['max' => $c['import_max_rows']])]]);
         }
 
-        return ['added' => count($rows), 'skipped' => $skipped, 'noCountryCode' => count(array_filter($rows, fn (array $r) => ! str_starts_with($r['phone'], '+')))];
+        return [$rows, $skipped];
+    }
+
+    /** People added to the campaign, and sent to Telenow with the next push (the outbox), as addTargets adds them. */
+    public function insert(Campaign $campaign, array $rows): void
+    {
+        if ($rows === []) {
+            return;
+        }
+        $c = config('kit.campaigns');
+        DB::transaction(function () use ($campaign, $rows, $c) {
+            $now = now();
+            foreach (array_chunk($rows, $c['insert_batch']) as $chunk) {
+                CampaignTarget::query()->insert(array_map(fn (array $r) => [
+                    'id' => (string) Str::uuid(), 'campaign_id' => $campaign->id, 'workspace_id' => $campaign->workspace_id,
+                    'phone_number' => $r['phone'], 'variables' => $r['variables'] === [] ? null : json_encode($r['variables']),
+                    'created_at' => $now, 'updated_at' => $now,
+                ], $chunk));
+            }
+            $this->outbox->enqueue(CampaignWrite::RESOURCE, $campaign->id, 'targets', null);
+        });
+        $this->send($campaign);
     }
 
     public function start(Campaign $campaign): Campaign

@@ -1,0 +1,57 @@
+{
+  "operationId": "getKnowledgeTable",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the files and their contents are ours (contract_k19tables.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/ad21b3f8-2e31-596b-bb62-8eb18ba65dea/knowledge-bases/52610ecc-2139-5dd0-ab6d-89e27aea9a45/documents/418b9592-3400-5ae7-a6ee-642df050a70e/dataset",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "colCount": 6,
+        "columns": [
+          {
+            "name": "Item",
+            "sql_name": "item",
+            "type": "text"
+          },
+          {
+            "name": "Price (₹)",
+            "sql_name": "price",
+            "type": "text"
+          },
+          {
+            "name": "In stock",
+            "sql_name": "in_stock",
+            "type": "bool"
+          },
+          {
+            "name": "Updated",
+            "sql_name": "updated",
+            "type": "date"
+          },
+          {
+            "name": "SKU",
+            "sql_name": "sku",
+            "type": "text"
+          },
+          {
+            "name": "Notes",
+            "sql_name": "notes",
+            "type": "text"
+          }
+        ],
+        "format": "csv",
+        "fuzzyRowCap": 10000,
+        "fuzzyTruncated": false,
+        "inlined": true,
+        "rowCount": 4
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

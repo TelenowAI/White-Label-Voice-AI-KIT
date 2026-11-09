@@ -1,0 +1,18 @@
+{
+  "operationId": "listInvoices",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the account made postpaid and its invoices written by SQL on that database as Telenow's monthly billing run writes them, and its balance emptied by SQL for the stopped case (contract_k29billing.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/02345d3c-d520-5493-a925-cc0c2040bc18/billing/invoices",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": "This API key is scoped to a different organization.",
+      "success": false
+    }
+  },
+  "serve": false
+}

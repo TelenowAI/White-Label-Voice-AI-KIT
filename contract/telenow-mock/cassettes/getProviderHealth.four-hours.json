@@ -1,0 +1,99 @@
+{
+  "operationId": "getProviderHealth",
+  "recorded": "2026-11-09, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the calls' provider failures written by SQL as the call engine writes them (voice_stack_incidents), no call placed (contract_k32helpers.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/agents/provider-health",
+    "query": "minutes=240",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "callsAffected": 6,
+        "groups": [
+          {
+            "agentIds": [
+              "7c057342-07b0-5a27-97c9-954e3bc4e184",
+              "5b696af1-5baf-5e9e-8225-83abf7b152b0"
+            ],
+            "agentNames": [
+              "Billing desk",
+              "Front desk"
+            ],
+            "attribution": "provider_outage",
+            "calls": 2,
+            "component": "stt",
+            "incidents": 3,
+            "keySource": "platform",
+            "lastAt": "2026-11-09T11:35:43.690062Z",
+            "lastError": "deepgram stream closed: 1011 internal error (retry)",
+            "provider": "deepgram"
+          },
+          {
+            "agentIds": [
+              "5b696af1-5baf-5e9e-8225-83abf7b152b0"
+            ],
+            "agentNames": [
+              "Billing desk"
+            ],
+            "attribution": "customer_config",
+            "calls": 1,
+            "component": "tts",
+            "incidents": 1,
+            "keySource": "platform",
+            "lastAt": "2026-11-09T11:29:43.690062Z",
+            "lastError": "telenow tts: voice not found for this model",
+            "provider": "telenow"
+          },
+          {
+            "agentIds": [],
+            "agentNames": [],
+            "attribution": "unknown",
+            "calls": 1,
+            "component": "llm",
+            "incidents": 1,
+            "keySource": "platform",
+            "lastAt": "2026-11-09T11:19:43.690062Z",
+            "lastError": "openai 502 bad gateway",
+            "provider": "openai"
+          },
+          {
+            "agentIds": [
+              "cf5c30ae-9136-560b-b07e-ceacaa884154"
+            ],
+            "agentNames": [],
+            "attribution": "platform",
+            "calls": 1,
+            "component": "tts",
+            "incidents": 1,
+            "keySource": "platform",
+            "lastAt": "2026-11-09T11:09:43.690062Z",
+            "lastError": "tts engine unavailable",
+            "provider": "telenow"
+          },
+          {
+            "agentIds": [
+              "7c057342-07b0-5a27-97c9-954e3bc4e184"
+            ],
+            "agentNames": [
+              "Front desk"
+            ],
+            "attribution": "provider_outage",
+            "calls": 1,
+            "component": "llm",
+            "incidents": 1,
+            "keySource": "platform",
+            "lastAt": "2026-11-09T08:39:43.690062Z",
+            "lastError": "openai 500 internal server error",
+            "provider": "openai"
+          }
+        ],
+        "windowMinutes": 240
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

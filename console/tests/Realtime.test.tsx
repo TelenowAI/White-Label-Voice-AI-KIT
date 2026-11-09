@@ -48,7 +48,7 @@ const agent = (over: Partial<Agent["settings"]> = {}): Agent => ({
   id: "a1", name: "Front desk", description: null, systemPrompt: null, isActive: true, syncState: "synced", syncError: null,
   stack: { llmProvider: "llm-a", llmModel: "m1", sttProvider: "stt-a", ttsProvider: "tts-a", ttsVoice: "vikram" },
   stackNames: { llmProvider: "Thinking", llmModel: "Quick", sttProvider: "Listening", ttsProvider: "Studio voices", ttsVoice: "Vikram" },
-  settings: { ...agentSettings, ...over }, stackCheck: null, knowledgeBases: [], createdAt: "2026-11-05T09:00:00Z", updatedAt: "2026-11-05T09:00:00Z",
+  settings: { ...agentSettings, ...over }, stackCheck: null, knowledgeBases: [], logoUrl: null, createdAt: "2026-11-05T09:00:00Z", updatedAt: "2026-11-05T09:00:00Z",
 });
 
 function setup(realtime: RealtimeChoice[], answers: Record<string, unknown> = {}) {
@@ -151,7 +151,7 @@ describe("admin → catalog → realtime voices", () => {
     fetchedAt: "2026-11-05T09:00:00Z", error: null, platformName: "Telenow", kinds: { llm: [], stt: [], tts: [] },
     defaults: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
     recommended: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null }, voiceNames: {},
-    transferAllowed: false, transferStillOn: 0, browserCallsAllowed: false, browserCallsUnpriced: [], consentRequired: false, consentStillToTell: 0,
+    transferAllowed: false, transferStillOn: 0, browserCallsAllowed: false, browserCallsUnpriced: [], webChatAllowed: false, webChatUnpriced: [], campaignLinksAllowed: false, consentRequired: false, consentStillToTell: 0,
     cloningAllowed: false, clonesPerAccount: 10, clonesMost: 50,
     realtime: { enabled, providers: [{ id: "openai", catalogName: "OpenAI Realtime", name: "OpenAI Realtime", ownName: null, namesPlatform: false, offered: false, recommended: false,
       languages: ["en"], models: [

@@ -21,7 +21,9 @@ use App\Http\Controllers\Kit\Admin\CustomerWalletController;
 use App\Http\Controllers\Kit\Admin\EmailController;
 use App\Http\Controllers\Kit\Admin\EmailTemplatesController;
 use App\Http\Controllers\Kit\Admin\PaymentsController as AdminPaymentsController;
+use App\Http\Controllers\Kit\Admin\OpenModelsController;
 use App\Http\Controllers\Kit\Admin\PricingController;
+use App\Http\Controllers\Kit\Admin\ProcessingCountryController;
 use App\Http\Controllers\Kit\Admin\ReportsController;
 use App\Http\Controllers\Kit\Admin\SmsController;
 use App\Http\Controllers\Kit\Admin\StaffController;
@@ -33,6 +35,9 @@ use App\Http\Controllers\Kit\Console\AgentCallsController;
 use App\Http\Controllers\Kit\Console\AgentsController;
 use App\Http\Controllers\Kit\Console\AgentFlowController;
 use App\Http\Controllers\Kit\Console\AgentVersionsController;
+use App\Http\Controllers\Kit\Console\AgentWebChatController;
+use App\Http\Controllers\Kit\Console\InsightsController;
+use App\Http\Controllers\Kit\Console\MemoryController;
 use App\Http\Controllers\Kit\Console\AgentWebhooksController;
 use App\Http\Controllers\Kit\Console\CallsController;
 use App\Http\Controllers\Kit\Console\CallWorkController;
@@ -53,6 +58,7 @@ use App\Http\Controllers\Kit\EmailCodeController;
 use App\Http\Controllers\Kit\InvitesController;
 use App\Http\Controllers\Kit\AccountController;
 use App\Http\Controllers\Kit\BrandController;
+use App\Http\Controllers\Kit\ChatController;
 use App\Http\Controllers\Kit\HealthController;
 use App\Http\Controllers\Kit\OidcController;
 use App\Http\Controllers\Kit\PasswordController;
@@ -77,11 +83,24 @@ Route::prefix('kit')->group(function () {
     Route::get('health', HealthController::class);
     Route::get('brand', BrandController::class);
     Route::post('telenow/events', TelenowEventsController::class)->middleware(EnsureInstalled::class);
+    // Telenow asking, on a call to a routed number, who takes it: no session; the timed signature for the account's token is the proof.
+    Route::post('telenow/routing/{token}', \App\Http\Controllers\Kit\TelenowRoutingController::class)->middleware(EnsureInstalled::class)->where('token', '[a-z0-9]{16,64}');
     // A payment gateway's events and the payer coming back from it: no session (a gateway's return can be a
     // cross-site POST, which carries no cookie); the gateway's signature, or asking the gateway, is the proof.
     Route::post('payments/webhooks/{gatewayId}', PaymentWebhookController::class)->middleware(EnsureInstalled::class);
     Route::match(['get', 'post'], 'payments/{paymentId}/return', PaymentReturnController::class)
         ->middleware([EnsureInstalled::class, 'throttle:kit-payment-return']);
+    // A customer's chat box on their own website: no session (the browser is on another website, and sends no cookie); the browser's
+    // `Origin` against the chat box's websites is the check (App\Kit\Chat\Conversations).
+    // An agent's logo as an image: anyone may read it (its chat box on another website shows it); no session.
+    Route::get('media/agent-logos/{agent}/{file}', [\App\Http\Controllers\Kit\AgentLogoController::class, 'show'])->middleware(EnsureInstalled::class)
+        ->where('file', '[0-9a-f]{32}\.(png|jpg|webp)');
+    Route::middleware(EnsureInstalled::class)->prefix('chat/{chatKey}')->group(function () {
+        Route::get('/', [ChatController::class, 'show']);
+        Route::get('messages', [ChatController::class, 'messages']);
+        Route::post('messages', [ChatController::class, 'send']);
+        Route::post('end', [ChatController::class, 'end']);
+    });
 
     Route::middleware([PrepareInstallation::class, 'web'])->group(function () {
         Route::get('setup', [SetupController::class, 'show']);
@@ -143,12 +162,17 @@ Route::prefix('kit')->group(function () {
                 Route::post('telenow/writes/{id}/retry', [VoicePlatformController::class, 'retryWrite']);
                 Route::post('telenow/events/{id}/retry', [VoicePlatformController::class, 'retryEvent']);
                 Route::post('telenow/reconcile/{id}', [VoicePlatformController::class, 'reconcile']);
+                Route::get('telenow/processing-country', [ProcessingCountryController::class, 'platform']);
             });
             $may('customers_read')->group(function () {
                 Route::get('customers', [CustomersController::class, 'index']);
                 Route::get('customers/{id}', [CustomersController::class, 'show']);
                 Route::get('customers/{id}/team', [CustomerTeamController::class, 'index']);
                 Route::get('customers/{id}/wallet', [CustomerWalletController::class, 'show']);
+                Route::get('customers/{id}/processing-country', [ProcessingCountryController::class, 'customer']);
+                Route::get('customers/{id}/call-health', [\App\Http\Controllers\Kit\Admin\CallHealthController::class, 'customer']);
+                Route::get('customers/{id}/invoices', [\App\Http\Controllers\Kit\Admin\InvoicesController::class, 'customer']);
+                Route::get('invoices/{id}', [\App\Http\Controllers\Kit\Admin\InvoicesController::class, 'show']);
             });
             $may('customers_suspend')->group(function () {
                 Route::post('customers/{id}/suspend', [CustomersController::class, 'suspend']);
@@ -179,6 +203,10 @@ Route::prefix('kit')->group(function () {
                 Route::post('payments/{id}/confirm', [AdminPaymentsController::class, 'confirm']);
                 Route::post('payments/{id}/cancel', [AdminPaymentsController::class, 'cancel']);
                 Route::post('payments/{id}/refunds', [AdminPaymentsController::class, 'refund']);
+                Route::get('platform-billing', [\App\Http\Controllers\Kit\Admin\PlatformBillingController::class, 'show']);
+                Route::put('platform-billing/alert', [\App\Http\Controllers\Kit\Admin\PlatformBillingController::class, 'alert']);
+                Route::get('invoice-settings', [\App\Http\Controllers\Kit\Admin\InvoicesController::class, 'settings']);
+                Route::put('invoice-settings', [\App\Http\Controllers\Kit\Admin\InvoicesController::class, 'saveSettings']);
             });
             $may('payment_gateways')->group(function () {
                 Route::put('payments/settings', [AdminPaymentsController::class, 'saveSettings']);
@@ -188,11 +216,19 @@ Route::prefix('kit')->group(function () {
                 Route::delete('payments/gateways/{id}', [AdminPaymentsController::class, 'removeGateway']);
                 Route::post('payments/gateways/{id}/test', [AdminPaymentsController::class, 'testGateway']);
             });
+            $may('starters')->group(function () {
+                Route::get('starters', [\App\Http\Controllers\Kit\Admin\StartersController::class, 'index']);
+                Route::get('starters/preview', [\App\Http\Controllers\Kit\Admin\StartersController::class, 'preview']);
+                Route::post('starters', [\App\Http\Controllers\Kit\Admin\StartersController::class, 'store']);
+                Route::patch('starters/{id}', [\App\Http\Controllers\Kit\Admin\StartersController::class, 'update']);
+            });
             $may('settings')->group(function () {
                 Route::get('catalog', [CatalogController::class, 'show']);
                 Route::put('catalog', [CatalogController::class, 'save']);
                 Route::post('catalog/refresh', [CatalogController::class, 'refresh']);
                 Route::get('catalog/voices', [CatalogController::class, 'voices']);
+                Route::get('catalog/open-models', [OpenModelsController::class, 'index']);
+                Route::get('catalog/open-models/price', [OpenModelsController::class, 'price']);
                 Route::get('email', [EmailController::class, 'show']);
                 Route::put('email', [EmailController::class, 'saveSite']);
                 Route::post('email/senders', [EmailController::class, 'addSender']);
@@ -255,11 +291,19 @@ Route::prefix('kit')->group(function () {
                     Route::patch('agents/{id}', [AgentsController::class, 'update']);
                     Route::delete('agents/{id}', [AgentsController::class, 'destroy']);
                     Route::post('agents/{id}/retry', [AgentsController::class, 'retry']);
+                    Route::post('agents/{id}/duplicate', [AgentsController::class, 'duplicate']);
+                    Route::get('starters', [\App\Http\Controllers\Kit\Console\StartersController::class, 'index']);
+                    Route::post('starters/{id}/agents', [\App\Http\Controllers\Kit\Console\StartersController::class, 'store']);
                     Route::post('agents/{id}/test-call', [AgentsController::class, 'testCall']);
                     Route::get('agents/{id}/call-form', [AgentCallsController::class, 'form']);
                     Route::post('agents/{id}/calls', [AgentCallsController::class, 'place'])->middleware('throttle:kit-agent-call');
                     Route::post('agents/{id}/voice-preview', [AgentsController::class, 'voicePreview']);
                     Route::post('agents/{id}/check', [AgentsController::class, 'checkStack'])->middleware('throttle:kit-stack-check');
+                    Route::post('agents/prompt-check', [AgentsController::class, 'checkNewPrompt'])->middleware('throttle:kit-prompt-check');
+                    Route::get('call-health', [\App\Http\Controllers\Kit\Console\CallHealthController::class, 'show']);
+                    Route::post('agents/{id}/prompt-check', [AgentsController::class, 'checkPrompt'])->middleware('throttle:kit-prompt-check');
+                    Route::post('agents/{id}/logo', [AgentsController::class, 'setLogo']);
+                    Route::delete('agents/{id}/logo', [AgentsController::class, 'removeLogo']);
                     Route::put('agents/{id}/knowledge', [KnowledgeController::class, 'setAgent']);
                     Route::get('agents/{id}/flow', [AgentFlowController::class, 'show']);
                     Route::put('agents/{id}/flow/draft', [AgentFlowController::class, 'saveDraft']);
@@ -271,6 +315,8 @@ Route::prefix('kit')->group(function () {
                     Route::get('agents/{id}/versions/{version}/changes', [AgentVersionsController::class, 'changes'])->where('version', '[0-9]{1,9}');
                     Route::get('agents/{id}/versions/{version}/results', [AgentVersionsController::class, 'results'])->where('version', '[0-9]{1,9}');
                     Route::post('agents/{id}/versions/{version}/restore', [AgentsController::class, 'restoreVersion'])->where('version', '[0-9]{1,9}');
+                    Route::get('agents/{id}/web-chat', [AgentWebChatController::class, 'show']);
+                    Route::put('agents/{id}/web-chat', [AgentWebChatController::class, 'update']);
                     Route::get('agents/{id}/webhooks', [AgentWebhooksController::class, 'index']);
                     Route::post('agents/{id}/webhooks', [AgentWebhooksController::class, 'store']);
                     Route::delete('agents/{id}/webhooks/{webhookId}', [AgentWebhooksController::class, 'destroy']);
@@ -287,6 +333,8 @@ Route::prefix('kit')->group(function () {
                     Route::post('campaigns/{id}/retry', [CampaignsController::class, 'retry']);
                     Route::get('campaigns/{id}/progress', [CampaignsController::class, 'progress']);
                     Route::post('campaigns/{id}/targets', [CampaignsController::class, 'addTargets']);
+                    Route::put('campaigns/{id}/source', [CampaignsController::class, 'setSource']);
+                    Route::delete('campaigns/{id}/source', [CampaignsController::class, 'removeSource']);
                     Route::post('campaigns/{id}/start', [CampaignsController::class, 'start']);
                     Route::post('campaigns/{id}/pause', [CampaignsController::class, 'pause']);
                     Route::post('campaigns/{id}/cancel', [CampaignsController::class, 'cancel']);
@@ -301,6 +349,8 @@ Route::prefix('kit')->group(function () {
                     Route::post('knowledge/{id}/documents/page', [KnowledgeController::class, 'addPage']);
                     Route::post('knowledge/{id}/documents/{documentId}/retry', [KnowledgeController::class, 'retry']);
                     Route::delete('knowledge/{id}/documents/{documentId}', [KnowledgeController::class, 'destroyDocument']);
+                    Route::get('knowledge/{id}/documents/{documentId}/table', [KnowledgeController::class, 'table']);
+                    Route::patch('knowledge/{id}/documents/{documentId}/table', [KnowledgeController::class, 'setTableTypes']);
                     Route::get('catalog', [StackChoicesController::class, 'show']);
                     Route::get('voices', [VoicesController::class, 'index']);
                     Route::post('voices/preview', [VoicesController::class, 'preview']);
@@ -320,25 +370,49 @@ Route::prefix('kit')->group(function () {
                     Route::get('payments', [PaymentsController::class, 'index']);
                     Route::post('payments', [PaymentsController::class, 'store']);
                     Route::get('payments/{id}', [PaymentsController::class, 'show']);
+                    Route::get('invoices', [\App\Http\Controllers\Kit\Console\InvoicesController::class, 'index']);
+                    Route::get('invoices/{id}', [\App\Http\Controllers\Kit\Console\InvoicesController::class, 'show']);
+                    Route::get('billing-details', [\App\Http\Controllers\Kit\Console\InvoicesController::class, 'billingDetails']);
+                    Route::put('billing-details', [\App\Http\Controllers\Kit\Console\InvoicesController::class, 'setBillingDetails']);
                     Route::get('numbers', [NumbersController::class, 'index']);
                     Route::get('numbers/available', [NumbersController::class, 'available']);
                     Route::post('numbers', [NumbersController::class, 'store']);
                     Route::put('numbers/{id}/agent', [NumbersController::class, 'agent']);
+                    Route::put('numbers/{id}/routing', [NumbersController::class, 'routing']);
+                    Route::put('numbers/{id}/caller-id', [NumbersController::class, 'callerId']);
+                    Route::put('numbers/{id}/unanswered', [NumbersController::class, 'unanswered']);
+                    Route::get('numbers/lost', [NumbersController::class, 'lost']);
+                    Route::post('numbers/{id}/get-back', [NumbersController::class, 'getBack']);
+                    Route::get('numbers/renewals', [NumbersController::class, 'renewals']);
+                    Route::get('routing', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'index']);
+                    Route::post('routing/rules', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'store']);
+                    Route::patch('routing/rules/{id}', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'update']);
+                    Route::delete('routing/rules/{id}', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'destroy']);
+                    Route::put('routing/order', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'order']);
+                    Route::post('routing/try', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'try']);
+                    Route::post('routing/check', [\App\Http\Controllers\Kit\Console\RoutingController::class, 'check'])->middleware('throttle:kit-routing-check');
                     Route::delete('numbers/{id}', [NumbersController::class, 'destroy']);
                     Route::get('consent', [ConsentController::class, 'index']);
+                    Route::get('consent/export', [ConsentController::class, 'export']);
                     Route::post('consent', [ConsentController::class, 'store']);
                     Route::post('consent/import', [ConsentController::class, 'import']);
                     Route::post('consent/withdraw', [ConsentController::class, 'withdraw']);
                     Route::put('consent/rule', [ConsentController::class, 'setRule']);
                     Route::get('dnc', [DncController::class, 'index']);
+                    Route::get('dnc/export', [DncController::class, 'export']);
                     Route::post('dnc', [DncController::class, 'store']);
                     Route::post('dnc/import', [DncController::class, 'import']);
                     Route::delete('dnc/{id}', [DncController::class, 'destroy']);
                     Route::get('calls', [CallsController::class, 'index']);
                     Route::get('calls/live', [CallsController::class, 'live']);
+                    Route::get('memory', [MemoryController::class, 'index']);
+                    Route::delete('memory', [MemoryController::class, 'destroy']);
+                    Route::get('calls/export', [CallsController::class, 'export']);
+                    Route::get('insights', InsightsController::class);
                     Route::get('calls/{id}', [CallsController::class, 'show']);
                     Route::get('calls/{id}/recordings/{index}', [CallsController::class, 'recording'])->whereNumber('index');
                     Route::post('calls/{id}/listen', [CallsController::class, 'listen']);
+                    Route::post('calls/{id}/agent-notes', [CallsController::class, 'tellAgent']);
                     Route::get('calls/{id}/work', [CallWorkController::class, 'show']);
                     Route::post('calls/{id}/notes', [CallWorkController::class, 'addNote']);
                     Route::put('calls/{id}/wrapup', [CallWorkController::class, 'setWrapup']);

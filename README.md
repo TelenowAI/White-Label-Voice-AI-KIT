@@ -53,24 +53,49 @@ Shown with demo data: a brand called Acme Voice and a customer called Clinic Co.
 - **Call flows**: a visual step builder for conversation, data capture, keypad input, routing, tools and transfers, with
   drafts and publishing.
 - **Versions**: every change saved as a version that can be compared and put back.
-- **Knowledge bases**: documents and text an agent answers from.
+- **Duplicate an agent**: a copy in the same account to try changes on, with a list of what is left to do (keys are never
+  copied).
+- **Starter agents**: ready-made agents you build in your own account and offer every customer, each reviewed before it
+  goes out and carrying nothing of the account it came from.
+- **Knowledge bases**: documents and text an agent answers from, and spreadsheets (CSV, JSON, Excel) it looks rows up
+  in, with their columns and rows to see and each column's type to set.
 - **Test it in the browser**: hear a voice, hear the agent, place a browser test call, and check the voice setup.
+- **Prompt check**: instructions checked as you write them, conditional sections included, with a preview filled with
+  sample values; a save the voice platform would refuse is stopped first.
+- **Agent logos**: each agent's own image, in the console and on its chat box.
+- **Web chat on your customers' websites**: one line of code puts a chat box on their pages, answered by the same agent
+  that takes their calls. Visitors only ever talk to your platform, under your brand; each conversation shows in the call
+  history with its transcript and is charged by your price lists.
 
 ### Calls, campaigns and phone numbers
 - **Inbound and outbound AI calling** on numbers your customers buy in their console, with your number fees.
-- **Outbound calling campaigns**: contacts from a CSV, a daily calling window in their time zone, attempts per person,
+- **Outbound calling campaigns**: contacts from a CSV or a link kept in sync (a published spreadsheet), a daily calling window in their time zone, attempts per person,
   settings changed mid-run, calling again, results as a CSV, and how it went.
-- **Call history** with recordings and transcripts, **listen in** to live calls, and **human agents** taking calls in the
-  browser with wrap-up notes and follow-ups.
+- **Call history** with recordings and transcripts, **listen in** to live calls and **tell the agent** something mid-call
+  (it says it now if asked), and **human agents** taking calls in the browser with wrap-up notes and follow-ups.
+- **Call routing**: rules for who takes a call to a number — by the line that forwarded it, the caller's number, the day
+  and hour — answered by a chosen agent with its own language and greeting, or refused with a busy line.
+- **Number controls**: each agent's caller id, what a number no agent answers does, getting back a number given up for
+  unpaid rent, and a warning before the balance falls short of the next rent.
 - **An agent calling one person** on demand, from its page.
+- **Insights**: calls, answered, minutes, outcomes, sentiment, channels and spend over any period, day by day and agent
+  by agent, in the viewer's own time zone.
+- **Exports**: calls, the do-not-call list and consent records as spreadsheet files, with the customer's own charges.
 - **Compliance**: a do-not-call list and a consent ledger (record, import, withdraw), with an operator-wide consent rule.
+- **Caller memory**: what agents remember about each caller from one call or chat to the next, searchable, and forgotten
+  on request (a phone number written any way).
 - **Webhooks and after-call email** for each agent.
 
 ### Billing and payments under your prices
 - **Your own price lists**: a markup or a per-minute price per call component, per plan — your margin on every call.
 - **Customer wallets** with top-ups, credits, low-balance emails and limits (calls at once, monthly cap).
+- **Invoices** for every payment, numbered without gaps, with your business details and tax (GST, VAT…), printable or
+  saved as PDF from the browser.
 - **Payment gateways built in**: Stripe, PayPal, Razorpay, Paystack, Flutterwave and Tap.
-- **Admin dashboard**: what customers were charged beside what the voice platform charged you, and your margin.
+- **Admin dashboard**: what customers were charged beside what the voice platform charged you, and your margin — per
+  customer, and one customer's by what was charged.
+- **Platform billing**: your own account at the voice platform — what it can still spend, a low-balance level that emails
+  your staff before calls stop, and the platform's invoices to you.
 
 ### Your brand, your website, your sign-ups
 - **White-label everything**: your name, logo, colours and domain on the website, the console and every email.
@@ -81,9 +106,12 @@ Shown with demo data: a brand called Acme Voice and a customer called Clinic Co.
 
 ### Running the platform
 - **Multi-tenant**: each customer is a workspace and a Telenow sub-account with its own encrypted key.
-- **Catalog curation**: you choose which AI providers, models and voices your customers may use, under your own names.
+- **Catalog curation**: you choose which AI providers, models and voices your customers may use, under your own names,
+  and add any of OpenRouter's language models beyond the catalog's, with what each costs you.
+- **Processing country**: where the voice platform serves your account's language models from, and each customer's.
 - **Staff roles and audit log**: owner, admin and support roles; every change recorded.
 - **Platform health**: scheduled jobs, the API key and incoming events, at a glance.
+- **Call health**: which providers failed on recent calls and on whose — customers see their own, you see everyone's.
 - **Look as the customer**: open a customer's console read-only to help them.
 
 ## How it works
@@ -106,7 +134,7 @@ flowchart LR
   Every write to Telenow goes through an outbox: saved with the change, sent at once, and retried with the same
   idempotency key, so nothing is lost or sent twice.
 - **React console** (`console/`): the customer console and the admin panel, one app shipped pre-built in every release.
-- **Contract first** (`contract/`): the kit's own API is an OpenAPI document (223 operations), and every answer is
+- **Contract first** (`contract/`): the kit's own API is an OpenAPI document (233 operations), and every answer is
   checked against it. Telenow's answers are recorded from a real Telenow release and replayed in tests.
 - **Your customers never see Telenow**: its ids, names and prices stay on your side; customers see your brand and your
   prices.
@@ -211,7 +239,7 @@ database), connect your Telenow key, and set your own prices.
 **Which AI models and voices can my customers use?**
 The ones you offer from Telenow's catalog: language models, speech recognition and text-to-speech providers, each with
 its models, settings and voices, and realtime speech-to-speech models such as OpenAI Realtime and Gemini Live when the
-platform runs them. You choose what is offered and what it is called.
+platform runs them, and any of OpenRouter's own models you add. You choose what is offered and what it is called.
 
 **Can I set my own prices and margins?**
 Yes. Price lists set a markup or a per-minute price for each part of a call, per plan. The admin dashboard shows what
@@ -223,6 +251,11 @@ Stripe, PayPal, Razorpay, Paystack, Flutterwave and Tap, set up in the admin.
 **Does it handle outbound calling campaigns and compliance?**
 Yes: campaigns from a CSV with a daily calling window and attempts per person, a do-not-call list, and a consent ledger
 with an operator-wide consent rule.
+
+**Can the agents chat as well as talk?**
+Yes. A customer turns on a chat box for any agent and puts one line of code on their website. The same agent answers
+visitors there, with its instructions, tools and knowledge, through your platform under your brand. You decide whether
+chat is offered at all, and your price lists decide what each conversation costs.
 
 **Will my customers see Telenow?**
 No. Customers see your brand, your names for the providers and voices, and your prices. Telenow's ids, names and prices

@@ -6,8 +6,10 @@ use App\Kit\Console\ServicePause;
 use App\Kit\Customers\Customers;
 use App\Kit\Email\Emails;
 use App\Kit\Email\Senders;
+use App\Kit\Invoices\CustomerInvoices;
 use App\Kit\Pricing\Pricing;
 use App\Kit\Wallet\Wallet;
+use App\Models\CustomerInvoice;
 use App\Models\Payment;
 use App\Models\PaymentEvent;
 use App\Models\PaymentGateway;
@@ -34,6 +36,7 @@ use Illuminate\Validation\Rule;
  * - **Crediting once.** A payment the gateway says is paid, for the amount and currency asked, credits the wallet
  *   once (the entry's reference is the payment), from whatever state it was in — money taken is money credited. Any
  *   other amount or currency waits for staff (`review`).
+ * - **Its invoice.** Issued once the payment is credited (App\Kit\Invoices\CustomerInvoices), and the payer's email links to it.
  * - **After.** A refund (staff's, or one made at the gateway) and a dispute (as the operator's dispute rule says) write
  *   negative entries, each once by the gateway's own id; a dispute won gives a held amount back, and so does a refund
  *   that later fails at the bank, since the money went back to the operator and not to the payer.
@@ -57,6 +60,7 @@ final class Payments
         private readonly Customers $customers,
         private readonly Emails $emails,
         private readonly Senders $senders,
+        private readonly CustomerInvoices $invoices,
     ) {}
 
     /**
@@ -403,7 +407,20 @@ final class Payments
         });
         $this->refundsAfterCredit($payment);
         if ($changed && ! $payment->isTest()) {
-            $this->tellPayer($payment->refresh());
+            $payment->refresh();
+            $this->tellPayer($payment, $this->invoice($payment));
+        }
+    }
+
+    /** The payment's invoice, issued now; a failure never stops the payment (`kit:payments` issues it later: CustomerInvoices::catchUp). */
+    private function invoice(Payment $payment): ?CustomerInvoice
+    {
+        try {
+            return $this->invoices->issue($payment);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return null;
         }
     }
 
@@ -564,7 +581,7 @@ final class Payments
         return $event->gatewayRef === null ? null : $query->where('gateway_ref', $event->gatewayRef)->first();
     }
 
-    private function tellPayer(Payment $payment): void
+    private function tellPayer(Payment $payment, ?CustomerInvoice $invoice): void
     {
         $user = $payment->user;
         // Someone who signed up with their phone has no email to tell.
@@ -573,7 +590,7 @@ final class Payments
         }
         $this->emails->send('payment_received', $user->email, [
             'name' => $user->name, 'amount' => "{$payment->received} {$payment->currency}", 'account' => $payment->workspace->name,
-        ], $this->senders->link('console/wallet'));
+        ], $this->senders->link($invoice === null ? 'console/wallet' : "console/invoices/{$invoice->id}"));
     }
 
     /** A top-up amount: shaped for the currency and within the operator's rules. */

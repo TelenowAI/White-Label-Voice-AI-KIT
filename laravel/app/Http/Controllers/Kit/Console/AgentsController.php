@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Kit\Console;
 
 use App\Kit\Agents\AgentBehaviour;
+use App\Kit\Agents\AgentLogos;
 use App\Kit\Agents\AgentRefused;
+use App\Kit\Agents\PromptCheck;
 use App\Kit\Agents\AgentSettings;
 use App\Kit\Agents\AgentVersions;
 use App\Kit\Agents\Agents;
 use App\Kit\Agents\AgentProviderSettings;
+use App\Kit\Agents\AgentDuplicate;
 use App\Kit\Agents\AgentRealtime;
 use App\Kit\Agents\StackCheck;
 use App\Kit\Agents\TestCall;
@@ -24,13 +27,14 @@ use Illuminate\Support\Str;
 
 /**
  * Console → Agents (contract/kit-api.yaml listAgents, createAgent, getAgent, updateAgent, deleteAgent, retryAgent,
- * startTestCall, previewAgentVoice, getAgentSettingsForm): the current account's agents, read from the kit's DB; every member may build them.
+ * startTestCall, previewAgentVoice, getAgentSettingsForm, duplicateAgent): the current account's agents, read from the kit's DB; every member may build
+ * them, and duplicate one (AgentDuplicate).
  * An agent of another account, or a deleted one, is 404. Its stack is answered under the kit's own provider keys, with
  * the names customers know them by (App\Kit\Catalog\Catalog). No Telenow id or key is ever answered.
  */
 final class AgentsController
 {
-    public function __construct(private readonly AgentVersions $versions, private readonly AgentSettings $settings, private readonly AgentBehaviour $behaviour, private readonly Emails $emails, private readonly Agents $agents, private readonly TestCall $testCall, private readonly Catalog $catalog, private readonly VoicePreview $preview, private readonly StackCheck $stackCheck, private readonly AgentProviderSettings $providerSettings, private readonly AgentRealtime $realtime) {}
+    public function __construct(private readonly AgentVersions $versions, private readonly AgentSettings $settings, private readonly AgentBehaviour $behaviour, private readonly Emails $emails, private readonly Agents $agents, private readonly TestCall $testCall, private readonly Catalog $catalog, private readonly VoicePreview $preview, private readonly StackCheck $stackCheck, private readonly AgentProviderSettings $providerSettings, private readonly AgentRealtime $realtime, private readonly AgentDuplicate $duplicate) {}
 
     public function index(Request $request): JsonResponse
     {
@@ -54,6 +58,16 @@ final class AgentsController
     public function store(Request $request): JsonResponse
     {
         return $this->refusals(fn () => response()->json($this->present($this->agents->create($this->membership($request)->workspace, $request->all())), 201));
+    }
+
+    /** A copy of an agent in the same account, and what is left to do on it (keys to type again, steps to publish…). */
+    public function duplicate(Request $request, string $id): JsonResponse|Response
+    {
+        return $this->with($request, $id, function (Agent $source) {
+            ['agent' => $copy, 'toRedo' => $toRedo] = $this->duplicate->duplicate($source);
+
+            return response()->json(['agent' => $this->present($copy), 'toRedo' => $toRedo], 201);
+        });
     }
 
     public function show(Request $request, string $id): JsonResponse
@@ -110,6 +124,34 @@ final class AgentsController
         return $this->with($request, $id, fn (Agent $a) => response()->json($this->stackCheck->check($a)));
     }
 
+    /** The agent's instructions and opening line as they are being written, checked as the voice platform checks them (App\Kit\Agents\PromptCheck). */
+    public function checkPrompt(Request $request, string $id, PromptCheck $check): JsonResponse|Response
+    {
+        return $this->with($request, $id, fn (Agent $a) => response()->json($check->check($a->workspace, $a, $request->all())));
+    }
+
+    /** The agent's logo: a PNG, JPEG or WebP image, kept in the kit (App\Kit\Agents\AgentLogos). Answers the agent. */
+    public function setLogo(Request $request, string $id, AgentLogos $logos): JsonResponse|Response
+    {
+        return $this->with($request, $id, fn (Agent $a) => response()->json($this->present($logos->set($a, $request->file('file')))));
+    }
+
+    public function removeLogo(Request $request, string $id, AgentLogos $logos): JsonResponse|Response
+    {
+        return $this->with($request, $id, fn (Agent $a) => response()->json($this->present($logos->remove($a))));
+    }
+
+    /** A new agent's instructions and opening line, checked before it is made: nothing of an agent's own is known yet. */
+    public function checkNewPrompt(Request $request, PromptCheck $check): JsonResponse|Response
+    {
+        $workspace = $this->membership($request)->workspace;
+        if (! is_string($workspace->telenow_key)) {
+            return response()->json(['message' => __('agents.account_not_ready')], 409);
+        }
+
+        return $this->refusals(fn () => response()->json($check->check($workspace, null, $request->all())));
+    }
+
     private function membership(Request $request): WorkspaceMember
     {
         return $request->attributes->get('kit.membership');
@@ -135,6 +177,12 @@ final class AgentsController
         }
     }
 
+    /** An agent as every agent operation answers it (the console's starters answer a new agent so too). */
+    public function presentAgent(Agent $a): array
+    {
+        return $this->present($a);
+    }
+
     private function present(Agent $a): array
     {
         ['stack' => $stack, 'names' => $names] = $this->catalog->presentStack($a);
@@ -145,6 +193,7 @@ final class AgentsController
             'description' => $a->description,
             'systemPrompt' => $a->system_prompt,
             'isActive' => $a->is_active,
+            'logoUrl' => app(AgentLogos::class)->url($a),
             'stack' => $stack,
             'stackNames' => $names,
             // Each provider's own settings and the realtime voice as customers name them (never Telenow's provider ids), over the rest.

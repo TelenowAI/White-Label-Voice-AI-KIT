@@ -1,25 +1,36 @@
 /**
- * Console → one agent (`/console/agents/:id`, and `/console/agents/new` to build one; contract/kit-api.yaml
+ * Console → one agent (`/console/agents/:id`, and `/console/agents/new` to build one, blank or from a ready-made agent the operator offers; contract/kit-api.yaml
  * createAgent, getAgent, updateAgent, deleteAgent, retryAgent): its name, description and instructions, whether it
- * takes calls, how it behaves on a call, its voice setup, the knowledge it answers from, whether the voice platform has its latest change (with a retry when it was refused), a
- * link to its calls, its test call, and deleting it (asked twice). A new agent starts from the operator's defaults.
+ * takes calls, how it behaves on a call, where its calls are sent, its chat box on the customer's own website, its voice setup, the knowledge it answers from, whether the voice platform has its latest change (with a retry when it was refused), a
+ * link to its calls, its test call, duplicating it (with the copy's one-time notice of what is left to do), and deleting it (asked twice). A new agent starts from the operator's defaults
+ * (or from a starter, whose page then says once which one and what is left to do).
+ * The instructions (and a new agent's opening line) are checked as they are typed (PromptCheck.tsx, checkPrompt / checkNewPrompt),
+ * with a preview on asking (PromptPreview.tsx); a save the backend refuses for broken sections says why at the instructions.
+ * Also here: its logo (AgentLogo.tsx) and the providers that failed on its recent calls (calls/CallHealthPanel.tsx).
  *
  * Not here: the list (Agents.tsx), the test call itself (TestCall.tsx), the agent calling one person (CallSomeone.tsx), choosing the voice setup (StackForm.tsx) and checking
  * it (StackCheck.tsx), its
- * knowledge (AgentKnowledge.tsx), its behaviour on a call (AgentSettingsForm.tsx), where its calls are sent (AgentWebhooks.tsx), its versions (AgentVersions.tsx), its call steps (flow/FlowPage.tsx).
+ * knowledge (AgentKnowledge.tsx), its behaviour on a call (AgentSettingsForm.tsx), where its calls are sent (AgentWebhooks.tsx), its chat box for the customer's website (AgentWebChat.tsx), its versions (AgentVersions.tsx), its call steps (flow/FlowPage.tsx), duplicating it (AgentDuplicate.tsx), the starters offered and their notice (AgentFromStarter.tsx).
  */
-import { useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { KitApiError, kitApi, type Agent, type AgentInput, type AgentSettingsForm as AgentSettingsFormSpec } from "../api";
+import { KitApiError, kitApi, type Agent, type AgentInput, type AgentSettingsForm as AgentSettingsFormSpec, type PromptCheckInput } from "../api";
+import { CallHealthPanel } from "../calls/CallHealthPanel";
 import { t, type TextKey } from "../text";
+import { AgentLogo } from "./AgentLogo";
+import { AgentCopyNotice, AgentDuplicate } from "./AgentDuplicate";
+import { AgentFromStarter, AgentStarterNotice } from "./AgentFromStarter";
 import { AgentKnowledge } from "./AgentKnowledge";
 import { AgentSettingsForm } from "./AgentSettingsForm";
 import { AgentVersions } from "./AgentVersions";
+import { AgentWebChat } from "./AgentWebChat";
 import { AgentWebhooks } from "./AgentWebhooks";
 import { StackCheck } from "./StackCheck";
 import { StackForm } from "./StackForm";
 import { SyncState } from "./SyncState";
 import { CallSomeone } from "./CallSomeone";
+import { PromptFindings, usePromptCheck } from "./PromptCheck";
+import { PromptPreview } from "./PromptPreview";
 import { TestCall } from "./TestCall";
 
 function message(err: unknown): string {
@@ -52,6 +63,7 @@ export function AgentPage() {
       {isNew && (
         <>
           <h1 id="agent-title">{t("newAgent")}</h1>
+          <AgentFromStarter />
           <AgentForm
             submitText="createAgent"
             onSave={async (input) => {
@@ -64,6 +76,8 @@ export function AgentPage() {
       {agent && (
         <>
           <h1 id="agent-title">{agent.name}</h1>
+          <AgentCopyNotice key={`copy-${agent.id}`} agentId={agent.id} />
+          <AgentStarterNotice key={`starter-${agent.id}`} agentId={agent.id} />
           <SyncState agent={agent} />
           <p>
             <Link to={`/console/calls?agent=${agent.id}`}>{t("agentCalls")}</Link>
@@ -77,14 +91,18 @@ export function AgentPage() {
               {t("retry")}
             </button>
           )}
+          {/* Only the logo is taken from the answer: the forms below keep what is being typed in them. */}
+          <AgentLogo key={`logo-${agent.id}`} agent={agent} onChanged={(saved) => setAgent((a) => (a ? { ...a, logoUrl: saved.logoUrl } : saved))} />
           <AgentForm key={agent.updatedAt} agent={agent} submitText="saveAgent" onSave={async (input) => setAgent(await kitApi.updateAgent(agent.id, input))} />
           {settingsForm && <AgentSettingsForm key={`settings-${agent.updatedAt}`} agent={agent} form={settingsForm} savedAt={settingsSavedAt} onSaved={(saved) => {
             setSettingsSavedAt(saved.updatedAt);
             setAgent(saved);
           }} />}
           <AgentWebhooks key={`webhooks-${agent.id}`} agent={agent} />
+          <AgentWebChat key={`webchat-${agent.id}`} agent={agent} />
           <StackForm key={`stack-${agent.updatedAt}`} agent={agent} onSaved={setAgent} />
           <StackCheck key={`check-${agent.id}`} agent={agent} />
+          <CallHealthPanel key={`health-${agent.id}`} agentId={agent.id} />
           <AgentKnowledge key={`knowledge-${agent.id}`} agent={agent} />
           <section aria-labelledby="agent-flow-link">
             <h2 id="agent-flow-link">{t("flowLink")}</h2>
@@ -94,6 +112,7 @@ export function AgentPage() {
           <AgentVersions key={`versions-${agent.id}`} agent={agent} onRestored={setAgent} />
           <CallSomeone key={`call-${agent.id}`} agentId={agent.id} />
           <TestCall agentId={agent.id} />
+          <AgentDuplicate key={`duplicate-${agent.id}`} agent={agent} />
           <DeleteAgent agent={agent} onDeleted={() => navigate("/console/agents")} onError={setFailure} />
         </>
       )}
@@ -110,6 +129,19 @@ function AgentForm({ agent, submitText, onSave }: { agent?: Agent; submitText: T
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [failure, setFailure] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [typed, setTyped] = useState(false);
+
+  // An agent's own check knows its values, tools and call steps; a new one's knows none yet. A new agent's opening line is
+  // checked with its instructions, as it would be saved; an agent's opening lines are checked where they are (AgentSettingsForm.tsx).
+  const agentId = agent?.id;
+  const run = useCallback(
+    (input: PromptCheckInput) => (agentId ? kitApi.checkPrompt(agentId, input) : kitApi.checkNewPrompt(input)),
+    [agentId],
+  );
+  const greeting = agent ? "" : opening.trim();
+  const prompt = usePromptCheck(run, typed && (systemPrompt.trim() !== "" || greeting !== "")
+    ? { systemPrompt: systemPrompt || null, ...(greeting ? { greeting } : {}) }
+    : null);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -148,15 +180,25 @@ function AgentForm({ agent, submitText, onSave }: { agent?: Agent; submitText: T
       <div className="field">
         <label htmlFor="agent-systemPrompt">{t("agentInstructions")}</label>
         <small className="muted">{t("agentInstructionsHelp")}</small>
-        <textarea {...field("systemPrompt")} rows={10} value={systemPrompt} onChange={(e) => setSystemPrompt(e.target.value)} />
+        <small className="muted">{t("agentInstructionsSections")}</small>
+        <textarea {...field("systemPrompt")} rows={10} value={systemPrompt} onChange={(e) => {
+          setSystemPrompt(e.target.value);
+          setTyped(true);
+        }} />
         {error("systemPrompt")}
+        <PromptFindings state={prompt} field="systemPrompt" id="agent-systemPrompt-check" />
+        <PromptPreview agentId={agentId} run={run} systemPrompt={systemPrompt} />
       </div>
       {!agent && (
         <div className="field">
           <label htmlFor="agent-settings.greetingInbound">{t("agentOpeningLine")}</label>
           <small className="muted">{t("agentOpeningLineHelp")}</small>
-          <input {...field("settings.greetingInbound")} value={opening} onChange={(e) => setOpening(e.target.value)} />
+          <input {...field("settings.greetingInbound")} value={opening} onChange={(e) => {
+            setOpening(e.target.value);
+            setTyped(true);
+          }} />
           {error("settings.greetingInbound")}
+          {greeting && <PromptFindings state={prompt} field="greeting" id="agent-greeting-check" />}
         </div>
       )}
       {agent && (

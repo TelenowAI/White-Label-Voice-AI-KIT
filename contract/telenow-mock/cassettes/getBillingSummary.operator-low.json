@@ -1,0 +1,80 @@
+{
+  "operationId": "getBillingSummary",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the account made postpaid and its invoices written by SQL on that database as Telenow's monthly billing run writes them, and its balance emptied by SQL for the stopped case (contract_k29billing.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/9ea0c695-16dc-5814-b6e1-cf1b3eb6381f/billing/summary",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "account": {
+          "balanceUsd": "40.0000000000",
+          "browserConcurrency": null,
+          "chatFeeMode": null,
+          "chatTurnBlockTurns": null,
+          "chatTurnBlockUsd": null,
+          "feePerMinUsdOverride": null,
+          "feePercentOverride": null,
+          "mode": "prepaid",
+          "monthlySpendLimitUsd": null,
+          "orgId": "9ea0c695-16dc-5814-b6e1-cf1b3eb6381f",
+          "softphoneFeePerMinUsdOverride": null,
+          "suspended": false,
+          "telephonyConcurrencyPerNumber": null
+        },
+        "billedToParent": false,
+        "breakdown": {
+          "adjustmentUsd": "0",
+          "agentCallsUsd": "0",
+          "appAi": [],
+          "calls": 0,
+          "chatUsd": "0",
+          "fdeRechargeUsd": "0",
+          "manualUsd": "0",
+          "platformAiUsd": "0",
+          "platformFeeUsd": "0",
+          "postCallAnalysisUsd": "0",
+          "rentalUsd": "0",
+          "setupUsd": "0",
+          "simulationUsd": "0",
+          "totalUsd": "0"
+        },
+        "concurrencyLimits": {
+          "browser": 50,
+          "telephonyPerNumber": 2
+        },
+        "creditRateInr": 95.0,
+        "dues": null,
+        "gateway": {
+          "razorpayKeyId": null
+        },
+        "numberCreditsUsd": 0.0,
+        "payableNative": "0",
+        "payableUsd": "0",
+        "perDay": [],
+        "periodStart": "2026-10-31T18:30:00Z",
+        "spendState": {
+          "balanceUsd": "40.0000000000",
+          "canSpend": true,
+          "headroomUsd": "40.0000000000",
+          "lowThresholdUsd": "100.0000000000",
+          "mode": "prepaid",
+          "monthlySpendLimitUsd": null,
+          "periodSpendUsd": "0",
+          "periodStart": "2026-10-31T18:30:00Z",
+          "state": "low",
+          "stoppedBy": null
+        },
+        "walletCurrency": "INR",
+        "walletNative": "3800.0000000000000000",
+        "walletRate": "95.000000"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

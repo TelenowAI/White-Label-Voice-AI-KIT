@@ -238,6 +238,14 @@ resources:
       - { column: next_renewal_at, telenow: next_renewal_at }
       - { column: released_at, telenow: released_at }
       - { column: telenow_updated_at, telenow: updated_at }
+      # Whether calls to it ask the account's routing endpoint who takes them (setNumberPool; App\Kit\Routing).
+      - { column: routed, telenow: is_pool }
+      # Its agent's caller id when a call names none (setDefaultOutboundNumber); cleared by Telenow when the number's agent changes (recorded).
+      - { column: agent_caller_id, telenow: is_default_outbound }
+      # What a call to it does while no agent answers it, as Telenow keeps it (setNumberInboundAction); config('kit.numbers.unanswered_read_as').
+      - { column: inbound_action, telenow: inbound_action }
+      # Its rent in USD as Telenow charges the operator (listNumbers, getNumber): priced on the customer's plan for renewal warnings, never shown.
+      - { column: rent_usd, telenow: monthly_rent_usd }
     # Number fees reach the kit through the ledger (rental, number_setup), not through events.
     events: []
     # Every number changed after an instant, released ones too (no cursor: the kit keeps the newest updated_at seen).

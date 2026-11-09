@@ -18,7 +18,7 @@ final class Campaign extends Model
     protected function casts(): array
     {
         return ['retry_on_no_answer' => 'boolean', 'dial_block' => 'array', 'push_summary' => 'array', 'started_at' => 'datetime',
-            'completed_at' => 'datetime', 'read_at' => 'datetime', 'deleted_at' => 'datetime'];
+            'completed_at' => 'datetime', 'read_at' => 'datetime', 'deleted_at' => 'datetime', 'source_checked_at' => 'datetime', 'source_added' => 'integer'];
     }
 
     public function workspace(): BelongsTo

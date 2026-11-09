@@ -16,7 +16,7 @@ use App\Models\PhoneNumber;
  * tried again, `failed` with the kit's words for what went wrong (Telenow's own text speaks of its Billing page and
  * reward credits, which are the operator's business), `synced` once done.
  *
- * Used by BuyAtTelenow, AssignAtTelenow, ReleaseAtTelenow.
+ * Used by BuyAtTelenow, AssignAtTelenow, RouteAtTelenow, CallerIdAtTelenow, UnansweredAtTelenow, ReleaseAtTelenow.
  */
 abstract class NumberWrite implements OutboxHandler
 {

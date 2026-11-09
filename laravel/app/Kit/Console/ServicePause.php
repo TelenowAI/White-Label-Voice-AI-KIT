@@ -5,6 +5,7 @@ namespace App\Kit\Console;
 use App\Kit\Pricing\Pricing;
 use Brick\Math\BigDecimal;
 use App\Kit\Settings\Settings;
+use App\Kit\Telenow\PlatformBilling;
 use App\Kit\Telenow\TelenowClient;
 use App\Kit\Telenow\TelenowError;
 use App\Models\Workspace;
@@ -24,11 +25,17 @@ use App\Models\Workspace;
  * A customer is never told why the operator's own account is stopped, or that Telenow exists (white label, §9): that
  * reason is the admin's (refresh() keeps it in settings as `telenow.billing`, `telenow.key_rejected`).
  *
- * refresh() reads Telenow; `kit:telenow-status` runs it every config('kit.telenow.status_minutes').
+ * refresh() reads Telenow; `kit:telenow-status` runs it every config('kit.telenow.status_minutes'), and tells the staff when the operator's account
+ * runs low or stops (App\Kit\Telenow\PlatformBilling::changed).
  */
 final class ServicePause
 {
-    public function __construct(private readonly Settings $settings, private readonly TelenowClient $telenow, private readonly Pricing $pricing) {}
+    public function __construct(
+        private readonly Settings $settings,
+        private readonly TelenowClient $telenow,
+        private readonly Pricing $pricing,
+        private readonly PlatformBilling $billing,
+    ) {}
 
     /** @return array{reason: string, message: string}|null */
     public function for(Workspace $workspace): ?array
@@ -68,7 +75,10 @@ final class ServicePause
         $this->settings->put('telenow.status_error', null);
         $this->settings->put('telenow.status_checked_at', now()->toIso8601String());
         if (is_array($state)) {
-            $this->settings->put('telenow.billing', array_intersect_key($state, array_flip(config('kit.telenow.spend_state_fields'))));
+            $before = $this->settings->get('telenow.billing');
+            $after = array_intersect_key($state, array_flip(config('kit.telenow.spend_state_fields')));
+            $this->settings->put('telenow.billing', $after);
+            $this->billing->changed(is_array($before) ? $before : null, $after); // the staff's email when it runs low or stops
         }
     }
 }

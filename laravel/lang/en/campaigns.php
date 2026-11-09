@@ -42,4 +42,6 @@ return [
     'export_columns' => ['outcome' => 'outcome', 'attempts' => 'attempts', 'finished' => 'finished_at'],
     'export_file' => 'campaign-people',
     'outcome_words' => ['answered' => 'Answered', 'no-answer' => 'No answer', 'busy' => 'Busy', 'machine' => 'Voicemail', 'failed' => 'Failed', 'waiting' => 'Waiting'],
+    'links_off' => 'Contacts from a link are not available. Ask your provider.',
+    'link_field' => 'Link',
 ];

@@ -111,6 +111,14 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('kit-stack-check', fn (Request $request) => Limit::perMinute(config('kit.stack_check.per_minute'))->by('stack-check|'.$request->user()?->getAuthIdentifier())
             ->response(fn (Request $request, array $headers) => response()->json(['message' => __('session.throttled')], 429, $headers)));
 
+        // The prompt check, per member (config('kit.agents.prompt_check.per_minute')): the console checks as the instructions are written, a few
+        // seconds after typing stops.
+        RateLimiter::for('kit-prompt-check', fn (Request $request) => Limit::perMinute(config('kit.agents.prompt_check.per_minute'))->by('prompt-check|'.$request->user()?->getAuthIdentifier())
+            ->response(fn (Request $request, array $headers) => response()->json(['message' => __('session.throttled')], 429, $headers)));
+
+        RateLimiter::for('kit-routing-check', fn (Request $request) => Limit::perMinute(config('kit.routing.checks_per_minute'))->by('routing-check|'.$request->user()?->getAuthIdentifier())
+            ->response(fn (Request $request, array $headers) => response()->json(['message' => __('session.throttled')], 429, $headers)));
+
         RateLimiter::for('kit-realtime-preview', fn (Request $request) => Limit::perMinute(config('kit.catalog.realtime.previews_per_minute'))->by('realtime-preview|'.$request->user()?->getAuthIdentifier())
             ->response(fn (Request $request, array $headers) => response()->json(['message' => __('session.throttled')], 429, $headers)));
 

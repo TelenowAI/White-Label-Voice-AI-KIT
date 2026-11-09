@@ -41,7 +41,7 @@ final class Agents
     /** The kit's API names for the agent's editable columns. */
     private const INPUT = ['name' => 'name', 'description' => 'description', 'systemPrompt' => 'system_prompt', 'isActive' => 'is_active'];
 
-    public function __construct(private readonly Outbox $outbox, private readonly Manifest $manifest, private readonly Catalog $catalog, private readonly AgentSettings $settings, private readonly AfterCallEmail $afterCallEmail, private readonly AgentWebhooks $webhooks, private readonly AgentProviderSettings $providerSettings, private readonly CatalogVoices $voices, private readonly AgentRealtime $realtime) {}
+    public function __construct(private readonly Outbox $outbox, private readonly Manifest $manifest, private readonly Catalog $catalog, private readonly AgentSettings $settings, private readonly AfterCallEmail $afterCallEmail, private readonly AgentWebhooks $webhooks, private readonly AgentProviderSettings $providerSettings, private readonly CatalogVoices $voices, private readonly AgentRealtime $realtime, private readonly PromptCheck $promptCheck) {}
 
     public function create(Workspace $workspace, array $input): Agent
     {
@@ -49,6 +49,7 @@ final class Agents
             throw new AgentRefused(409, __('agents.account_not_ready'));
         }
         $columns = $this->validated($input, creating: true, workspace: $workspace);
+        $this->promptCheck->refuseBroken($workspace, null, $columns['system_prompt'] ?? null);
         unset($columns['is_active']); // a new agent is active (Telenow's create takes no isActive)
         $settings = $this->settings->forNewAgent($this->settings->validated($input)) + $this->withProviderSettings(null, $input, $columns, $columns) + $this->withRealtime($input);
         $email = $this->afterCallEmail->validated($input, (new Agent)->forceFill(['workspace_id' => $workspace->id]));
@@ -78,6 +79,9 @@ final class Agents
         $now = $this->settings->of($agent);
         $settings = array_filter($this->settings->validated($input, $agent) + $this->withProviderSettings($agent, $input, $this->stackOf($columns, $agent), $changed) + $this->withRealtime($input),
             fn ($value, string $key) => $this->settings->changed($now, $key, $value), ARRAY_FILTER_USE_BOTH);
+        if (array_key_exists('system_prompt', $changed)) {
+            $this->promptCheck->refuseBroken($agent->workspace, $agent, $changed['system_prompt']);
+        }
         $email = $this->afterCallEmail->validated($input, $agent);
         if ($email !== null && $email !== $this->afterCallEmail->of($agent)) {
             $agent->forceFill(['after_call_email' => $email])->save();
@@ -123,6 +127,7 @@ final class Agents
     public function delete(Agent $agent): void
     {
         $this->webhooks->removeAll($agent);
+        app(AgentLogos::class)->forget($agent);
         if ($agent->telenow_id === null && $this->outbox->hasFailed(AgentWrite::RESOURCE, $agent->id)) {
             $this->outbox->cancel(AgentWrite::RESOURCE, $agent->id, __('agents.cancelled'));
             $agent->forceFill(['deleted_at' => now(), 'sync_state' => 'synced', 'sync_error' => null])->save();

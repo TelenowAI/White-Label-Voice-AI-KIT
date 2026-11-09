@@ -107,6 +107,18 @@ return [
             'provider' => ['id', 'name', 'status', 'enabled', 'recommended', 'multilingual'],
             'model' => ['id', 'name', 'enabled', 'recommended', 'contextWindow'],
         ],
+        // The language model provider whose agents may name any of its models, not only the catalog's (Telenow takes any OpenRouter model id): the
+        // operator adds them from OpenRouter's own list as Telenow reads it (App\Kit\Catalog\OpenModels), at most models_max. The list is kept for
+        // list_minutes, a page of per_page at a time in Admin → Catalog; an id must have id_pattern's shape. '' turns adding models off.
+        'open_models' => [
+            'provider' => (string) env('KIT_OPEN_MODELS_PROVIDER', 'openrouter'),
+            'models_max' => (int) env('KIT_OPEN_MODELS_MAX', 100),
+            'list_minutes' => (int) env('KIT_OPEN_MODELS_LIST_MINUTES', 30),
+            'per_page' => (int) env('KIT_OPEN_MODELS_PER_PAGE', 50),
+            'id_pattern' => '/^~?[a-z0-9][a-z0-9._-]*\/[A-Za-z0-9._:-]{1,120}$/',
+        ],
+        // How long the processing country read from Telenow is kept (minutes): it changes only when the operator's account country does.
+        'processing_country_minutes' => (int) env('KIT_PROCESSING_COUNTRY_MINUTES', 60),
         // Voices per page in the console.
         'voices_per_page' => (int) env('KIT_VOICES_PER_PAGE', 24),
         // Voices written to the database at a time when a provider's list is copied.
@@ -172,6 +184,9 @@ return [
             'dnc.create' => App\Kit\Dnc\Telenow\AddAtTelenow::class,
             'numbers.create' => App\Kit\Numbers\Telenow\BuyAtTelenow::class,
             'numbers.assign' => App\Kit\Numbers\Telenow\AssignAtTelenow::class,
+            'numbers.route' => App\Kit\Numbers\Telenow\RouteAtTelenow::class,
+            'numbers.caller_id' => App\Kit\Numbers\Telenow\CallerIdAtTelenow::class,
+            'numbers.unanswered' => App\Kit\Numbers\Telenow\UnansweredAtTelenow::class,
             'numbers.delete' => App\Kit\Numbers\Telenow\ReleaseAtTelenow::class,
             'knowledge_bases.create' => App\Kit\Knowledge\Telenow\CreateBaseAtTelenow::class,
             'knowledge_bases.delete' => App\Kit\Knowledge\Telenow\DeleteBaseAtTelenow::class,
@@ -221,6 +236,27 @@ return [
         'name_max_length' => 120,
         'description_max_length' => 500,
         'prompt_max_length' => (int) env('KIT_AGENT_PROMPT_MAX', 20000),
+        // An agent's logo (App\Kit\Agents\AgentLogos): kept on this disk under dir, a PNG, JPEG or WebP image of at most max_kb kilobytes and
+        // min_px to max_px pixels a side, served with a year's cache (its name is its content's, so a new image is a new address).
+        'logo' => [
+            'disk' => env('KIT_AGENT_LOGO_DISK', 'local'),
+            'dir' => 'agent-logos',
+            'max_kb' => (int) env('KIT_AGENT_LOGO_MAX_KB', 512),
+            'min_px' => 16,
+            'max_px' => (int) env('KIT_AGENT_LOGO_MAX_PX', 1024),
+            'types' => ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/webp' => 'webp'],
+            'cache_seconds' => 31536000,
+        ],
+        // The prompt check (App\Kit\Agents\PromptCheck): Telenow checks at most check_max_length characters (a longer prompt is saved unchecked:
+        // Telenow's save still refuses broken sections); a preview takes at most values_max sample values of value_max_length each, for a call on one
+        // of these channels (Telenow's words).
+        'prompt_check' => [
+            'check_max_length' => (int) env('KIT_PROMPT_CHECK_MAX', 12000),
+            'values_max' => 50,
+            'value_max_length' => 1000,
+            'channels' => ['phone_inbound', 'phone_outbound', 'chat'],
+            'per_minute' => (int) env('KIT_PROMPT_CHECKS_PER_MINUTE', 30),
+        ],
         'per_page' => (int) env('KIT_AGENTS_PER_PAGE', 50),
         // What a new agent starts with (App\Kit\Agents\AgentSettings). With none of these Telenow starts no call limit and no
         // silence hang-up, and the agent has no way to hang up, so a line left open would bill until someone hangs up.
@@ -412,6 +448,11 @@ return [
         // The parts of a call the console shows. A call is read again until none of them is `pending` in Telenow's
         // `completeness`: after base × 2^(reads − 1) seconds, at most max, and at most max_reads times.
         'wait_for' => ['recording', 'transcript', 'analysis'],
+        // Channels that never have a recording: Telenow still says a chat's is `pending` once it has ended, and after it is rated (recorded,
+        // contract_k15chat.py), so a call on one is not kept waiting for it.
+        'unrecorded_channels' => ['chat'],
+        // The outcomes the calls list offers to narrow to: an account's own, most calls first. An outcome is the voice platform's word, an agent's own too.
+        'outcomes_max' => 50,
         'reread_base_seconds' => (int) env('KIT_CALLS_REREAD_BASE', 60),
         'reread_max_seconds' => (int) env('KIT_CALLS_REREAD_MAX', 3600),
         'max_reads' => (int) env('KIT_CALLS_MAX_READS', 12),
@@ -442,6 +483,10 @@ return [
         'listen_unheard_channels' => ['web_call', 'web_chat', 'simulation', 'chat'],
         // How many of a call's listeners its page shows, newest first.
         'listens_shown' => 20,
+        // Telling the agent during a call (App\Kit\Calls\AgentNotes): the most a note may hold (Telenow takes as much as fits beside the call so
+        // far, which depends on the agent's model, and says so), and how many of a call's notes its page shows, newest first.
+        'agent_note_max_length' => (int) env('KIT_AGENT_NOTE_MAX', 2000),
+        'agent_notes_shown' => 50,
     ],
 
     'wallet' => [
@@ -481,6 +526,41 @@ return [
         'fee_kinds' => ['rental', 'number_setup'],
         // Numbers for sale shown per search.
         'search_limit' => (int) env('KIT_NUMBERS_SEARCH_LIMIT', 20),
+        // What a call to a number no agent answers does, in the kit's words, and as Telenow takes it (setNumberInboundAction). Telenow's
+        // `forward` needs a number to forward to that its released API cannot set, so it speaks the message instead (recorded): read as one.
+        'unanswered' => ['message' => 'speak', 'busy' => 'reject', 'unavailable' => 'no-answer'],
+        'unanswered_read_as' => ['speak' => 'message', 'forward' => 'message', 'reject' => 'busy', 'no-answer' => 'unavailable'],
+        // Renewal warnings (App\Kit\Numbers\NumberRenewals): a number renewing within this many days is "soon"; the email goes to the
+        // account's members in config('kit.wallet.alert_roles') once for each renewal its balance will not cover, this many days ahead at most.
+        'renewal_warning_days' => (int) env('KIT_NUMBERS_RENEWAL_WARNING_DAYS', 7),
+        // Why Telenow gave up a number that can be got back (App\Kit\Numbers\LostNumbers), when it means its rent was not paid; any other
+        // (the account closed, a carrier forced it) reads as "given up by the platform".
+        'lost_unpaid_reasons' => ['renewal_unpaid', 'postpaid_suspended'],
+    ],
+
+    'routing' => [
+        // Who takes a call to a routed number (App\Kit\Routing): the account's rules, asked by Telenow on every such call at this kit's
+        // endpoint. Where Telenow asks (https, a public host). Empty: this kit's own APP_URL + /api/kit/telenow/routing/<the account's token>.
+        'url' => env('KIT_ROUTING_URL'),
+        // How long Telenow waits for this kit's answer, in ms (Telenow takes 200–3000; the caller hears nothing meanwhile). Past it, or on
+        // any failure, the number's own agent answers. Telenow sets 1200 itself when none is sent (recorded), so it is always sent.
+        'timeout_ms' => (int) env('KIT_ROUTING_TIMEOUT_MS', 1200),
+        // How far a request's signed time may be from this server's clock, in seconds: an older one is refused, so a copy cannot answer again later.
+        'signature_tolerance_seconds' => (int) env('KIT_ROUTING_SIGNATURE_TOLERANCE', 300),
+        // Rules an account may have, numbers one rule may list (forwarded-from lines, callers' numbers or their starts), and its name's length.
+        'rules_max' => (int) env('KIT_ROUTING_RULES_MAX', 100),
+        'numbers_per_rule' => (int) env('KIT_ROUTING_NUMBERS_PER_RULE', 500),
+        'name_max_length' => 120,
+        // What Telenow takes in an answer (pool_routing.rs): a greeting of up to 500 characters, a language tag of letters, digits and
+        // hyphens up to 32, a call cap between 15 s and 4 h (the kit's cap is whole minutes).
+        'greeting_max_length' => 500,
+        'language_pattern' => '/^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8}){0,3}$/',
+        'language_max_length' => 32,
+        'max_minutes' => 240,
+        // A caller's number "starts with": the fewest digits a start may have (a country code is 1 to 3 digits, ITU-T E.164).
+        'caller_start_min_digits' => 1,
+        // The voice platform's test of a routed number (it asks this kit through the platform), allowed a member a minute.
+        'checks_per_minute' => (int) env('KIT_ROUTING_CHECKS_PER_MINUTE', 6),
     ],
 
     'knowledge' => [
@@ -494,6 +574,12 @@ return [
         // and what this host lets PHP receive.
         'file_max_bytes' => 20 * 1024 * 1024,
         'file_types' => ['pdf', 'docx', 'txt', 'md', 'csv', 'json', 'xlsx'],
+        // The files Telenow keeps as a table agents look rows up in (getKnowledgeTable), and a table's rows a page at a time:
+        // table_page by default, at most table_page_max (Telenow's most). A table has at most table_columns_max columns.
+        'table_types' => ['csv', 'json', 'xlsx'],
+        'table_page' => 50,
+        'table_page_max' => 200,
+        'table_columns_max' => 256,
         // Where an upload waits until the outbox has sent it (then it is deleted): a filesystem disk.
         'upload_disk' => env('KIT_KNOWLEDGE_DISK', 'local'),
         // Telenow's document statuses: still being read, ready for agents, failed.
@@ -506,6 +592,21 @@ return [
         // every run; at most feed_bases_per_run bases a run.
         'feed_minutes' => (int) env('KIT_KNOWLEDGE_FEED_MINUTES', 15),
         'feed_bases_per_run' => (int) env('KIT_KNOWLEDGE_FEED_BASES', 50),
+    ],
+
+    'links' => [
+        // Reading a customer's link from this server (App\Kit\Net\PublicLinks): the ports allowed, redirects followed, and how long a read may take.
+        'ports' => [443],
+        'max_redirects' => 3,
+        // How many of a name's checked addresses are tried, in turn, when one cannot be reached.
+        'addresses_tried' => 3,
+        'connect_seconds' => 5,
+        'timeout_seconds' => 20,
+    ],
+
+    'starters' => [
+        // Ready-made agents the operator offers every account (App\Kit\Agents\StarterAgents): what a description may hold.
+        'description_max_length' => 500,
     ],
 
     'campaigns' => [
@@ -523,6 +624,10 @@ return [
         'phone_columns' => ['phone_number', 'phone'],
         'import_max_bytes' => 2 * 1024 * 1024,
         'import_max_rows' => (int) env('KIT_CAMPAIGN_IMPORT_ROWS', 10000),
+        // People from a link (App\Kit\Campaigns\CampaignSources): each link read again this often while its campaign is not finished, at most
+        // link_per_run links a run of kit:campaign-links.
+        'link_every_minutes' => (int) env('KIT_CAMPAIGN_LINK_MINUTES', 15),
+        'link_per_run' => (int) env('KIT_CAMPAIGN_LINK_PER_RUN', 20),
         // How many people one database insert writes (SQLite caps the values one statement may bind).
         'insert_batch' => 500,
         // How many people one push sends (Telenow takes up to 1,000), and the source name they carry.
@@ -627,12 +732,36 @@ return [
             'payment_gateways' => ['owner'],
             'staff' => ['owner'],
             'audit' => ['owner', 'admin'],
+            'starters' => ['owner', 'admin'],
         ],
         'per_page' => (int) env('KIT_ADMIN_PER_PAGE', 50),
         // How long a staff invite link works.
         'invite_hours' => (int) env('KIT_STAFF_INVITE_HOURS', 72),
         // How long staff may look at the console as a customer (read-only) before it ends by itself.
         'view_as_minutes' => (int) env('KIT_VIEW_AS_MINUTES', 30),
+    ],
+
+    'invoices' => [
+        // Customers' invoices (App\Kit\Invoices\CustomerInvoices): one per payment credited, numbered <prefix><year>-<sequence>, the sequence
+        // this many digits and starting again at 1 each calendar year (UTC). The prefix is the operator's (Admin → Invoices); this one until then.
+        'sequence_digits' => (int) env('KIT_INVOICE_SEQUENCE_DIGITS', 6),
+        'default_prefix' => env('KIT_INVOICE_PREFIX', 'INV-'),
+        // What the operator and a customer may type: a prefix's shape, the longest name, address and tax number, a tax name, and a tax rate
+        // (a percentage up to 100, at most two decimals).
+        'prefix_pattern' => '/^[A-Za-z0-9\/_-]{0,16}$/',
+        'name_max_length' => 120,
+        'address_max_length' => 500,
+        'tax_number_max_length' => 64,
+        'tax_name_max_length' => 32,
+        // Paid payments with no invoice yet are issued theirs by `kit:payments`, this many a run (a failure at the payment never stops it).
+        'catch_up_per_run' => (int) env('KIT_INVOICE_CATCH_UP', 50),
+    ],
+
+    'platform_billing' => [
+        // Admin → Platform billing (App\Kit\Telenow\PlatformBilling): the low-balance level is whole USD of at most this many digits and cents.
+        'alert_max_digits' => (int) env('KIT_PLATFORM_ALERT_MAX_DIGITS', 7),
+        // Telenow's invoice statuses (migration 0066: draft, issued, paid, overdue, void); any other reads as `other`.
+        'invoice_statuses' => ['draft', 'issued', 'paid', 'overdue', 'void'],
     ],
 
     'reconcile' => [
@@ -658,6 +787,20 @@ return [
         'recent_hours' => (int) env('KIT_HEALTH_RECENT_HOURS', 24),
         'list' => (int) env('KIT_HEALTH_LIST', 20),
         'error_length' => 500,
+    ],
+
+    'call_health' => [
+        // Call health (App\Kit\Calls\CallHealth): the window shown by default and the longest one (Telenow's own most, a day), an account's read
+        // kept cache_seconds; `kit:call-health` every sweep_minutes reads at most sweep_max_accounts accounts that had calls in the default window
+        // (the busiest first), and a provider with alert_calls calls or more failed across them is flagged on the dashboard, with at most
+        // customers_listed of its customers named.
+        'minutes' => (int) env('KIT_CALL_HEALTH_MINUTES', 60),
+        'max_minutes' => 1440,
+        'cache_seconds' => (int) env('KIT_CALL_HEALTH_CACHE_SECONDS', 60),
+        'sweep_minutes' => (int) env('KIT_CALL_HEALTH_SWEEP_MINUTES', 15),
+        'sweep_max_accounts' => (int) env('KIT_CALL_HEALTH_SWEEP_MAX', 200),
+        'alert_calls' => (int) env('KIT_CALL_HEALTH_ALERT_CALLS', 3),
+        'customers_listed' => (int) env('KIT_CALL_HEALTH_CUSTOMERS_LISTED', 10),
     ],
 
     'reports' => [
@@ -951,6 +1094,58 @@ return [
         'number_max_length' => 40,
         // Calls one member may place a minute: a page stuck trying again cannot place them one after another.
         'calls_per_minute' => (int) env('KIT_BROWSER_CALLS_PER_MINUTE', 6),
+    ],
+
+    'memory' => [
+        // What the account's agents remember about callers (App\Kit\Memory\CallerMemory): Telenow lists at most this many, the most recent
+        // (recorded); any caller can still be forgotten. A web chat visitor's key is the kit's `kit-<conversation>` identifier.
+        'limit' => 200,
+        'chat_prefix' => 'kit-',
+    ],
+
+    'insights' => [
+        // A customer's calls over a period (App\Kit\Reports\Insights, console Insights) and the calls file (App\Kit\Calls\CallsExport): whole days in
+        // the viewer's time zone, the last `default_days` when none is asked, at most `max_days`; read `chunk` calls at a time, so a long period is
+        // never held in memory.
+        'default_days' => 30,
+        'max_days' => 366,
+        'chunk' => 1000,
+    ],
+
+    'chat' => [
+        // Web chat (App\Kit\Chat): an agent's chat box on a customer's own website, which the kit answers through Telenow's chat API with the
+        // account's own key (chatSend, recorded: contract_k15chat.py). A visitor's browser only ever talks to the kit.
+        // Telenow takes a message of any length (recorded: 20,000 characters, answered); the kit takes at most this many.
+        'message_max_length' => (int) env('KIT_CHAT_MESSAGE_MAX_LENGTH', 2000),
+        // An open conversation holds one of the account's calls-at-once places at Telenow (recorded: a second is refused, 429, at a limit of one),
+        // and Telenow ends one only after 30 minutes with no message, so the kit ends one itself after this many (kit:chats).
+        'idle_minutes' => (int) env('KIT_CHAT_IDLE_MINUTES', 10),
+        // A conversation's most messages from the visitor: each one costs the customer a model's reply.
+        'messages_max' => (int) env('KIT_CHAT_MESSAGES_MAX', 100),
+        // Messages a minute from one address to one chat box, new conversations an hour from one address to one chat box, and messages a minute
+        // to all of one account's chat boxes: a page or a script sending again and again spends the customer's money.
+        'messages_per_minute' => (int) env('KIT_CHAT_MESSAGES_PER_MINUTE', 12),
+        'conversations_per_hour' => (int) env('KIT_CHAT_CONVERSATIONS_PER_HOUR', 20),
+        'account_messages_per_minute' => (int) env('KIT_CHAT_ACCOUNT_MESSAGES_PER_MINUTE', 120),
+        'websites_max' => 20,
+        // A website is https, but for these hosts plain http too, so a chat box can be tried on a page served from the customer's own computer.
+        'test_hosts' => ['localhost', '127.0.0.1', '[::1]'],
+        // Telenow's roles in a conversation (chatMessages, recorded), as a visitor's chat box names them; any other role is not shown.
+        'roles' => ['user' => 'visitor', 'assistant' => 'agent'],
+        'title_max_length' => 80,
+        'greeting_max_length' => 500,
+        // A reply that runs the agent's tools can take longer than Telenow's usual answer (config('kit.telenow.timeout_seconds')).
+        'timeout_seconds' => (int) env('KIT_CHAT_TIMEOUT', 60),
+        // How Telenow rates a chat (recorded: getCallCost `callType: chat`, `llm` and `chat_turn` events, the turn fee in `platformFeeUsd`): a plan
+        // that prices none of these parts cannot charge one, so a chat box on it does not answer.
+        'rated_as' => ['callType' => 'chat', 'direction' => 'web', 'channel' => 'chat'],
+        'rated_parts' => ['llm', 'embedding', 'platformFee'],
+        // The script a customer puts on their pages, served from this platform's public folder, and how long a conversation's key is.
+        'script_path' => 'chat/widget.js',
+        'key_length' => 32,
+        'conversation_token_length' => 48,
+        // Conversations ended at Telenow per run of kit:chats.
+        'ends_per_run' => 200,
     ],
 
     'oidc' => [

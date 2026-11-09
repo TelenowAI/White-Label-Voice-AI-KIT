@@ -1,0 +1,81 @@
+{
+  "operationId": "setNumberInboundAction",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; a number's release for unpaid rent (release_reason, reclaim_deadline_at) and the parent's empty wallet set by SQL on that database (contract_k27numbers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/voice/numbers/c90520dc-eff2-5a2b-8fba-9bbc3bc6eaf8/inbound-action",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "agent_id": null,
+        "capabilities": {
+          "mms": null,
+          "sms": false,
+          "voice": true
+        },
+        "compliance_external_id": null,
+        "country_iso": "India",
+        "created_at": "2026-11-08T15:54:10.512151Z",
+        "e164": "918045671001",
+        "external_id": "/v1/Account/KITSTUB/Number/918045671001/",
+        "id": "c90520dc-eff2-5a2b-8fba-9bbc3bc6eaf8",
+        "inbound_action": "no-answer",
+        "is_active": true,
+        "is_default_outbound": false,
+        "is_pool": false,
+        "metadata": null,
+        "monthly_rent": "499.00000",
+        "next_renewal_at": "2026-12-08T15:54:10.511958Z",
+        "number_type": "local",
+        "org_id": "845e15e1-bd99-59b1-9ed0-fb5220c74ad7",
+        "pool_max_concurrent": null,
+        "provider": "teleone",
+        "provider_data": {
+          "integration_id": "13372038774068389791",
+          "owned": {
+            "alias": null,
+            "application": "/v1/Account/KITSTUB/Application/13372038774068389791/",
+            "country": "India",
+            "currency": null,
+            "mms_enabled": null,
+            "monthly_rental_rate": "499.00000",
+            "number": "918045671001",
+            "region": "Karnataka",
+            "resource_uri": "/v1/Account/KITSTUB/Number/918045671001/",
+            "setup_rate": "0.00000",
+            "sms_enabled": false,
+            "sub_account": false,
+            "sub_type": null,
+            "type": "local",
+            "voice_enabled": true
+          },
+          "purchase": {
+            "api_id": "1d36e496-aa9d-5057-b4b2-e3e6f5f3b8a2",
+            "message": "created",
+            "numbers": [
+              {
+                "number": "918045671001",
+                "status": "Success"
+              }
+            ],
+            "status": "fulfilled"
+          }
+        },
+        "provider_integration_id": "13372038774068389791",
+        "region": "Karnataka",
+        "released_at": null,
+        "renewal_alert_at": null,
+        "setup_price": "0.00000",
+        "source": "purchased",
+        "updated_at": "2026-11-08T15:54:13.507620Z",
+        "user_id": "0391d8eb-5a59-5f76-9376-d46036cdbaf5"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

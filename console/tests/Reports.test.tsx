@@ -4,9 +4,11 @@
  * paused with its reason and a link to its Billing page; the period's money, customers and calls; what needs a look,
  * each linking to where it is handled, or that nothing does; another period asked for, and a refused one shown by its
  * field; a date typed the moment the period shows is kept (it was lost on a slow CI runner); the cost report grouped as picked, its customers linking to their page, the totals, and its pages; the admin
- * panel opens on the dashboard.
+ * panel opens on the dashboard. One customer's figures: a customer's row asks for them by what was charged, over the
+ * period shown; while one is picked, their name (as answered), their page, and the period, grouping and pages keep to
+ * them until the way back to every customer.
  */
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { ReactElement } from "react";
 import { createRoot } from "react-dom/client";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
@@ -37,7 +39,7 @@ function dashboard(over: Partial<AdminDashboard> = {}): AdminDashboard {
       name: "Telenow", billingUrl: "https://app.telenow.ai/billing", connected: true, keyRejected: false, error: null, checkedAt: "2026-10-31T11:55:00Z",
       account: { mode: "prepaid", state: "low", canSpend: true, stoppedBy: null, balanceUsd: "4.4950000000", monthlySpendLimitUsd: null, periodSpendUsd: "35.50", lowThresholdUsd: "5" },
     },
-    attention: { callsNotCharged: 1, failedWrites: 0, paymentsToReview: 2, customersNotSynced: 0, eventsFailed: 0, customersDrifting: 0, jobsNotRunning: false },
+    attention: { callsNotCharged: 1, failedWrites: 0, paymentsToReview: 2, customersNotSynced: 0, eventsFailed: 0, customersDrifting: 0, jobsNotRunning: false, providersFailing: 0 },
     ...over,
   };
 }
@@ -46,6 +48,7 @@ function report(over: Partial<CostReport> = {}): CostReport {
   return {
     period: { from: "2026-10-01", to: "2026-10-31" },
     by: "customer",
+    customer: null,
     groups: [{ value: "customer", label: "Customer" }, { value: "component", label: "What was charged" }],
     rows: [
       { key: "w-bolt", label: "Bolt Clinics", currency: "INR", count: 1, price: "30.00", cost: "16.65", costUsd: "0.2000", margin: "13.35", marginPercent: "44.5" },
@@ -100,7 +103,7 @@ describe("Admin → Dashboard", () => {
   });
 
   it("says why the account is paused, in its words when it has none of ours, and when nothing needs a look", async () => {
-    const d = dashboard({ attention: { callsNotCharged: 0, failedWrites: 0, paymentsToReview: 0, customersNotSynced: 0, eventsFailed: 0, customersDrifting: 0, jobsNotRunning: false } });
+    const d = dashboard({ attention: { callsNotCharged: 0, failedWrites: 0, paymentsToReview: 0, customersNotSynced: 0, eventsFailed: 0, customersDrifting: 0, jobsNotRunning: false, providersFailing: 0 } });
     d.telenow.account = { ...d.telenow.account, state: "stopped", canSpend: false, stoppedBy: "spend_cap", monthlySpendLimitUsd: "50" };
     fakeKit({ "GET /api/kit/admin/dashboard": d });
     at("/admin/dashboard", <DashboardPage />);
@@ -224,6 +227,71 @@ describe("Admin → Cost vs price", () => {
       "/api/kit/admin/costs",
       "/api/kit/admin/costs?by=customer&from=2026-10-01&to=2026-10-31&page=2",
       "/api/kit/admin/costs?by=component&from=2026-10-01&to=2026-10-31",
+    ]);
+  });
+
+  it("shows one customer's figures by what was charged, keeps to them, and goes back to every customer", async () => {
+    const PERIOD = "from=2026-10-01&to=2026-10-31";
+    const bolt = { id: "w-bolt", name: "Bolt Clinics" };
+    const boltParts = report({
+      by: "component", customer: bolt, total: 3, perPage: 2,
+      rows: [
+        { key: "component:llm", label: "Language model", currency: "INR", count: 4, price: "10.00", cost: "3.00", costUsd: "0.0360", margin: "7.00", marginPercent: "70.0" },
+        { key: "component:tts", label: "Voice", currency: "INR", count: 4, price: "8.00", cost: "5.00", costUsd: "0.0600", margin: "3.00", marginPercent: "37.5" },
+      ],
+      totals: [{ ...totals, count: 1, price: "30.00" }],
+    });
+    const sent = fakeKit({
+      "GET /api/kit/admin/costs": report(),
+      [`GET /api/kit/admin/costs?by=component&${PERIOD}&customer=w-bolt`]: boltParts,
+      [`GET /api/kit/admin/costs?by=component&${PERIOD}&page=2&customer=w-bolt`]: report({ ...boltParts, page: 2, rows: [] }),
+      "GET /api/kit/admin/costs?by=component&from=2026-10-02&to=2026-10-30&customer=w-bolt": report({ ...boltParts, period: { from: "2026-10-02", to: "2026-10-30" } }),
+      "GET /api/kit/admin/costs?by=customer&from=2026-10-02&to=2026-10-30&customer=w-bolt": report({ customer: bolt, period: { from: "2026-10-02", to: "2026-10-30" }, rows: [report().rows[0]], total: 1 }),
+      "GET /api/kit/admin/costs?by=customer&from=2026-10-02&to=2026-10-30": report({ period: { from: "2026-10-02", to: "2026-10-30" } }),
+    });
+    at("/admin/costs", <CostsPage />);
+    const table = await screen.findByRole("table", { name: "Cost vs price" });
+    expect(screen.queryByTestId("costs-customer"), "every customer at first").toBeNull();
+    const boltRow = table.querySelector('[data-row="w-bolt"]') as HTMLElement;
+    expect(within(boltRow).getByRole("link", { name: "Bolt Clinics" }).getAttribute("href")).toBe("/admin/customers/w-bolt");
+    expect(within(table).getByRole("button", { name: "Acme Dental by what was charged" }).textContent).toBe("By what was charged");
+
+    fireEvent.click(within(boltRow).getByRole("button", { name: "Bolt Clinics by what was charged" }));
+    const picked = await screen.findByTestId("costs-customer");
+    expect(within(picked).getByText("Showing Bolt Clinics only.")).toBeTruthy();
+    expect(within(picked).getByRole("link", { name: "Their page and wallet" }).getAttribute("href")).toBe("/admin/customers/w-bolt");
+    expect(screen.getByRole("columnheader", { name: "What was charged" })).toBeTruthy();
+    expect(screen.getByText("Voice")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /by what was charged/ }), "no customer rows to pick from").toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    await screen.findByText("Page 2 of 2");
+    fireEvent.click(screen.getByRole("button", { name: "Previous" }));
+    await screen.findByText("Page 1 of 2");
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    await screen.findByText("Page 2 of 2");
+    const period = screen.getByRole("form", { name: "Period" });
+    fireEvent.change(within(period).getByLabelText("From"), { target: { value: "2026-10-02" } });
+    fireEvent.change(within(period).getByLabelText("To"), { target: { value: "2026-10-30" } });
+    fireEvent.click(within(period).getByRole("button", { name: "Show" }));
+    await screen.findByText("Page 1 of 2");
+    fireEvent.change(screen.getByLabelText("Group by"), { target: { value: "customer" } });
+    const one = await screen.findByRole("columnheader", { name: "Customer" });
+    expect(one).toBeTruthy();
+    expect(within(screen.getByTestId("costs-customer")).getByText("Showing Bolt Clinics only.")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to every customer" }));
+    await waitFor(() => expect(screen.queryByTestId("costs-customer")).toBeNull());
+    expect(screen.getByRole("link", { name: "Acme Dental" }).getAttribute("href")).toBe("/admin/customers/w-acme");
+    expect(sent.map((s) => s.path)).toEqual([
+      "/api/kit/admin/costs",
+      `/api/kit/admin/costs?by=component&${PERIOD}&customer=w-bolt`,
+      `/api/kit/admin/costs?by=component&${PERIOD}&page=2&customer=w-bolt`,
+      `/api/kit/admin/costs?by=component&${PERIOD}&customer=w-bolt`,
+      `/api/kit/admin/costs?by=component&${PERIOD}&page=2&customer=w-bolt`,
+      "/api/kit/admin/costs?by=component&from=2026-10-02&to=2026-10-30&customer=w-bolt",
+      "/api/kit/admin/costs?by=customer&from=2026-10-02&to=2026-10-30&customer=w-bolt",
+      "/api/kit/admin/costs?by=customer&from=2026-10-02&to=2026-10-30",
     ]);
   });
 });

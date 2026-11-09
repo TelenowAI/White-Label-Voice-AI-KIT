@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Kit\Console;
 
+use App\Kit\Consent\ConsentExport;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Kit\Consent\ConsentLedger;
 use App\Kit\Consent\ConsentRefused;
 use App\Kit\Consent\ConsentRule;
@@ -32,6 +34,12 @@ final class ConsentController
             'limits' => ['types' => $c['types'], 'writtenType' => $c['written_type'], 'scopes' => $c['scopes'], 'defaultScope' => $c['default_scope'], 'sources' => $c['sources'], 'phoneColumns' => config('kit.campaigns.phone_columns'),
                 'capturedColumn' => $c['captured_column'], 'expiresColumn' => $c['expires_column'], 'importMaxBytes' => $c['import_max_bytes'], 'importMaxRows' => $c['import_max_rows']],
         ]);
+    }
+
+    /** The records as a file, withdrawn ones too (contract exportConsent). */
+    public function export(Request $request, ConsentExport $export): StreamedResponse
+    {
+        return $export->download($this->membership($request)->workspace);
     }
 
     public function store(Request $request): JsonResponse|Response

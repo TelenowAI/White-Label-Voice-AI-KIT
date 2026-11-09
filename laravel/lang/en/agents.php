@@ -311,4 +311,23 @@ return [
             'unknown' => 'This did not work. Try again, or try a test call.',
         ],
     ],
+    // A copy's name (App\Kit\Agents\AgentDuplicate): the source's name and this.
+    'copy_suffix' => ' (copy)',
+    'copy_suffix_n' => ' (copy :n)',
+    // A new agent's name from a starter when that name is taken (App\Kit\Agents\StarterAgents).
+    'name_n' => ' (:n)',
+    // An agent's logo (App\Kit\Agents\AgentLogos).
+    'logo' => [
+        'field' => 'logo',
+        'type' => 'Choose a PNG, JPEG or WebP image.',
+        'size' => 'Choose an image of :min to :max pixels a side.',
+        'not_kept' => 'The image could not be kept just now. Try again shortly.',
+        'not_found' => 'There is no such image.',
+    ],
+    // The prompt check (App\Kit\Agents\PromptCheck).
+    'prompt_check' => [
+        'fields' => ['systemPrompt' => 'instructions', 'greeting' => 'opening line', 'values' => 'sample values', 'values.*' => 'sample value', 'channel' => 'channel'],
+        'unavailable' => 'The instructions could not be checked just now. Try again shortly.',
+        'broken' => 'The instructions\' conditional sections do not open and close properly. Check them and save again.',
+    ],
 ];

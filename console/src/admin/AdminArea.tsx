@@ -4,8 +4,10 @@
  * for the pages too), the first of them is where it opens, then a sign-out button and the page. Who may do what is the
  * backend's to say: an admin call it refuses (403) shows the backend's message instead of the page.
  *
- * Not here: the pages (DashboardPage.tsx, CostsPage.tsx, VoicePlatformPage.tsx, StaffPage.tsx, AuditPage.tsx, Customers.tsx, CustomerPage.tsx, Pricing.tsx, Catalog.tsx, SignupsPage.tsx, EmailPage.tsx,
- * SmsPage.tsx, SsoPage.tsx, CaptchaPage.tsx, PaymentsPage.tsx, WebsitePage.tsx; the rest of admin comes with K1's later slices).
+ * A customer's invoice opens at `/admin/invoices/:id` for staff who may read customers.
+ *
+ * Not here: the pages (DashboardPage.tsx, CostsPage.tsx, VoicePlatformPage.tsx, PlatformBillingPage.tsx, StaffPage.tsx, AuditPage.tsx, Customers.tsx, CustomerPage.tsx, Pricing.tsx, Catalog.tsx, SignupsPage.tsx, EmailPage.tsx,
+ * SmsPage.tsx, SsoPage.tsx, CaptchaPage.tsx, PaymentsPage.tsx, InvoiceSettingsPage.tsx, CustomerInvoicePage.tsx, WebsitePage.tsx, StarterAgentsPage.tsx; the rest of admin comes with K1's later slices).
  */
 import { useEffect, useState, type ReactElement } from "react";
 import { NavLink, Navigate, Route, Routes, useNavigate } from "react-router-dom";
@@ -16,18 +18,22 @@ import { AuditPage } from "./AuditPage";
 import { CaptchaPage } from "./CaptchaPage";
 import { Catalog } from "./Catalog";
 import { CostsPage } from "./CostsPage";
+import { CustomerInvoicePage } from "./CustomerInvoicePage";
 import { CustomerPage } from "./CustomerPage";
 import { Customers } from "./Customers";
 import { DashboardPage } from "./DashboardPage";
 import { EmailPage } from "./EmailPage";
+import { InvoiceSettingsPage } from "./InvoiceSettingsPage";
 import { MayContext, mayFor } from "./may";
 import { PaymentsPage } from "./PaymentsPage";
+import { PlatformBillingPage } from "./PlatformBillingPage";
 import { Pricing } from "./Pricing";
 import { SignupsPage } from "./SignupsPage";
 import { SmsPage } from "./SmsPage";
 import { StaffInviteAccept } from "./StaffInviteAccept";
 import { StaffPage } from "./StaffPage";
 import { SsoPage } from "./SsoPage";
+import { StarterAgentsPage } from "./StarterAgentsPage";
 import { VoicePlatformPage } from "./VoicePlatformPage";
 import { WebsitePage } from "./WebsitePage";
 
@@ -39,7 +45,10 @@ const PAGES: { path: string; ability: string; title: TextKey; element: ReactElem
   { path: "costs", ability: "reports", title: "costsTitle", element: <CostsPage /> },
   { path: "pricing", ability: "money", title: "pricingTitle", element: <Pricing /> },
   { path: "payments", ability: "money", title: "paymentsTitle", element: <PaymentsPage /> },
+  { path: "invoices", ability: "money", title: "invoiceSettingsTitle", element: <InvoiceSettingsPage /> },
+  { path: "platform-billing", ability: "money", title: "platformBillingTitle", element: <PlatformBillingPage /> },
   { path: "catalog", ability: "settings", title: "catalogTitle", element: <Catalog /> },
+  { path: "starters", ability: "starters", title: "startersTitle", element: <StarterAgentsPage /> },
   { path: "signups", ability: "customers_manage", title: "signupsTitle", element: <SignupsPage /> },
   { path: "email", ability: "settings", title: "emailTitle", element: <EmailPage /> },
   { path: "sms", ability: "settings", title: "smsTitle", element: <SmsPage /> },
@@ -91,6 +100,7 @@ function Signed({ user, setUser }: { user: User | null | undefined; setUser: (u:
         <Routes>
           {pages.map((p) => <Route key={p.path} path={p.path} element={p.element} />)}
           {may("customers_read") && <Route path="customers/:id" element={<CustomerPage />} />}
+          {may("customers_read") && <Route path="invoices/:id" element={<CustomerInvoicePage />} />}
           <Route path="*" element={pages.length > 0 ? <Navigate to={`/admin/${pages[0].path}`} replace /> : <p className="muted">{t("staffNothing")}</p>} />
         </Routes>
       </div>

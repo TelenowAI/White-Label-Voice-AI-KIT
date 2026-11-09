@@ -201,7 +201,7 @@ describe("the phone", () => {
 describe("what the team writes on a call", () => {
   const onCall = (over: Record<string, unknown> = {}) => ({
     ...signedIn,
-    "GET /api/kit/console/calls/c1": { ...summary(), canListen: false, listens: [], answeredBy: null, transcript: [], recordings: [], analysis: null },
+    "GET /api/kit/console/calls/c1": { ...summary(), canListen: false, listens: [], canTellAgent: false, agentNotes: [], answeredBy: null, transcript: [], recordings: [], analysis: null },
     "GET /api/kit/console/calls/c1/work": emptyWork,
     ...over,
   });

@@ -1,0 +1,56 @@
+{
+  "operationId": "createAgent",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the release reaching openrouter.ai's public model list only; the operator's country changed by SQL on that database (contract_k31openrouter.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "created_at": "2026-11-08T20:52:02.709387Z",
+        "deleted_at": null,
+        "description": null,
+        "fallback_config": null,
+        "id": "8a643211-4096-5dcf-9b2f-2d43a21ecee3",
+        "is_active": true,
+        "is_public": false,
+        "llm_config": null,
+        "llm_model": "openai/gpt-4o-mini",
+        "llm_provider": "openrouter",
+        "metadata": {
+          "callerIdentity": {
+            "enabled": true
+          },
+          "kitId": "3a489085-02a4-554f-a5ea-be3740744e69"
+        },
+        "name": "Front desk",
+        "org_id": "9c26899b-1d95-5d26-bf39-0ec95a451453",
+        "partner_client_id": null,
+        "s2s_config": null,
+        "session_config": {},
+        "stt_config": {
+          "apiKey": "••••-key"
+        },
+        "stt_provider": "deepgram",
+        "system_prompt": "You answer the phone for a dental clinic.",
+        "tags": null,
+        "telephony_config": null,
+        "telephony_provider": null,
+        "total_duration": 0,
+        "total_messages": 0,
+        "total_sessions": 0,
+        "tts_config": null,
+        "tts_provider": "telenow",
+        "tts_voice": "vikram-en-in",
+        "updated_at": "2026-11-08T20:52:02.709387Z",
+        "user_id": "80c11cfe-d259-51d7-b962-f2c704e0bdaa"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

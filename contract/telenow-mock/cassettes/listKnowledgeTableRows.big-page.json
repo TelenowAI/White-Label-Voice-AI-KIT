@@ -1,0 +1,56 @@
+{
+  "operationId": "listKnowledgeTableRows",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the files and their contents are ours (contract_k19tables.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/ad21b3f8-2e31-596b-bb62-8eb18ba65dea/knowledge-bases/52610ecc-2139-5dd0-ab6d-89e27aea9a45/documents/bf13c7a6-ac4d-506b-92c0-6f8e23123f63/rows",
+    "query": "limit=3&offset=10040",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "columns": [
+          {
+            "name": "Order",
+            "sql_name": "order",
+            "type": "number"
+          },
+          {
+            "name": "Customer",
+            "sql_name": "customer",
+            "type": "text"
+          },
+          {
+            "name": "Total",
+            "sql_name": "total",
+            "type": "number"
+          }
+        ],
+        "limit": 3,
+        "offset": 10040,
+        "rowCount": 10050,
+        "rows": [
+          {
+            "customer": "Customer 10040",
+            "order": 11040,
+            "total": 680.5
+          },
+          {
+            "customer": "Customer 10041",
+            "order": 11041,
+            "total": 717.5
+          },
+          {
+            "customer": "Customer 10042",
+            "order": 11042,
+            "total": 754.5
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

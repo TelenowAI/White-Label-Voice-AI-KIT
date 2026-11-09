@@ -1,16 +1,21 @@
 /**
  * Admin → one customer (`/admin/customers/:id`): its name and status, what staff may do to it (CustomerActions:
- * limits, looking at its console, closing), its wallet and plan (CustomerWallet), and its team (TeamPanel with the
- * admin's calls). Here the operator invites an account's first user and credits it.
+ * limits, looking at its console, closing), its wallet and plan (CustomerWallet), its invoices and billing details
+ * (CustomerInvoices), its processing country on the voice platform (ProcessingCountry.tsx: kept from when it was made),
+ * the providers that failed on its recent calls in detail (calls/CallHealthPanel.tsx CustomerCallHealth), and its team
+ * (TeamPanel with the admin's calls). Here the operator invites an account's first user and credits it.
  *
  * Not here: the list (Customers.tsx).
  */
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { kitApi, type Customer } from "../api";
+import { CustomerCallHealth } from "../calls/CallHealthPanel";
 import { TeamPanel, type TeamCalls } from "../team/TeamPanel";
 import { CustomerActions } from "./CustomerActions";
+import { CustomerInvoices } from "./CustomerInvoices";
 import { CustomerWallet } from "./CustomerWallet";
+import { CustomerProcessingCountry } from "./ProcessingCountry";
 import { useMay } from "./may";
 import { t, type TextKey } from "../text";
 
@@ -57,6 +62,9 @@ export function CustomerPage() {
           {customer.syncError && <p className="muted" data-testid="sync-error">{customer.syncError}</p>}
           <CustomerActions customer={customer} may={may} onChanged={setCustomer} />
           <CustomerWallet customerId={customer.id} />
+          <CustomerInvoices customerId={customer.id} />
+          <CustomerProcessingCountry customerId={customer.id} />
+          <CustomerCallHealth customerId={customer.id} />
           <TeamPanel calls={calls} />
         </>
       )}

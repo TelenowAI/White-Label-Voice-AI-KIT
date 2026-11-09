@@ -87,6 +87,24 @@ return [
             'lines' => ['Hi :name, :account has run out of credit (its balance is :balance), so its calls have stopped.', 'Add credit and they start again.'],
             'action' => 'Add credit',
         ],
+        'platform_balance_low' => [
+            'subject' => ':brand: the voice platform balance is low',
+            'lines' => ['Hi :name, the balance of your account at the voice platform is down to :balance, at or below your warning level of :level.',
+                'Add credit there before it runs out: when it does, every customer\'s calls stop and numbers are not renewed.'],
+            'action' => 'Open platform billing',
+        ],
+        'platform_stopped' => [
+            'subject' => ':brand: calls have stopped at the voice platform',
+            'lines' => ['Hi :name, the voice platform has stopped your account (:reason), so no customer can start a call.',
+                'Customers see that the service is paused until it is fixed.'],
+            'action' => 'Open platform billing',
+        ],
+        'number_rent_short' => [
+            'subject' => "Your :brand balance won't cover your numbers' rent",
+            'lines' => ["Hi :name, the balance of :account (:balance) won't cover the next rent of :numbers, due from :date. It needs :short more.",
+                'The rent is charged all the same, and calls stop when the balance reaches zero.'],
+            'action' => 'Add credit',
+        ],
     ],
     // What Admin → Email calls each kind in its list.
     'kind_names' => [
@@ -105,6 +123,9 @@ return [
         'payment_received' => 'Payment received',
         'balance_low' => 'Low balance',
         'balance_empty' => 'Out of credit',
+        'platform_balance_low' => 'Voice platform: balance low',
+        'platform_stopped' => 'Voice platform: calls stopped',
+        'number_rent_short' => "Numbers' rent not covered",
     ],
     // What each placeholder an email can use stands for (Admin → Email → Templates); one with no words here shows as
     // it is.
@@ -127,6 +148,10 @@ return [
         'duration' => 'How long the call lasted',
         'outcome' => 'How the call ended, as a short sentence, or nothing when that is not known',
         'summary' => "The call's summary",
+        'numbers' => 'The phone numbers it is about',
+        'date' => 'The first day one of them is due',
+        'short' => 'How much more the balance needs, with its currency',
+        'reason' => 'Why the voice platform stopped the account',
     ],
     'call_duration' => ':minutes min :seconds s',
     'call_no_number' => 'an unknown number',

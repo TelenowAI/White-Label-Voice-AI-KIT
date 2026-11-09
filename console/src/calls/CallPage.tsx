@@ -1,20 +1,23 @@
 /**
  * Console → one call (`/console/calls/:id`; contract/kit-api.yaml getCall, getCallRecording): who and when, how it
  * ended, its recordings (played through the kit: the `<audio>` loads callRecordingUrl with the session cookie), its
- * transcript (the caller and the agent), and what its analysis found. A call the voice platform is still completing
+ * transcript (the caller and the agent), and what its analysis found. A web chat (channel `chat`, a conversation in the chat box on the
+ * customer's website) reads as one: its title and direction say so, and its transcript names the visitor. A call the voice platform is still completing
  * says so: its parts may follow. Below, what the team wrote on it (CallWork.tsx), and a link to every call with the same person. A manager can listen in while it is on (ListenIn.tsx), and
- * the page says who has.
+ * the page says who has. A manager can tell the agent something while it is on (TellAgent.tsx); what the agent was told, by whom and when, is listed for anyone
+ * who can see the call, the newest first, a note just told added at the top.
  *
  * Not here: the list (Calls.tsx), the words for outcomes and directions (callText.ts).
  */
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { callRecordingUrl, kitApi, type CallDetail } from "../api";
+import { callRecordingUrl, kitApi, type AgentNote, type CallDetail } from "../api";
 import { t } from "../text";
 import { money } from "../wallet/money";
 import { CallWork } from "./CallWork";
 import { ListenIn } from "./ListenIn";
-import { directionText, durationText, otherNumber, outcomeText } from "./callText";
+import { TellAgent } from "./TellAgent";
+import { directionOf, durationText, isChat, otherNumber, outcomeText } from "./callText";
 
 /** A name the analysis gave by key (appointment_date), in words. */
 function humanKey(key: string): string {
@@ -33,6 +36,8 @@ export function CallPage() {
   }, [id]);
 
   const number = call ? otherNumber(call) : null;
+  const chat = call !== null && isChat(call);
+  const told = (note: AgentNote) => setCall((c) => (c ? { ...c, agentNotes: [note, ...c.agentNotes] } : c));
 
   return (
     <section aria-labelledby="call-title">
@@ -42,12 +47,29 @@ export function CallPage() {
       {failure && <p role="alert" className="error">{failure}</p>}
       {call && (
         <>
-          <h1 id="call-title">{number ? t("callTitleNumber", { number }) : t("callTitleBrowser")}</h1>
+          <h1 id="call-title">{number ? t("callTitleNumber", { number }) : t(chat ? "callTitleChat" : "callTitleBrowser")}</h1>
           {!call.complete && <p role="status" className="muted">{t("callStillCompleting")}</p>}
           {call.canListen && (
             <p>
               <ListenIn callId={call.id} />
             </p>
+          )}
+          {call.canTellAgent && <TellAgent callId={call.id} onTold={told} />}
+          {call.agentNotes.length > 0 && (
+            <section aria-labelledby="agent-notes-title">
+              <h2 id="agent-notes-title">{t("agentNotesTitle")}</h2>
+              <ol className="notes" aria-label={t("agentNotesTitle")}>
+                {call.agentNotes.map((note, i) => (
+                  <li key={call.agentNotes.length - i}>
+                    <p className="note-body">{note.text}</p>
+                    <small className="muted">
+                      {note.by ?? t("formerMember")} · {new Date(note.at).toLocaleString()}
+                      {note.sayNow && ` · ${t("agentNoteSayNow")}`}
+                    </small>
+                  </li>
+                ))}
+              </ol>
+            </section>
           )}
           {number && (
             <p>
@@ -85,7 +107,7 @@ export function CallPage() {
               </>
             )}
             <dt>{t("callDirection")}</dt>
-            <dd>{directionText(call.direction)}</dd>
+            <dd>{directionOf(call)}</dd>
             {call.from && (
               <>
                 <dt>{t("callFrom")}</dt>
@@ -127,7 +149,7 @@ export function CallPage() {
               <ol className="transcript" aria-label={t("transcriptTitle")}>
                 {call.transcript.map((line, i) => (
                   <li key={i}>
-                    <strong>{t(line.role === "user" ? "callCaller" : "callAgent")}:</strong> {line.text}
+                    <strong>{t(line.role === "user" ? (chat ? "callVisitor" : "callCaller") : "callAgent")}:</strong> {line.text}
                   </li>
                 ))}
               </ol>
