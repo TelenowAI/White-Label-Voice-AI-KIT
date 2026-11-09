@@ -4,9 +4,9 @@
  * documents, newest first, each in the console's words (saving, being read, ready, failed and why, with a retry);
  * adding text, a file (the kinds and size the backend takes, checked before it is sent) or a web page; deleting a
  * document, or the base, only after asking (which agents stop answering from it). A document still being read is
- * looked at again shortly.
+ * looked at again shortly. A ready document kept as a table (a CSV, JSON or Excel file) links to that table.
  *
- * Not here: the list (KnowledgePage.tsx).
+ * Not here: the list (KnowledgePage.tsx); a table's columns and rows (KnowledgeTablePage.tsx).
  */
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -134,6 +134,9 @@ function Document({ baseId, doc: d, onChanged, onError }: { baseId: string; doc:
           </div>
         ) : (
           <div className="actions">
+            {d.table && d.state === "ready" && (
+              <Link to={`/console/knowledge/${encodeURIComponent(baseId)}/documents/${encodeURIComponent(d.id)}/table`}>{t("kbViewTable")}</Link>
+            )}
             {d.state === "failed" && (
               <button type="button" className="secondary" disabled={busy} onClick={() => act(() => kitApi.retryKnowledgeDocument(baseId, d.id))}>{t("retry")}</button>
             )}

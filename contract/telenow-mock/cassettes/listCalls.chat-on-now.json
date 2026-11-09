@@ -1,0 +1,88 @@
+{
+  "operationId": "listCalls",
+  "recorded": "2026-11-07, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key, a stand-in language model behind telenow_onprem (llm_stub_k15.py), speech providers with placeholder keys, and every other outbound HTTP request sent to a dead local proxy (contract_k15chat.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/2f363f7a-c2b0-5d37-9cbd-2b881410b27c/calls",
+    "query": "status=active&limit=50",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "calls": [
+          {
+            "agent_audible_count": null,
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "agent_name": "Website helper",
+            "answered_by": null,
+            "artifacts": {
+              "analysis": false,
+              "cost": false,
+              "latency": false,
+              "recording": false,
+              "trace": false
+            },
+            "audio_gap_count": null,
+            "call_mode": "agent",
+            "call_sid": null,
+            "caller_memory": null,
+            "channel": "chat",
+            "charge_usd": null,
+            "content_purged_at": null,
+            "created_at": "2026-11-07T20:11:54.607089Z",
+            "direction": "web",
+            "disposition": null,
+            "duration_sec": null,
+            "end_time": null,
+            "flow_ms_avg": null,
+            "from_number": null,
+            "id": "cd59dbbd-b19e-5940-8eb3-b1fa23d56392",
+            "initiated_by": null,
+            "initiated_by_api_key": null,
+            "initiated_by_email": null,
+            "initiated_by_name": null,
+            "initiated_via": null,
+            "lead": null,
+            "llm_ms_avg": null,
+            "net_rtt_ms_avg": null,
+            "objectives_state": null,
+            "org_id": "2f363f7a-c2b0-5d37-9cbd-2b881410b27c",
+            "phone_number": null,
+            "recording_id": null,
+            "resp_ms_avg": null,
+            "resp_ms_max": null,
+            "resp_samples": null,
+            "source": "chat_api",
+            "start_time": "2026-11-07T20:11:54.607089Z",
+            "status": "active",
+            "stt_ms_avg": null,
+            "to_number": null,
+            "tts_ms_avg": null,
+            "turn_hold_ms_avg": null,
+            "updated_at": "2026-11-07T20:11:54.607089Z",
+            "user_id": "6f9f2963-3265-5655-89bb-ddfbc4c14e05",
+            "variables": {
+              "current_date": "2026-11-08",
+              "current_datetime": "Sunday, 08 November 2026, 01:41 AM",
+              "current_ist_datetime": "Sunday, 08 November 2026, 01:41 AM",
+              "current_ist_weekday": "Sunday",
+              "current_time": "01:41 AM",
+              "current_timezone": "Asia/Kolkata",
+              "current_utc_offset": "+05:30",
+              "current_weekday": "Sunday",
+              "day_after_tomorrow_date": "Tuesday, 10 November 2026",
+              "today_date": "Sunday, 08 November 2026",
+              "tomorrow_date": "Monday, 09 November 2026"
+            },
+            "wrapup_disposition": null
+          }
+        ],
+        "total": 1
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

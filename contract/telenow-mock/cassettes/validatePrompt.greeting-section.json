@@ -1,0 +1,30 @@
+{
+  "operationId": "validatePrompt",
+  "recorded": "2026-11-09, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the calls' provider failures written by SQL as the call engine writes them (voice_stack_incidents), no call placed (contract_k32helpers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/agents/prompt/validate",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "errors": [],
+        "valid": true,
+        "warnings": [
+          {
+            "code": "section_in_spoken_line",
+            "column": 6,
+            "field": "greeting",
+            "line": 1,
+            "message": "Line 1: this text is spoken aloud, and conditional sections only work in prompts — `{#if …}` would be read out as written. Keep the condition in the prompt, or write each case as its own line."
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

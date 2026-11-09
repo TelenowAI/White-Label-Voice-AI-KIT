@@ -97,6 +97,7 @@ class AgentsTest extends TestCase
             'description' => 'Books appointments',
             'systemPrompt' => 'You are the front desk of Acme Dental. Book appointments politely.',
             'isActive' => true,
+            'logoUrl' => null,
             // Telenow's provider ids under the kit's own keys; no names while the operator offers none of them
             'stack' => [
                 'llmProvider' => Catalog::publicKey('llm', $this->telenow['llm_provider']), 'llmModel' => $this->telenow['llm_model'],

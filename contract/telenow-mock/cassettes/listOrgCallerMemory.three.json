@@ -1,0 +1,55 @@
+{
+  "operationId": "listOrgCallerMemory",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the memory rows were SEEDED into its caller_memory table (Telenow writes them with its own model after a call, which no throwaway release can run): the shapes are Telenow's, the contents ours (contract_k17memory.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/fe94c9cc-8ddc-51b7-89e0-17bd6af2029e/memory",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "callCount": 1,
+          "callerKey": "kit-55b47f25-16c1-5eca-ae46-f25dfec463cd",
+          "expiresAt": "2027-02-06T05:14:26.766557Z",
+          "facts": {},
+          "lastSession": null,
+          "orgId": "fe94c9cc-8ddc-51b7-89e0-17bd6af2029e",
+          "summary": "Asked about Saturday opening hours on the website.",
+          "updatedAt": "2026-11-08T03:14:26.766557Z"
+        },
+        {
+          "callCount": 3,
+          "callerKey": "14155550100",
+          "expiresAt": "2027-02-05T05:14:26.766557Z",
+          "facts": {
+            "children": 2,
+            "name": "Asha",
+            "preference": "mornings"
+          },
+          "lastSession": "88de4be2-0f50-556d-b69b-39a0e64405d9",
+          "orgId": "fe94c9cc-8ddc-51b7-89e0-17bd6af2029e",
+          "summary": "Asha books cleanings for her family and prefers mornings.",
+          "updatedAt": "2026-11-07T05:14:26.766557Z"
+        },
+        {
+          "callCount": 1,
+          "callerKey": "14155550199",
+          "expiresAt": "2026-07-21T05:14:26.766557Z",
+          "facts": {
+            "name": "Ben"
+          },
+          "lastSession": null,
+          "orgId": "fe94c9cc-8ddc-51b7-89e0-17bd6af2029e",
+          "summary": "An old caller whose memory has run out.",
+          "updatedAt": "2026-04-22T05:14:26.766557Z"
+        }
+      ],
+      "success": true
+    }
+  },
+  "serve": false
+}

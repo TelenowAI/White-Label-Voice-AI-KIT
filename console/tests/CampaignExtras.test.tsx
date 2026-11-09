@@ -15,17 +15,17 @@ afterEach(() => {
 });
 
 const root = "/api/kit/console/campaigns/c1";
-const limits: CampaignLimits = { nameMaxLength: 120, concurrency: { default: 2, max: 50 }, maxAttempts: { default: 3, max: 10 }, retryGapMinutes: { default: 5, min: 1, max: 60 }, machineDetection: ["off", "voicemail", "hangup"], phoneColumns: ["phone_number"], importMaxBytes: 1024, importMaxRows: 10 };
+const limits: CampaignLimits = { nameMaxLength: 120, concurrency: { default: 2, max: 50 }, maxAttempts: { default: 3, max: 10 }, retryGapMinutes: { default: 5, min: 1, max: 60 }, machineDetection: ["off", "voicemail", "hangup"], phoneColumns: ["phone_number"], importMaxBytes: 1024, importMaxRows: 10, linksAllowed: false, linkEveryMinutes: 15 };
 const campaign = (over: Partial<Campaign> = {}): Campaign => ({
   id: "c1", name: "Recall", agent: { id: "a1", name: "Front desk" }, callerId: { id: "n1", number: "+14155550100" },
   settings: { concurrency: 2, windowStart: "09:00", windowEnd: "18:00", timezone: "UTC", machineDetection: "voicemail", maxAttempts: 2, retryGapMinutes: 5, retryOnNoAnswer: true },
-  status: "running", waiting: null, counts: { people: 3, answered: 1, notReached: 2 }, pushed: { added: 3, duplicates: 0, suppressed: 0, skipped: 0 }, syncState: "synced", syncError: null, startedAt: null, completedAt: null, createdAt: "2026-11-04T09:00:00Z", ...over,
+  status: "running", waiting: null, counts: { people: 3, answered: 1, notReached: 2 }, pushed: { added: 3, duplicates: 0, suppressed: 0, skipped: 0 }, syncState: "synced", syncError: null, source: null, startedAt: null, completedAt: null, createdAt: "2026-11-04T09:00:00Z", ...over,
 });
 const person = (over: Partial<CampaignTarget> = {}): CampaignTarget => ({ id: "t1", phoneNumber: "+14155550101", variables: {}, state: "done", outcome: "no-answer", attempts: 1, completedAt: "2026-11-04T09:00:00Z", tryingAgain: false, ...over });
 const numbers: PhoneNumber[] = [
-  { id: "n1", number: "+14155550100", country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing: false, syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" },
-  { id: "n2", number: "+14155550111", country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing: false, syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" },
-  { id: "n3", number: "+14155550122", country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing: true, syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" },
+  { id: "n1", number: "+14155550100", country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing: false, routed: false, agentCallerId: false, unanswered: "message", syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" },
+  { id: "n2", number: "+14155550111", country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing: false, routed: false, agentCallerId: false, unanswered: "message", syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" },
+  { id: "n3", number: "+14155550122", country: "US", region: null, type: "local", agent: null, monthlyPrice: null, nextRenewalAt: null, releasing: true, routed: false, agentCallerId: false, unanswered: "message", syncState: "synced", syncError: null, createdAt: "2026-10-30T14:00:00Z" },
 ];
 const counts = { waiting: 1, answered: 2, unanswered: 3, failed: 4 };
 const progress: CampaignProgress = {

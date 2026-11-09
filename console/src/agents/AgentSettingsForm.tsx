@@ -3,19 +3,21 @@
  * lines, how it speaks and listens (AgentBehaviourFields.tsx), recording, how long a call may run, what it does when the line goes
  * silent, whether it can hang up, transfer to a person (once the operator allows them), its tools, look-ups and hand-overs
  * (AgentToolsFields.tsx, AgentLookupsFields.tsx, AgentHandoffFields.tsx) and what is worked out from each finished call. One form and
- * one save: the backend changes only what changed.
+ * one save: the backend changes only what changed. Each opening line is checked as it is typed, with the agent's saved instructions
+ * (PromptCheck.tsx, checkPrompt): what the check finds in it is shown under it.
  *
  * Not here: the agent's name and instructions (AgentPage.tsx), its voice setup (StackForm.tsx), how these become the voice
  * platform's settings (App\Kit\Agents\AgentSettings).
  */
-import { useState, type FormEvent, type ReactNode } from "react";
-import { KitApiError, kitApi, type Agent, type AgentAnalysisField, type AgentSettingsForm as FormSpec, type AgentSettingsInput, type AgentTransferPlace } from "../api";
+import { useCallback, useState, type FormEvent, type ReactNode } from "react";
+import { KitApiError, kitApi, type Agent, type AgentAnalysisField, type AgentSettingsForm as FormSpec, type AgentSettingsInput, type AgentTransferPlace, type PromptCheckInput } from "../api";
 import { t, type TextKey } from "../text";
 import { AgentBehaviourFields, behaviourSettings, behaviourValues } from "./AgentBehaviourFields";
 import { AgentEmailFields } from "./AgentEmailFields";
 import { AgentHandoffFields } from "./AgentHandoffFields";
 import { AgentLookupsFields, lookupRows, lookupsInput } from "./AgentLookupsFields";
 import { AgentToolsFields, toolRows, toolsInput } from "./AgentToolsFields";
+import { PromptFindings, usePromptCheck } from "./PromptCheck";
 import { humane, keyFor } from "./settingsRows";
 
 function message(err: unknown): string {
@@ -93,6 +95,14 @@ export function AgentSettingsForm({ agent, form, savedAt, onSaved }: { agent: Ag
   const [failure, setFailure] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(savedAt === agent.updatedAt);
+  const [typedLines, setTypedLines] = useState({ inbound: false, outbound: false });
+
+  const runCheck = useCallback((input: PromptCheckInput) => kitApi.checkPrompt(agent.id, input), [agent.id]);
+  /** An opening line to check once typed in, with the instructions as saved; null while untouched or empty. */
+  const lineCheck = (typed: boolean, line: string): PromptCheckInput | null =>
+    typed && line.trim() !== "" ? { systemPrompt: agent.systemPrompt, greeting: line.trim() } : null;
+  const inboundCheck = usePromptCheck(runCheck, lineCheck(typedLines.inbound, greetingInbound));
+  const outboundCheck = usePromptCheck(runCheck, lineCheck(typedLines.outbound, greetingOutbound));
 
   const change = <T,>(set: (v: T) => void) => (v: T) => {
     setSaved(false);
@@ -205,8 +215,16 @@ export function AgentSettingsForm({ agent, form, savedAt, onSaved }: { agent: Ag
       <section aria-labelledby="settings-opening">
         <h2 id="settings-opening">{t("settingsOpening")}</h2>
         {s.greetingInbound === null && <p className="note">{t("settingsNoOpening")}</p>}
-        {text("settings-greetingInbound", "settings.greetingInbound", "settingsGreetingInbound", greetingInbound, setGreetingInbound, "settingsGreetingHelp")}
-        {text("settings-greetingOutbound", "settings.greetingOutbound", "settingsGreetingOutbound", greetingOutbound, setGreetingOutbound, "settingsGreetingHelp")}
+        {text("settings-greetingInbound", "settings.greetingInbound", "settingsGreetingInbound", greetingInbound, (v) => {
+          setGreetingInbound(v);
+          setTypedLines((x) => ({ ...x, inbound: true }));
+        }, "settingsGreetingHelp")}
+        {greetingInbound.trim() !== "" && <PromptFindings state={inboundCheck} field="greeting" id="settings-greetingInbound-check" />}
+        {text("settings-greetingOutbound", "settings.greetingOutbound", "settingsGreetingOutbound", greetingOutbound, (v) => {
+          setGreetingOutbound(v);
+          setTypedLines((x) => ({ ...x, outbound: true }));
+        }, "settingsGreetingHelp")}
+        {greetingOutbound.trim() !== "" && <PromptFindings state={outboundCheck} field="greeting" id="settings-greetingOutbound-check" />}
         {text("settings-voicemail", "settings.voicemailMessage", "settingsVoicemail", voicemail, setVoicemail, "settingsVoicemailHelp")}
       </section>
 

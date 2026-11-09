@@ -1,11 +1,11 @@
 /**
- * Console → Consent (`/console/consent`; contract/kit-api.yaml listConsent, withdrawConsent): the account's record of who agreed to be called, newest first, searchable by number, each with what it says, whether it still counts and whether it has arrived;
- * withdrawing a number's, only after asking, since that also lists it as do-not-call and drops its waiting calls. A record has no edit or delete: it is what the customer shows after a complaint.
+ * Console → Consent (`/console/consent`; contract/kit-api.yaml listConsent, withdrawConsent, exportConsent): the account's record of who agreed to be called, newest first, searchable by number, each with what it says, whether it still counts and whether it has arrived;
+ * downloading every record, withdrawn ones too, as a CSV file; withdrawing a number's, only after asking, since that also lists it as do-not-call and drops its waiting calls. A record has no edit or delete: it is what the customer shows after a complaint.
  *
  * Not here: whether calls need it (ConsentRulePanel.tsx), recording (ConsentForms.tsx), enforcement (the voice platform checks it before each call).
  */
 import { useCallback, useEffect, useState } from "react";
-import { kitApi, type ConsentPage as Page, type ConsentRecord } from "../api";
+import { consentExportUrl, kitApi, type ConsentPage as Page, type ConsentRecord } from "../api";
 import { t, type TextKey } from "../text";
 import { ConsentImportForm, ConsentRecordForm } from "./ConsentForms";
 import { ConsentRulePanel } from "./ConsentRulePanel";
@@ -49,6 +49,7 @@ export function ConsentPage() {
     <section aria-labelledby="consent-title">
       <h1 id="consent-title">{t("consentTitle")}</h1>
       <p className="muted">{t("consentHelp")}</p>
+      <p><a href={consentExportUrl()} download>{t("downloadCsv")}</a></p>
       {failure && <p role="alert" className="error">{failure}</p>}
       {data && <ConsentRulePanel rule={data.rule} onChanged={(rule) => setData((d) => (d ? { ...d, rule } : d))} />}
       {data && <ConsentRecordForm limits={data.limits} onRecorded={(said) => { setNotice(said); void load(); }} />}

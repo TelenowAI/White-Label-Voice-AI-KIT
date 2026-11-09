@@ -668,6 +668,22 @@
         {
           "column": "telenow_updated_at",
           "telenow": "updated_at"
+        },
+        {
+          "column": "routed",
+          "telenow": "is_pool"
+        },
+        {
+          "column": "agent_caller_id",
+          "telenow": "is_default_outbound"
+        },
+        {
+          "column": "inbound_action",
+          "telenow": "inbound_action"
+        },
+        {
+          "column": "rent_usd",
+          "telenow": "monthly_rent_usd"
         }
       ],
       "events": [],

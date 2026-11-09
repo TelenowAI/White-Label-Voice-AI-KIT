@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Kit\Console;
 
+use App\Kit\Dnc\DncExport;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Kit\Dnc\Dnc;
 use App\Kit\Dnc\DncRefused;
 use App\Models\DncEntry;
@@ -36,6 +38,12 @@ final class DncController
             'entries' => $query->clone()->forPage($page, $perPage)->get()->map($this->present(...))->all(),
             'total' => $query->count(), 'page' => $page, 'perPage' => $perPage,
         ]);
+    }
+
+    /** The list as a file (contract exportDnc). */
+    public function export(Request $request, DncExport $export): StreamedResponse
+    {
+        return $export->download($this->membership($request)->workspace);
     }
 
     public function store(Request $request): JsonResponse

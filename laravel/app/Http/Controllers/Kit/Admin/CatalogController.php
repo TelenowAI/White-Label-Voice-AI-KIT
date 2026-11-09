@@ -13,6 +13,8 @@ use App\Kit\Catalog\RealtimeCatalog;
 use App\Kit\Consent\ConsentRule;
 use App\Kit\Manifest\Manifest;
 use App\Kit\Settings\Settings;
+use App\Kit\Campaigns\CampaignSources;
+use App\Kit\Chat\WebChats;
 use App\Kit\Softphone\BrowserCalls;
 use App\Kit\Voices\Cloning;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +32,7 @@ use Illuminate\Http\Request;
  */
 final class CatalogController
 {
-    public function __construct(private readonly Catalog $catalog, private readonly CatalogVoices $voices, private readonly Settings $settings, private readonly Manifest $manifest, private readonly AgentSettings $agentSettings, private readonly AgentTransfers $transfers, private readonly Audit $audit, private readonly ConsentRule $consent, private readonly BrowserCalls $browserCalls, private readonly Cloning $cloning, private readonly RealtimeCatalog $realtime) {}
+    public function __construct(private readonly Catalog $catalog, private readonly CatalogVoices $voices, private readonly Settings $settings, private readonly Manifest $manifest, private readonly AgentSettings $agentSettings, private readonly AgentTransfers $transfers, private readonly Audit $audit, private readonly ConsentRule $consent, private readonly BrowserCalls $browserCalls, private readonly WebChats $webChats, private readonly Cloning $cloning, private readonly RealtimeCatalog $realtime, private readonly CampaignSources $campaignLinks) {}
 
     public function show(): JsonResponse
     {
@@ -39,7 +41,7 @@ final class CatalogController
 
     public function save(Request $request): JsonResponse
     {
-        $request->validate(['kinds' => ['present', 'array'], 'defaults' => ['present', 'array'], 'transferAllowed' => ['sometimes', 'boolean'], 'browserCallsAllowed' => ['sometimes', 'boolean'], 'consentRequired' => ['sometimes', 'boolean'], 'cloningAllowed' => ['sometimes', 'boolean'], 'clonesPerAccount' => ['sometimes', 'integer', 'min:1', 'max:'.Cloning::most()], 'realtime' => ['sometimes', 'array']]);
+        $request->validate(['kinds' => ['present', 'array'], 'defaults' => ['present', 'array'], 'transferAllowed' => ['sometimes', 'boolean'], 'browserCallsAllowed' => ['sometimes', 'boolean'], 'webChatAllowed' => ['sometimes', 'boolean'], 'campaignLinksAllowed' => ['sometimes', 'boolean'], 'consentRequired' => ['sometimes', 'boolean'], 'cloningAllowed' => ['sometimes', 'boolean'], 'clonesPerAccount' => ['sometimes', 'integer', 'min:1', 'max:'.Cloning::most()], 'realtime' => ['sometimes', 'array']]);
 
         return $this->refusals(function () use ($request) {
             // Realtime voices are checked first, so a refusal leaves everything as it was (the save is all or nothing).
@@ -61,6 +63,20 @@ final class CatalogController
                     $this->audit->record($request->user(), $allowed ? 'softphone.allowed' : 'softphone.stopped');
                 }
                 $this->browserCalls->allow($allowed);
+            }
+            if ($request->has('webChatAllowed')) {
+                $allowed = $request->boolean('webChatAllowed');
+                if ($allowed !== $this->webChats->allowed()) {
+                    $this->audit->record($request->user(), $allowed ? 'chat.allowed' : 'chat.stopped');
+                }
+                $this->webChats->allow($allowed);
+            }
+            if ($request->has('campaignLinksAllowed')) {
+                $allowed = $request->boolean('campaignLinksAllowed');
+                if ($allowed !== $this->campaignLinks->allowed()) {
+                    $this->audit->record($request->user(), $allowed ? 'campaign_links.allowed' : 'campaign_links.stopped');
+                }
+                $this->campaignLinks->allow($allowed);
             }
             if ($request->has('consentRequired')) {
                 $required = $request->boolean('consentRequired');
@@ -132,8 +148,10 @@ final class CatalogController
                 'recommended' => (bool) ($p['recommended'] ?? false),
                 'models' => array_map(fn (array $m) => [
                     'id' => $m['id'], 'catalogName' => $m['name'] ?? $m['id'], 'name' => $m['displayName'], 'ownName' => $m['ownName'],
-                    'namesPlatform' => $m['namesPlatform'], 'offered' => $m['offered'],
+                    'namesPlatform' => $m['namesPlatform'], 'offered' => $m['offered'], 'added' => ($m['extra'] ?? false) === true,
                 ], $p['curatedModels']),
+                // Whether the operator may add models of the provider's own list (App\Kit\Catalog\OpenModels): Admin → Catalog → Add models.
+                'openModels' => $p['openModels'],
                 'voiceCount' => $kind === 'tts' ? ($counts[$p['id']] ?? 0) : 0,
                 // Its own settings, each with whether customers may change it and, of one with options, which (App\Kit\Catalog\ProviderSettings): Telenow's own values here.
                 'settings' => array_map(fn (array $f) => array_intersect_key($f, array_flip(['key', 'kind', 'label', 'help', 'options', 'min', 'max', 'step', 'defaultValue', 'advanced', 'model', 'offered'])), $p['settings']),
@@ -167,6 +185,9 @@ final class CatalogController
             'transferStillOn' => $this->transfers->stillOn(),
             'browserCallsAllowed' => $this->browserCalls->allowed(),
             'browserCallsUnpriced' => $this->browserCalls->unpricedPlans(),
+            'webChatAllowed' => $this->webChats->allowed(),
+            'campaignLinksAllowed' => $this->campaignLinks->allowed(),
+            'webChatUnpriced' => $this->webChats->unpricedPlans(),
             'consentRequired' => $this->consent->requiredForEveryone(),
             'consentStillToTell' => $this->consent->stillToTell(),
             'cloningAllowed' => $this->cloning->allowed(),

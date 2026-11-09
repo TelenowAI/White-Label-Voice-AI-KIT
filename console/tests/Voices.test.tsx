@@ -3,7 +3,8 @@
  * the browser, the operator's provider names) narrowed and paged as the backend is asked; a voice or an agent heard in
  * a clip the backend makes (its refusal in its words); an agent's stack chosen whole from what is offered (every voice
  * of the chosen provider; a part no longer offered kept and said so), the backend's word on a field; and the operator's
- * page: names, the platform's name flagged, models, defaults (the platform's recommendation one click away), saved whole.
+ * page: names, the platform's name flagged, models, defaults (the platform's recommendation one click away), saved whole;
+ * and what customers may use (transfers, calls from the browser, web chat, consent, cloning), each saved with the rest.
  */
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -126,7 +127,7 @@ describe("an agent's voice setup", () => {
     stack: { llmProvider: "pA", llmModel: "gpt-4o-mini", sttProvider: "pS", ttsProvider: "pT", ttsVoice: "vikram-en-in" },
     settings: agentSettings, stackCheck: null,
     stackNames: { llmProvider: "OpenAI", llmModel: "GPT-4o mini", sttProvider: "Deepgram", ttsProvider: "Studio voices", ttsVoice: "Vikram" },
-    knowledgeBases: [],
+    knowledgeBases: [], logoUrl: null,
     createdAt: "2026-10-30T09:00:00Z", updatedAt: "2026-10-30T09:00:00Z", ...over,
   });
   const eleven = [voice({ id: "e1", name: "Aria", provider: "pE", providerName: "ElevenLabs" }), voice({ id: "e2", name: "Sarah", provider: "pE", providerName: "ElevenLabs" })];
@@ -305,13 +306,13 @@ describe("an agent's voice setup", () => {
 
 describe("admin → catalog", () => {
   const curation: CatalogCuration = {
-    fetchedAt: "2026-10-30T12:00:00Z", error: null, platformName: "Telenow", browserCallsAllowed: false, browserCallsUnpriced: [],
+    fetchedAt: "2026-10-30T12:00:00Z", error: null, platformName: "Telenow", browserCallsAllowed: false, browserCallsUnpriced: [], webChatAllowed: false, webChatUnpriced: [], campaignLinksAllowed: false,
     kinds: {
       llm: [{ id: "openai", catalogName: "OpenAI", name: "OpenAI", ownName: null, namesPlatform: false, offered: true, enabled: true, status: "ga", recommended: true,
-        models: [{ id: "gpt-4o-mini", catalogName: "GPT-4o mini", name: "GPT-4o mini", ownName: null, namesPlatform: false, offered: true },
-          { id: "gpt-4.1-nano", catalogName: "GPT-4.1 nano", name: "GPT-4.1 nano", ownName: null, namesPlatform: false, offered: false }], voiceCount: 0, settings: [] }],
-      stt: [{ id: "deepgram", catalogName: "Deepgram", name: "Deepgram", ownName: null, namesPlatform: false, offered: false, enabled: true, status: "ga", recommended: true, models: [], voiceCount: 0, settings: [] }],
-      tts: [{ id: "telenow", catalogName: "Telenow TTS", name: "Telenow TTS", ownName: null, namesPlatform: true, offered: false, enabled: true, status: "ga", recommended: true, models: [],
+        models: [{ id: "gpt-4o-mini", catalogName: "GPT-4o mini", name: "GPT-4o mini", ownName: null, namesPlatform: false, offered: true, added: false },
+          { id: "gpt-4.1-nano", catalogName: "GPT-4.1 nano", name: "GPT-4.1 nano", ownName: null, namesPlatform: false, offered: false, added: false }], openModels: false, voiceCount: 0, settings: [] }],
+      stt: [{ id: "deepgram", catalogName: "Deepgram", name: "Deepgram", ownName: null, namesPlatform: false, offered: false, enabled: true, status: "ga", recommended: true, models: [], openModels: false, voiceCount: 0, settings: [] }],
+      tts: [{ id: "telenow", catalogName: "Telenow TTS", name: "Telenow TTS", ownName: null, namesPlatform: true, offered: false, enabled: true, status: "ga", recommended: true, models: [], openModels: false,
         voiceCount: 1050, settings: [] }],
     },
     defaults: { ...none, llmProvider: "openai", llmModel: "gpt-4o-mini" },
@@ -432,6 +433,28 @@ describe("admin → catalog", () => {
     expect((within(form).getByLabelText("Customers may place calls from the browser, from their own numbers") as HTMLInputElement).checked).toBe(false);
   });
 
+  it("saves whether customers may put a chat box on their websites, says how a chat is charged, and names the plans that cannot price one", async () => {
+    const sent = fakeKit({
+      ...staff, ...listVoices,
+      "GET /api/kit/admin/catalog": { ...curation, webChatUnpriced: [{ id: "standard", name: "Standard" }, { id: "gold", name: "Gold" }] },
+      "PUT /api/kit/admin/catalog": () => Response.json({ ...curation, webChatAllowed: true }),
+    });
+    open("/admin/catalog", <AdminArea />, "/admin");
+    const form = await screen.findByRole("form", { name: "Catalog" });
+    const box = within(form).getByLabelText("Customers may put a chat box on their websites, answered by their agents") as HTMLInputElement;
+    expect(box.checked).toBe(false);
+    expect(box.closest("fieldset")?.querySelector("legend")?.textContent).toBe("Web chat");
+    expect(within(form).getByText(/charged by the price lists as a call with the channel chat: its language model, knowledge look-ups and platform fee/)).toBeTruthy();
+    expect(within(form).getByText("These plans have no price for a chat, so their customers cannot turn a chat box on, and one that is on stops answering: Standard, Gold.")).toBeTruthy();
+    fireEvent.click(box);
+    fireEvent.click(within(form).getByRole("button", { name: "Save" }));
+    await waitFor(() => expect(sent.filter((c) => c.method === "PUT")).toHaveLength(1));
+    const saved = sent.find((c) => c.method === "PUT")?.body as { webChatAllowed: boolean; browserCallsAllowed: boolean };
+    expect([saved.webChatAllowed, saved.browserCallsAllowed]).toEqual([true, false]);
+    await waitFor(() => expect(within(form).queryByText(/have no price for a chat/)).toBeNull());
+    expect((within(form).getByLabelText("Customers may put a chat box on their websites, answered by their agents") as HTMLInputElement).checked).toBe(true);
+  });
+
   it("does not say so while they are allowed, when an agent having one is as it should be", async () => {
     fakeKit({ ...staff, ...listVoices, "GET /api/kit/admin/catalog": { ...curation, transferAllowed: true, transferStillOn: 3 } });
     open("/admin/catalog", <AdminArea />, "/admin");
@@ -470,6 +493,8 @@ describe("admin → catalog", () => {
     expect(sent.filter((s) => s.method === "PUT").pop()?.body).toEqual({
       transferAllowed: false,
       browserCallsAllowed: false,
+      webChatAllowed: false,
+      campaignLinksAllowed: false,
       consentRequired: false,
       cloningAllowed: false,
       clonesPerAccount: 10,

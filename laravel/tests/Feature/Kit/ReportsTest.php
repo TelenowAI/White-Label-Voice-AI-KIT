@@ -157,6 +157,23 @@ class ReportsTest extends TestCase
         $this->travelBack();
     }
 
+    public function test_one_customers_figures_by_what_was_charged(): void
+    {
+        $this->month();
+        $october = ['from' => '2026-10-01', 'to' => '2026-10-31'];
+        $acme = $this->costs($october + ['by' => 'component', 'customer' => $this->acme->id])->assertOk()
+            ->assertJsonPath('customer', ['id' => $this->acme->id, 'name' => 'Acme Dental'])->assertJsonPath('total', 3);
+        $this->assertSame(['component:telephony' => '7.50', 'component:llm' => '5.00', 'component:newthing' => '5.00'], array_column($acme->json('rows'), 'price', 'key'));
+        $this->assertSame([['currency' => 'INR', 'count' => 2, 'price' => '17.50', 'cost' => '9.99', 'costUsd' => '0.1200', 'margin' => '7.51', 'marginPercent' => '42.9']],
+            $acme->json('totals'), "the customer's totals, not everyone's");
+        $this->assertSame(['call' => '30.00'], array_column($this->costs($october + ['by' => 'component', 'customer' => $this->bolt->id])->json('rows'), 'price', 'key'));
+        $this->assertSame([$this->acme->id], array_column($this->costs($october + ['by' => 'customer', 'customer' => $this->acme->id])->json('rows'), 'key'));
+        $this->costs($october + ['by' => 'component'])->assertJsonPath('customer', null)->assertJsonPath('totals.0.price', '47.50');
+        foreach ([(string) Str::uuid(), 'acme'] as $unknown) {
+            $this->costs($october + ['customer' => $unknown])->assertStatus(422)->assertJsonValidationErrors('customer');
+        }
+    }
+
     public function test_a_period_must_run_forwards_and_not_too_long_and_a_grouping_must_be_known(): void
     {
         $this->costs(['from' => '2026-10-10', 'to' => '2026-10-01'])->assertStatus(422)->assertJsonValidationErrors(['to']);
@@ -215,7 +232,7 @@ class ReportsTest extends TestCase
         $this->assertSame(['total' => 3, 'active' => 2, 'suspended' => 1, 'notReady' => 1, 'outOfCredit' => null, 'new' => 1], $d->json('customers'));
         $this->assertSame(['count' => 6, 'seconds' => 300, 'live' => 1], $d->json('calls'));
         $this->assertSame(['callsNotCharged' => 1, 'failedWrites' => 1, 'paymentsToReview' => 1, 'customersNotSynced' => 1, 'eventsFailed' => 1,
-            'customersDrifting' => 1, 'jobsNotRunning' => true], $d->json('attention'));
+            'customersDrifting' => 1, 'jobsNotRunning' => true, 'providersFailing' => 0], $d->json('attention'));
         DB::table('job_runs')->insert(['command' => 'kit:outbox', 'expression' => '* * * * *', 'started_at' => now()->subMinute(), 'created_at' => now(), 'updated_at' => now()]);
         $this->actingAs($this->staff)->getJson('/api/kit/admin/dashboard?from=2026-10-01&to=2026-10-31')->assertJsonPath('attention.jobsNotRunning', false);
         $d->assertJsonPath('telenow.connected', true)->assertJsonPath('telenow.keyRejected', false)->assertJsonPath('telenow.billingUrl', config('kit.telenow.billing_url'))

@@ -1,0 +1,18 @@
+{
+  "operationId": "listOrgCallerMemory",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the memory rows were SEEDED into its caller_memory table (Telenow writes them with its own model after a call, which no throwaway release can run): the shapes are Telenow's, the contents ours (contract_k17memory.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/9fc5e3ab-5f92-568d-a97e-01d584c77479/memory",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": "This API key is scoped to a different organization.",
+      "success": false
+    }
+  },
+  "serve": false
+}

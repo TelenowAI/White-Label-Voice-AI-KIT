@@ -1,6 +1,6 @@
 /**
  * Console → Consent (consent/): the rule and who holds it, how many waiting calls it touches, changing it only after asking; recording one person with the words only where they are needed, the backend's word beside a field; a file, too big refused before it is
- * sent; the list with each record's state, and withdrawing only after asking. A record offers no edit or delete. Not here: what the backend does (ConsentTest.php).
+ * sent; the list with each record's state, downloading every record as a CSV file (exportConsent), and withdrawing only after asking. A record offers no edit or delete. Not here: what the backend does (ConsentTest.php).
  */
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -274,6 +274,14 @@ describe("the list", () => {
     fake({ [`GET ${root}?page=1`]: page({ records: [record({ state: "expired", onDoNotCall: true })] }) });
     await show();
     expect(row("+14155550101").textContent).not.toContain("do-not-call");
+  });
+
+  it("downloads every record as a CSV file", async () => {
+    fake({});
+    await show();
+    const link = screen.getByRole("link", { name: "Download CSV" });
+    expect(link.getAttribute("href")).toBe(`${root}/export`);
+    expect(link.hasAttribute("download")).toBe(true);
   });
 
   it("says when there are none", async () => {

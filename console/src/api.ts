@@ -114,6 +114,8 @@ export interface AdminDashboard {
     eventsFailed: number;
     customersDrifting: number;
     jobsNotRunning: boolean;
+    /** Providers that failed on as many of customers' recent calls as the alert level, or more, at call health's last sweep. */
+    providersFailing: number;
   };
 }
 
@@ -159,6 +161,8 @@ export interface AuditPage {
 /** Admin → Voice platform: how the link to the voice platform is doing. */
 export interface VoicePlatformHealth {
   telenow: { name: string; connected: boolean; account: string | null; keyRejected: boolean; error: string | null; checkedAt: string | null };
+  /** The providers that failed on customers' recent calls, added up by the last sweep; null before its first run. */
+  callHealth: PlatformCallHealth | null;
   events: {
     registered: boolean;
     url: string | null;
@@ -204,16 +208,84 @@ export interface VoicePlatformHealth {
   };
 }
 
-/** Admin → Cost vs price: one page of groups, and the totals of the whole period. */
+/** Call health's last sweep over every customer with calls in the window (VoicePlatformHealth `callHealth`). Admin only. */
+export interface PlatformCallHealth {
+  checkedAt: string;
+  windowMinutes: number;
+  /** Accounts with calls in the window, those read, and those whose failures could not be read. */
+  accountsActive: number;
+  accountsChecked: number;
+  accountsUnread: number;
+  /** A provider with this many calls failed or more is flagged on the dashboard. */
+  alertCalls: number;
+  providers: {
+    part: CallHealthPart;
+    providerId: string;
+    provider: string;
+    calls: number;
+    customerCount: number;
+    /** The customers with the most such calls first (at most so many). */
+    customers: { id: string; name: string; calls: number }[];
+    lastAt: string | null;
+  }[];
+}
+
+/** Admin → Cost vs price: one page of groups, and the totals of the whole period; of every customer, or of the one in `customer`. */
 export interface CostReport {
   period: ReportPeriod;
   by: string;
+  customer: { id: string; name: string } | null;
   groups: Option[];
   rows: (MoneyTotals & { key: string; label: string })[];
   totals: MoneyTotals[];
   page: number;
   perPage: number;
   total: number;
+}
+
+/**
+ * Admin → Platform billing: the voice platform's spend state for the operator's own account, as last read. Money is
+ * USD as decimal strings. The document requires none of its fields, so each may be missing.
+ */
+export interface PlatformSpendState {
+  state?: "ok" | "low" | "stopped";
+  canSpend?: boolean;
+  stoppedBy?: "suspended" | "out_of_credit" | "spend_cap" | null;
+  mode?: "prepaid" | "postpaid";
+  balanceUsd?: string;
+  periodStart?: string;
+  periodSpendUsd?: string;
+  monthlySpendLimitUsd?: string | null;
+  headroomUsd?: string | null;
+  lowThresholdUsd?: string | null;
+}
+
+/** The spend state as last read (null before the first read) and when (setPlatformBalanceAlert answers this). */
+export interface PlatformBillingState {
+  state: PlatformSpendState | null;
+  checkedAt: string | null;
+}
+
+/** One of the voice platform's invoices to the operator: its lines are net, `rest` is what the total holds beyond them (tax). */
+export interface PlatformInvoice {
+  id: string;
+  periodStart: string | null;
+  periodEnd: string | null;
+  status: "draft" | "issued" | "paid" | "overdue" | "void" | "other";
+  issuedAt: string | null;
+  dueAt: string | null;
+  paidAt: string | null;
+  currency: string;
+  total: string | null;
+  totalUsd: string | null;
+  lines: { kind: string; description: string; amount: string | null }[];
+  rest: string | null;
+}
+
+/** Admin → Platform billing: the state, and the invoices newest first (null with `invoicesError` when they could not be read). */
+export interface PlatformBilling extends PlatformBillingState {
+  invoices: PlatformInvoice[] | null;
+  invoicesError: string | null;
 }
 
 /** The public website's content (Admin → Website). Texts may hold `{brand}`, `{email}` and `{site}`. */
@@ -798,6 +870,30 @@ export interface AgentWebhookDelivery {
   canSendAgain: boolean;
 }
 
+/** An agent's chat box on the customer's own website (getAgentWebChat): visitors talk to this platform, never to the voice platform. */
+export interface WebChat {
+  /** Whether the operator offers web chat. */
+  allowed: boolean;
+  /** Whether the account's plan has a price for a chat (always true while customers are not charged). */
+  priced: boolean;
+  enabled: boolean;
+  /** The websites it may show on, each by its address alone. */
+  websites: string[];
+  /** Its heading; null shows the agent's name. */
+  title: string | null;
+  /** The first message a visitor sees; never sent to the agent. */
+  greeting: string | null;
+  /** The code to put on each page, before `</body>`; null until it is first turned on. */
+  snippet: string | null;
+}
+
+export interface WebChatInput {
+  enabled: boolean;
+  websites: string[];
+  title?: string | null;
+  greeting?: string | null;
+}
+
 export interface AgentRequestHeader {
   name: string;
   value: string;
@@ -887,10 +983,22 @@ export interface Agent {
   stackCheck: StackCheck | null;
   /** The knowledge bases it answers from. */
   knowledgeBases: KnowledgeBaseRef[];
+  /** Where its logo is served (this platform's own address); null for none. */
+  logoUrl: string | null;
   syncState: "pending" | "synced" | "failed";
   syncError: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * One thing left to do on a copy of an agent (duplicateAgent): `key`, type again the key of the tool or look-up `name`;
+ * `flow`, its call steps are a draft to finish and publish; `voiceSetup`, it has the default voice setup; `webhooks`, each
+ * address has its own new signing secret; `tools`, `lookups`, `handoff`, these are to be set again.
+ */
+export interface AgentCopyToDo {
+  kind: "key" | "flow" | "voiceSetup" | "webhooks" | "tools" | "lookups" | "handoff";
+  name: string | null;
 }
 
 export interface Campaign {
@@ -917,13 +1025,38 @@ export interface Campaign {
   pushed: { added: number; duplicates: number; suppressed: number; skipped: number };
   syncState: "pending" | "synced" | "failed";
   syncError: string | null;
+  /** People from a link (setCampaignSource); null when it has none. */
+  source: CampaignSource | null;
   startedAt: string | null;
   completedAt: string | null;
   createdAt: string;
 }
 
+/** A campaign's link: a CSV read again every `linkEveryMinutes` while the campaign is not finished, adding only new numbers. */
+export interface CampaignSource {
+  url: string;
+  /** When it was last read; null before the first read. */
+  checkedAt: string | null;
+  /** Why it could not be read last time, in words for the customer. */
+  problem: string | null;
+  /** How many people it has added. */
+  added: number;
+}
+
+/** What one read of a campaign's link added (setCampaignSource). `alreadyThere`: numbers the campaign has already; `skipped`: lines with no number. */
+export interface CampaignLinkRead {
+  added: number;
+  alreadyThere: number;
+  skipped: number;
+  noCountryCode: number;
+}
+
 /** What a new campaign starts from and what this backend takes (listCampaigns). */
 export interface CampaignLimits {
+  /** The operator lets campaigns take people from a link (setCampaignSource). */
+  linksAllowed: boolean;
+  /** How often a campaign's link is read again. */
+  linkEveryMinutes: number;
   nameMaxLength: number;
   concurrency: { default: number; max: number };
   maxAttempts: { default: number; max: number };
@@ -1113,6 +1246,37 @@ export interface KnowledgeDocument {
   state: "saving" | "working" | "ready" | "failed";
   problem: string | null;
   createdAt: string;
+  /** A CSV, JSON or Excel file, kept as a table agents look rows up in (knowledgeTable). */
+  table: boolean;
+}
+
+/** How agents read a table's column: `number` and `date` are compared (and numbers added up) as such; `text` and `bool` by their words. */
+export type KnowledgeColumnType = "text" | "number" | "bool" | "date";
+
+export interface KnowledgeTableColumn {
+  /** How the column is named to agents, in `rows` and in setKnowledgeColumnTypes. */
+  key: string;
+  /** Its heading in the file. */
+  name: string;
+  type: KnowledgeColumnType;
+}
+
+/** One cell of a table's row: text, a number, true or false, or null (none). */
+export type KnowledgeCell = string | number | boolean | null;
+
+/** A spreadsheet document as the agents use it: its columns and a page of its rows. */
+export interface KnowledgeTable {
+  columns: KnowledgeTableColumn[];
+  /** This page's rows, each its cells in the order of `columns`. */
+  rows: KnowledgeCell[][];
+  rowCount: number;
+  offset: number;
+  limit: number;
+  format: "csv" | "json" | "xlsx";
+  /** Small enough that agents read it whole on every call (and still look rows up in it). */
+  inPrompt: boolean;
+  /** For a table too big to read whole: finding rows by meaning covers only its first this many rows; null when it covers them all. */
+  searchByMeaningRows: number | null;
 }
 
 export interface KnowledgeLimits {
@@ -1276,12 +1440,20 @@ export interface CuratedModel {
   offered: boolean;
 }
 
+/** A language model of a provider in Admin → Catalog: the catalog's own, or one the operator added from the provider's own list. */
+export interface CuratedLlmModel extends CuratedModel {
+  /** Added by the operator from the provider's own list (CurationInput `extraModels`), listed after the catalog's own; its `catalogName` is the list's name when it was added. */
+  added: boolean;
+}
+
 export interface CuratedProvider extends CuratedModel {
   enabled: boolean;
   status: string | null;
   recommended: boolean;
   /** Language models only. */
-  models: CuratedModel[];
+  models: CuratedLlmModel[];
+  /** Models may be added to it from its own whole list (`openModels`, `openModelPrice`; CurationInput `extraModels`). Language models only. */
+  openModels: boolean;
   /** Voice providers only: how many voices it has (a page of them: `catalogVoices`). */
   voiceCount: number;
   /** Its own settings, with the platform's values, and whether customers may change each (and which options). */
@@ -1319,6 +1491,12 @@ export interface CatalogCuration {
   browserCallsAllowed: boolean;
   /** The price lists with no price for such a call, while customers are charged: a customer on one cannot place them. */
   browserCallsUnpriced: { id: string; name: string }[];
+  /** Whether customers may put a chat box on their websites, answered by their agents. */
+  webChatAllowed: boolean;
+  /** The price lists with no price for a chat, while customers are charged: a customer on one cannot turn a chat box on. */
+  webChatUnpriced: { id: string; name: string }[];
+  /** Whether campaigns may take their people from a link this server reads (only https links to public addresses). */
+  campaignLinksAllowed: boolean;
   consentRequired: boolean;
   consentStillToTell: number;
   /** Whether customers may clone voices of their own. */
@@ -1343,12 +1521,54 @@ export interface CuratedRealtimeProvider {
   models: { id: string; catalogName: string; name: string; ownName: string | null; namesPlatform: boolean; offered: boolean; voiceCount: number }[];
 }
 
+/** Admin → Catalog → Add models (listOpenModels): a page of the open-model provider's own list, searched. */
+export interface OpenModelPage {
+  /** The platform's id for the provider the models are added to. */
+  provider: string;
+  models: {
+    /** The list's model id (may hold `/`, `.`, `:`, `~`). */
+    id: string;
+    name: string;
+    /** Added by the operator, as saved. */
+    added: boolean;
+    /** In the catalog already: chosen there, never added. */
+    inCatalog: boolean;
+  }[];
+  page: number;
+  perPage: number;
+  /** How many match the search. */
+  total: number;
+  /** How many models may be added in all. */
+  max: number;
+}
+
+/** What the voice platform charges the operator for one of those models (getOpenModelPrice): US dollars per million tokens, an estimate; null when not found. */
+export interface OpenModelPrice {
+  model: string;
+  found: boolean;
+  inputPerM: number | null;
+  outputPerM: number | null;
+}
+
+/** An account's processing country on the voice platform (getPlatformProcessingCountry, getCustomerProcessingCountry). Admin only. */
+export interface ProcessingCountry {
+  /** Two letters; null when the platform has none for the account. */
+  country: string | null;
+  /** The account's declared country, its sign-up time zone's, or neither. */
+  source: "country" | "time_zone" | "unknown";
+  checkedAt: string;
+}
+
 export interface CurationInput {
   kinds: Partial<Record<CatalogKind, Record<string, { offered: boolean; name: string | null; models?: Record<string, { offered: boolean; name: string | null }>;
+    /** The provider with `openModels` only: its added models now, by the list's model id (`{}` for none); not sent, those added before stay. */
+    extraModels?: Record<string, { offered: boolean; name: string | null }>;
     settings?: Record<string, { offered: boolean; options?: Record<string, boolean> }> }>>>;
   defaults: StackIds;
   transferAllowed?: boolean;
   browserCallsAllowed?: boolean;
+  webChatAllowed?: boolean;
+  campaignLinksAllowed?: boolean;
   consentRequired?: boolean;
   cloningAllowed?: boolean;
   clonesPerAccount?: number;
@@ -1403,6 +1623,66 @@ export interface OwnVoiceInput {
   source: "upload" | "record";
 }
 
+/** One thing the prompt check found (PromptFinding): the field and line it is at, and a message ready to show. */
+export interface PromptFinding {
+  field: "systemPrompt" | "greeting";
+  code: string;
+  line: number;
+  column: number;
+  message: string;
+}
+
+/** The call a preview of the instructions is for (PromptCheckInput `channel`); none is no channel sent. */
+export type PromptChannel = "phone_inbound" | "phone_outbound" | "chat";
+
+/** What the prompt check is sent (checkPrompt, checkNewPrompt): with `values`, even `{}`, a preview comes back. */
+export interface PromptCheckInput {
+  systemPrompt: string | null;
+  greeting?: string | null;
+  values?: Record<string, string | null> | null;
+  channel?: PromptChannel | null;
+}
+
+/**
+ * The prompt check's answer (PromptCheck). `checked` false: too long to check (saved unchecked). `valid` false: a save would be refused.
+ * `preview` only when sample values were sent; each section's `branch` is counted from 1, null for none kept.
+ */
+export interface PromptCheck {
+  checked: boolean;
+  valid: boolean;
+  errors: PromptFinding[];
+  warnings: PromptFinding[];
+  preview: { text: string; sections: { line: number; branch: number | null; branches: number }[] } | null;
+}
+
+/** The part of a call a provider served (CallHealth, VoicePlatformHealth `callHealth`). */
+export type CallHealthPart = "stt" | "tts" | "llm" | "other";
+
+/** One provider that failed on an account's recent calls (CallHealth `failures`); the last five fields are staff only. */
+export interface CallHealthFailure {
+  part: CallHealthPart;
+  /** The operator's name for it, or its part when there is none to show. */
+  provider: string;
+  cause: "provider" | "setup" | "platform" | "unknown";
+  calls: number;
+  lastAt: string | null;
+  agents: { id: string; name: string }[];
+  providerId?: string;
+  attribution?: string;
+  keySource?: string;
+  incidents?: number;
+  error?: string | null;
+}
+
+/** An account's call health (getCallHealth; getCustomerCallHealth with the staff fields). */
+export interface CallHealth {
+  windowMinutes: number;
+  /** Calls with a failure, each once however many parts failed. */
+  callsAffected: number;
+  checkedAt: string;
+  failures: CallHealthFailure[];
+}
+
 /** What Call someone offers for an agent (getAgentCallForm). */
 export interface AgentCallForm {
   callerIds: { id: string; number: string }[];
@@ -1446,6 +1726,7 @@ export interface CallSummary {
   outcome: string | null;
   /** `inbound`, `outbound`, `web`, … */
   direction: string | null;
+  /** `telephony`, `web_call`, `softphone` (placed from the browser), `chat` (a web chat: no phone number), … */
   channel: string | null;
   from: string | null;
   to: string | null;
@@ -1460,11 +1741,117 @@ export interface CallSummary {
   wrapup: string | null;
 }
 
-/** Which calls a page of them holds: one agent's, one person's by their number, or those the member placed from the browser. */
+/**
+ * Which calls a page of them holds: one agent's, one person's by their number, those the member placed from the browser, those of
+ * whole days, one outcome, one channel. The file of calls (callsExportUrl) takes the same, but `placedBy`.
+ */
 export interface CallFilter {
   agentId?: string;
   number?: string;
   placedBy?: "me";
+  /** The first day (YYYY-MM-DD), in `timeZone`. */
+  from?: string;
+  /** The last day (YYYY-MM-DD), in `timeZone`. */
+  to?: string;
+  /** The IANA time zone the days are in (the browser's); UTC when none. */
+  timeZone?: string;
+  /** The voice platform's word (`answered`, `no-answer`, `busy`, `failed`, `machine`, …). */
+  outcome?: string;
+  /** `telephony`, `web_call`, `softphone`, `chat`, … */
+  channel?: string;
+}
+
+/** How many calls had one outcome, sentiment or channel (`key` as the voice platform words it; null for none). */
+export interface InsightCount {
+  key: string | null;
+  count: number;
+}
+
+/** What was charged in one currency: an exact decimal string in the currency's own units. */
+export interface InsightSpend {
+  currency: string;
+  amount: string;
+}
+
+/** One day of a period of insights (every day is there, those with no call too). */
+export interface InsightDay {
+  day: string;
+  calls: number;
+  answered: number;
+  seconds: number;
+}
+
+/** One agent's calls in a period of insights; `agentId` null for calls with no agent, `name` null for an agent no longer here. */
+export interface InsightAgent {
+  agentId: string | null;
+  name: string | null;
+  calls: number;
+  answered: number;
+  seconds: number;
+  spend: InsightSpend[];
+}
+
+/** How the account's calls went over whole days (getInsights); `answered`: calls that lasted and that no machine picked up. */
+export interface Insights {
+  from: string;
+  to: string;
+  timeZone: string;
+  calls: number;
+  answered: number;
+  seconds: number;
+  /** How long an answered call lasted on average; 0 with none. */
+  averageSeconds: number;
+  /** Most first. */
+  outcomes: InsightCount[];
+  /** Over the calls with an analysis; most first. */
+  sentiments: InsightCount[];
+  /** Most first. */
+  channels: InsightCount[];
+  spend: InsightSpend[];
+  /** Oldest first. */
+  days: InsightDay[];
+  /** Most calls first. */
+  agents: InsightAgent[];
+}
+
+/** The period insights cover (whole days in `timeZone`; the backend's default when none) and, if asked, one agent's calls only. */
+export interface InsightsQuery {
+  from?: string;
+  to?: string;
+  timeZone?: string;
+  agentId?: string;
+}
+
+/** One caller the account's agents remember (getCallerMemory): a phone caller by their number, a web chat visitor by the website they chatted on. */
+export interface RememberedCaller {
+  /** What forgetCaller takes to forget them. */
+  key: string;
+  kind: "phone" | "chat" | "other";
+  /** The number with its +, or the key for a caller that is not a phone. */
+  caller: string;
+  /** For a web chat visitor, the website they chatted on, when the kit still has the conversation. */
+  website: string | null;
+  summary: string | null;
+  /** The facts kept about them, by name. */
+  facts: { name: string; value: string }[];
+  /** How many of their calls it was made from. */
+  calls: number;
+  updatedAt: string;
+  /** When it stops being used on calls; null for never. */
+  expiresAt: string | null;
+  /** No longer used on calls. */
+  expired: boolean;
+  /** The kit's call it was last made from, when the kit has it. */
+  lastCallId: string | null;
+}
+
+/** What the account's agents remember about callers, most recent first (getCallerMemory). */
+export interface CallerMemory {
+  callers: RememberedCaller[];
+  /** The most this lists; any caller can still be forgotten, listed or not. */
+  limit: number;
+  /** Whether this member may forget a caller (one who manages the account). */
+  canForget: boolean;
 }
 
 /** Calls on now (getLiveCalls): by the account's agents, and the rest, placed from the browser. */
@@ -1550,6 +1937,20 @@ export interface CallPage {
   total: number;
   page: number;
   perPage: number;
+  /** The outcomes the account's calls have, most calls first: what the outcome filter offers. */
+  outcomes: string[];
+}
+
+/** Something a member told the agent during a call (tellAgent): background from its next reply, never the caller's words. */
+export interface AgentNote {
+  /** Who told it; null once they are no longer a user here. */
+  by: string | null;
+  at: string;
+  text: string;
+  /** The agent was asked to say it at once. */
+  sayNow: boolean;
+  /** `nextReply`: from the agent's next reply; `whenBack`: when the agent has the call again (on hold, a transfer under way); `sayingNow`: it is saying it now. */
+  delivery: "nextReply" | "whenBack" | "sayingNow";
 }
 
 export interface CallDetail extends CallSummary {
@@ -1557,8 +1958,12 @@ export interface CallDetail extends CallSummary {
   canListen: boolean;
   /** Who listened in to it, newest first. */
   listens: { by: string | null; at: string }[];
+  /** The member may tell the agent something now (tellAgent). */
+  canTellAgent: boolean;
+  /** What the agent was told during the call, newest first. */
+  agentNotes: AgentNote[];
   answeredBy: string | null;
-  /** `role`: `user` (the caller) or `assistant` (the agent). */
+  /** `role`: `user` (the caller, or the visitor on a web chat) or `assistant` (the agent). */
   transcript: { role: string | null; text: string; at: string | null }[];
   recordings: { index: number; durationSec: number | null; createdAt: string | null }[];
   analysis: { summary: string | null; sentiment: string | null; disposition: string | null; actionItems: unknown; customData?: Record<string, unknown> | null; qa?: { key?: string; met?: boolean; evidence?: string }[] | null } | null;
@@ -1753,6 +2158,92 @@ export interface CustomerWallet {
   perPage: number;
 }
 
+/** An account's details printed on its invoices as the customer (null: none; the account's name stands for a missing name). */
+export interface BillingDetails {
+  name: string | null;
+  address: string | null;
+  taxNumber: string | null;
+}
+
+/** Console → Invoices → billing details: every member reads them, `canEdit` (its owners and admins) may change them. */
+export interface AccountBillingDetails extends BillingDetails {
+  canEdit: boolean;
+}
+
+/** Admin → Invoices: what the operator prints on customers' invoices from now on. Null: none (the brand's name and support email for those two). */
+export interface InvoiceSettings {
+  /** Before the year and the number: "INV-" gives INV-2026-000001. */
+  prefix: string | null;
+  name: string | null;
+  address: string | null;
+  taxNumber: string | null;
+  email: string | null;
+  /** GST, VAT…; a tax needs both its name and its rate. */
+  taxName: string | null;
+  /** A percentage from 0 to 100, at most two decimals; 0: no tax. */
+  taxRate: string | null;
+}
+
+/** The settings as the backend answers them, with how many digits the year's number has (the server's setting, not the operator's). */
+export interface InvoiceSettingsAnswer extends InvoiceSettings {
+  sequenceDigits: number;
+}
+
+/** One side of an invoice (the operator selling, the customer billed) as it was when the invoice was issued. */
+export interface InvoiceParty {
+  name: string;
+  address: string | null;
+  taxNumber: string | null;
+  email: string | null;
+}
+
+/** An invoice in a list: one per payment credited to a wallet. Amounts are exact decimals in its currency, tax included. */
+export interface InvoiceSummary {
+  id: string;
+  number: string;
+  issuedAt: string;
+  currency: string;
+  /** The amount paid, tax included. */
+  amount: string;
+  /** What has been refunded of the payment since (the invoice itself never changes); null: nothing. */
+  refunded: string | null;
+}
+
+/** An invoice as its printable page shows it: `net` + `tax.amount` = `amount`; no tax: `net` is the amount. */
+export interface Invoice extends InvoiceSummary {
+  description: string;
+  net: string;
+  tax: { name: string; rate: string; amount: string } | null;
+  seller: InvoiceParty;
+  buyer: InvoiceParty;
+  /** The way to pay it was paid with. */
+  paidWith: string | null;
+}
+
+/** An invoice as staff read it, with the customer it is for. */
+export interface AdminInvoice extends Invoice {
+  customerId: string;
+}
+
+/** A page of an account's invoices, newest first. */
+export interface InvoicePage {
+  invoices: InvoiceSummary[];
+  page: number;
+  perPage: number;
+  total: number;
+}
+
+/** Console → Invoices: a page of the account's invoices, its billing details, and whether this member may change them. */
+export interface AccountInvoices extends InvoicePage {
+  billingDetails: BillingDetails;
+  canEdit: boolean;
+}
+
+/** Admin → a customer → a page of its invoices and its billing details. */
+export interface CustomerInvoiceList extends InvoicePage {
+  billingDetails: BillingDetails;
+}
+
 export interface PriceListRow {
   id: string;
   name: string;
@@ -1824,9 +2315,242 @@ export interface PhoneNumber {
   nextRenewalAt: string | null;
   /** Released; listed until the voice platform has it back. */
   releasing: boolean;
+  /** Calls to it follow the account's call routing rules (setNumberRouting). */
+  routed: boolean;
+  /** Its agent's calls come from it when they name no number (setNumberCallerId). */
+  agentCallerId: boolean;
+  /** What a call to it does while no agent answers it (setNumberUnanswered). */
+  unanswered: Unanswered;
   syncState: "pending" | "synced" | "failed";
   syncError: string | null;
   createdAt: string;
+}
+
+/**
+ * What a call to a number does while no agent answers it: `message`, the caller hears that no one is available, then the call ends (the call
+ * is answered); `busy`, a busy line; `unavailable`, the line is unavailable. Neither of the last two answers the call.
+ */
+export type Unanswered = "message" | "busy" | "unavailable";
+
+/** A number the voice platform gave up for the account that can still be got back (contract LostNumber); never one the account released. */
+export interface LostNumber {
+  /** The released number (getLostNumberBack). */
+  id: string;
+  /** E.164, with its +. */
+  number: string;
+  releasedAt: string | null;
+  /** It can be got back until then. */
+  until: string | null;
+  /** When the account asked for it back, while it is being got back by hand. */
+  askedAt: string | null;
+  /** `unpaid`: given up when its rent was not paid; `other`: for another reason of the platform's. */
+  reason: "unpaid" | "other";
+  /** The agent that answered it then (null when none, or since deleted). */
+  agent: { id: string; name: string } | null;
+  /** It was that agent's caller id. */
+  wasCallerId: boolean;
+  /** Getting it back costs its setup and a month's rent on the account's plan (null while charging is off, or when the plan cannot price it). */
+  setupPrice: Price | null;
+  monthlyPrice: Price | null;
+}
+
+/** What getting a lost number back did: back at once as a new number set up as the old one, or being got back by hand until `until`. */
+export type GetBackOutcome = { outcome: "restored"; number: PhoneNumber } | { outcome: "requested"; until: string | null };
+
+/** One number's next rent (NumberRenewals `numbers`). */
+export interface NumberRenewal {
+  id: string;
+  number: string;
+  renewsAt: string;
+  /** Null while charging is off, or when the plan cannot price it. */
+  rent: Price | null;
+  /** `short`: the balance does not cover it once every renewal before it is charged too; `soon`: it renews within `soonDays`. */
+  status: "ok" | "soon" | "short";
+  /** With `short`: the running shortfall up to this renewal — what to add to cover it and every one before it. */
+  shortBy: Price | null;
+}
+
+/** Whether the balance covers each number's next rent, in renewal order (contract NumberRenewals). Rent, balance and `short` only while `charging`. */
+export interface NumberRenewals {
+  charging: boolean;
+  balance: Price | null;
+  soonDays: number;
+  numbers: NumberRenewal[];
+}
+
+/**
+ * What a call routing rule matches (a list left empty: any call) and what it does (contract RoutingRuleInput). Days are ISO (1 = Monday); hours
+ * run from `from` until `until` (not included), past midnight when `until` comes first. Days or hours need a timezone. A rule that refuses keeps
+ * no agent, language, greeting or cap.
+ */
+export interface RoutingRuleInput {
+  name?: string;
+  enabled?: boolean;
+  numberIds?: string[];
+  /** Lines that forwarded the call, E.164. */
+  forwardedFrom?: string[];
+  /** How the caller's number starts: + and digits (+44), or a whole number. */
+  callerStartsWith?: string[];
+  days?: number[];
+  from?: string | null;
+  until?: string | null;
+  /** An IANA timezone. */
+  timezone?: string | null;
+  action?: "answer" | "refuse";
+  /** One of the account's saved agents; null: the number's own. */
+  agentId?: string | null;
+  /** A language code (en-US, hi-IN) for the call. */
+  language?: string | null;
+  /** The agent's first line on the call. */
+  greeting?: string | null;
+  /** The call's longest, when shorter than the agent's own. */
+  maxMinutes?: number | null;
+}
+
+/** A call routing rule as saved (contract RoutingRule). */
+export interface RoutingRule {
+  id: string;
+  name: string;
+  enabled: boolean;
+  numberIds: string[];
+  forwardedFrom: string[];
+  callerStartsWith: string[];
+  days: number[];
+  from: string | null;
+  until: string | null;
+  timezone: string | null;
+  action: "answer" | "refuse";
+  /** The agent that takes the call; null: the number's own. */
+  agent: { id: string; name: string } | null;
+  /** Its agent was deleted: the number's own takes the call. */
+  agentGone: boolean;
+  language: string | null;
+  greeting: string | null;
+  maxMinutes: number | null;
+}
+
+/** Why the voice platform had no answer from this server (contract RoutingProblem), in the kit's words, never the platform's. */
+export type RoutingProblem = "off" | "not_connected" | "slow" | "refused" | "unreachable" | "bad_answer" | "address" | "other" | null;
+
+/** One of the account's numbers that can take calls, as call routing shows it. */
+export interface RoutingNumber {
+  id: string;
+  number: string;
+  agent: { id: string; name: string } | null;
+  routed: boolean;
+  syncState: "pending" | "synced" | "failed";
+  syncError: string | null;
+}
+
+/** Whether the voice platform asks this server about calls to the account's routed numbers. */
+export interface RoutingConnection {
+  /** `elsewhere`: it asks another address; `unknown`: the platform was not reached just now. */
+  state: "connected" | "off" | "elsewhere" | "not_connected" | "unknown";
+  lastAnsweredAt: string | null;
+  problem: RoutingProblem;
+  problemAt: string | null;
+}
+
+/** The backend's limits on call routing rules. */
+export interface RoutingLimits {
+  rulesMax: number;
+  /** The most numbers, forwarded-from lines or caller starts one rule may list (each). */
+  numbersPerRule: number;
+  nameMaxLength: number;
+  greetingMaxLength: number;
+  languageMaxLength: number;
+  maxMinutes: number;
+}
+
+/** Console → Call routing (getRouting). */
+export interface RoutingPage {
+  /** In the order they are tried. */
+  rules: RoutingRule[];
+  numbers: RoutingNumber[];
+  /** Null until a number was first routed. */
+  connection: RoutingConnection | null;
+  /** Whether this member may change call routing (the account's managers). */
+  canManage: boolean;
+  limits: RoutingLimits;
+}
+
+/** A pretend call to try against the rules as saved (tryRouting); `at` an ISO date-time, now when left out. */
+export interface RoutingTryInput {
+  numberId: string;
+  callerNumber?: string | null;
+  forwardedFrom?: string | null;
+  at?: string | null;
+}
+
+/** What would happen to a pretend call (tryRouting). */
+export interface RoutingTry {
+  /** The rule that takes it; null: none does, the number's own agent answers. */
+  rule: { id: string; name: string } | null;
+  outcome: "answer" | "refuse" | "own_agent";
+  /** Who takes the call (none for a refusal). */
+  agent: { id: string; name: string } | null;
+  language: string | null;
+  greeting: string | null;
+  maxMinutes: number | null;
+  /** Whether calls to the number follow the rules yet. */
+  routed: boolean;
+}
+
+/** The voice platform's own test of a routed number, through this server (checkRouting). */
+export interface RoutingCheck {
+  answered: boolean;
+  elapsedMs: number;
+  action: "answer" | "refuse" | null;
+  problem: RoutingProblem;
+}
+
+/** A ready-made agent the operator offers every account (Admin → Starter agents; listStarterAgents). */
+export interface StarterAgent {
+  id: string;
+  name: string;
+  description: string | null;
+  offered: boolean;
+  /** How many call steps it carries. */
+  steps: number;
+  /** The agent and account it was made from, as they were named then. */
+  from: { agent: string | null; account: string | null };
+  publishedBy: string | null;
+  publishedAt: string;
+}
+
+/** An account the signed-in staff member owns, with its agents: what a starter may be published from. */
+export interface StarterSource {
+  id: string;
+  name: string;
+  agents: { id: string; name: string }[];
+}
+
+export interface StarterAgentList {
+  starters: StarterAgent[];
+  sources: StarterSource[];
+}
+
+export type StarterTextWhere = "description" | "prompt" | "setting" | "analysis" | "step" | "exit";
+
+export type StarterLeftOutKind = "ownVoice" | "tools" | "lookups" | "handoff" | "transfer" | "emailAfterCall" | "knowledge" | "webhooks" | "steps";
+
+/**
+ * What a starter made from an agent would carry (previewStarterAgent): every piece of its free text in full, where it is
+ * (`key`: a setting's or analysis field's key, a step's `name` / `instructions` / `line`, an exit's `label` / `when`),
+ * and what of the agent it leaves out (`steps`: the tool, hand-over and transfer steps made endings).
+ */
+export interface StarterAgentPreview {
+  agent: { id: string; name: string; account: string };
+  texts: { where: StarterTextWhere; key: string | null; of: string | null; text: string }[];
+  leftOut: { kind: StarterLeftOutKind; count: number; names: string[] }[];
+  steps: number;
+}
+
+/** A starter as a customer's account is offered it (listOfferedStarterAgents). */
+export interface OfferedStarter {
+  id: string;
+  name: string;
+  description: string | null;
 }
 
 export class KitApiError extends Error {
@@ -1976,6 +2700,9 @@ export const kitApi = {
   removeTeamMember: (userId: number) => call<void>("DELETE", `/api/kit/console/team/members/${userId}`),
   agents: (page = 1) => call<AgentPage>("GET", `/api/kit/console/agents?page=${page}`),
   createAgent: (input: AgentInput & { name: string }) => call<Agent>("POST", "/api/kit/console/agents", input),
+  offeredStarterAgents: () => call<{ starters: OfferedStarter[] }>("GET", "/api/kit/console/starters"),
+  createAgentFromStarter: (starterId: string) =>
+    call<{ agent: Agent; toRedo: AgentCopyToDo[] }>("POST", `/api/kit/console/starters/${encodeURIComponent(starterId)}/agents`),
   agent: (id: string) => call<Agent>("GET", `/api/kit/console/agents/${encodeURIComponent(id)}`),
   agentSettingsForm: () => call<AgentSettingsForm>("GET", "/api/kit/console/agents/settings-form"),
   agentFlow: (id: string) => call<AgentFlowState>("GET", `/api/kit/console/agents/${encodeURIComponent(id)}/flow`),
@@ -1994,11 +2721,23 @@ export const kitApi = {
   testAgentWebhook: (id: string, webhookId: string, event: string) => call<{ deliveries: AgentWebhookDelivery[] }>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/webhooks/${encodeURIComponent(webhookId)}/test`, { event }),
   agentWebhookDeliveries: (id: string, webhookId: string) => call<{ deliveries: AgentWebhookDelivery[] }>("GET", `/api/kit/console/agents/${encodeURIComponent(id)}/webhooks/${encodeURIComponent(webhookId)}/deliveries`),
   replayAgentWebhookDelivery: (id: string, webhookId: string, deliveryId: string) => call<{ deliveries: AgentWebhookDelivery[] }>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/webhooks/${encodeURIComponent(webhookId)}/deliveries/${encodeURIComponent(deliveryId)}/replay`, {}),
+  agentWebChat: (id: string) => call<WebChat>("GET", `/api/kit/console/agents/${encodeURIComponent(id)}/web-chat`),
+  updateAgentWebChat: (id: string, input: WebChatInput) => call<WebChat>("PUT", `/api/kit/console/agents/${encodeURIComponent(id)}/web-chat`, input),
   updateAgent: (id: string, input: AgentInput) => call<Agent>("PATCH", `/api/kit/console/agents/${encodeURIComponent(id)}`, input),
   deleteAgent: (id: string) => call<void>("DELETE", `/api/kit/console/agents/${encodeURIComponent(id)}`),
   retryAgent: (id: string) => call<Agent>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/retry`, {}),
+  duplicateAgent: (id: string) => call<{ agent: Agent; toRedo: AgentCopyToDo[] }>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/duplicate`),
   startTestCall: (id: string) => call<{ session: TestSession }>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/test-call`, {}),
   agentCallForm: (id: string) => call<AgentCallForm>("GET", `/api/kit/console/agents/${encodeURIComponent(id)}/call-form`),
+  checkPrompt: (id: string, input: PromptCheckInput) => call<PromptCheck>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/prompt-check`, input),
+  checkNewPrompt: (input: PromptCheckInput) => call<PromptCheck>("POST", "/api/kit/console/agents/prompt-check", input),
+  setAgentLogo: (id: string, file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return send<Agent>(`/api/kit/console/agents/${encodeURIComponent(id)}/logo`, form);
+  },
+  removeAgentLogo: (id: string) => call<Agent>("DELETE", `/api/kit/console/agents/${encodeURIComponent(id)}/logo`),
+  callHealth: (minutes?: number) => call<CallHealth>("GET", `/api/kit/console/call-health${query({ minutes: minutes === undefined ? undefined : String(minutes) })}`),
   placeAgentCall: (id: string, input: AgentCallInput) => call<{ callId: string }>("POST", `/api/kit/console/agents/${encodeURIComponent(id)}/calls`, input),
   wallet: (page = 1) => call<Wallet>("GET", `/api/kit/console/wallet?page=${page}`),
   setWalletAlert: (lowBalanceAt: string | null) => call<Wallet>("PUT", "/api/kit/console/wallet/alert", { lowBalanceAt }),
@@ -2006,6 +2745,11 @@ export const kitApi = {
   startTopUp: (gatewayId: string, amount: string, payer?: PayerDetails) =>
     call<{ payment: ConsolePayment; checkout: Checkout }>("POST", "/api/kit/console/payments", { gatewayId, amount, ...(payer ? { payer } : {}) }),
   payment: (id: string) => call<ConsolePayment>("GET", `/api/kit/console/payments/${encodeURIComponent(id)}`),
+  accountInvoices: (page = 1) => call<AccountInvoices>("GET", `/api/kit/console/invoices${query({ page: page > 1 ? String(page) : undefined })}`),
+  accountInvoice: (id: string) => call<Invoice>("GET", `/api/kit/console/invoices/${encodeURIComponent(id)}`),
+  billingDetails: () => call<AccountBillingDetails>("GET", "/api/kit/console/billing-details"),
+  setBillingDetails: (d: BillingDetails) =>
+    call<AccountBillingDetails>("PUT", "/api/kit/console/billing-details", { name: d.name, address: d.address, taxNumber: d.taxNumber }),
   dnc: (page = 1, search = "") =>
     call<DncPage>("GET", `/api/kit/console/dnc?${new URLSearchParams({ page: String(page), ...(search ? { search } : {}) })}`),
   addDnc: (phoneNumber: string, reason: string | null) => call<DncEntry>("POST", "/api/kit/console/dnc", { phoneNumber, reason }),
@@ -2015,6 +2759,15 @@ export const kitApi = {
   saveCatalogCuration: (body: CurationInput) => call<CatalogCuration>("PUT", "/api/kit/admin/catalog", body),
   refreshCatalog: () => call<CatalogCuration>("POST", "/api/kit/admin/catalog/refresh", {}),
   catalogVoices: (f: VoiceFilters = {}) => call<VoicePage>("GET", `/api/kit/admin/catalog/voices?${voiceQuery(f)}`),
+  openModels: (search = "", page = 1) =>
+    call<OpenModelPage>("GET", `/api/kit/admin/catalog/open-models${query({ search, page: page > 1 ? String(page) : undefined })}`),
+  openModelPrice: (model: string) => call<OpenModelPrice>("GET", `/api/kit/admin/catalog/open-models/price${query({ model })}`),
+  starterAgents: () => call<StarterAgentList>("GET", "/api/kit/admin/starters"),
+  previewStarterAgent: (agentId: string) => call<StarterAgentPreview>("GET", `/api/kit/admin/starters/preview${query({ agentId })}`),
+  publishStarterAgent: (input: { agentId: string; name: string; description: string | null; reviewed: true }) =>
+    call<StarterAgent>("POST", "/api/kit/admin/starters", input),
+  updateStarterAgent: (starterId: string, input: { name?: string; description?: string | null; offered?: boolean }) =>
+    call<StarterAgent>("PATCH", `/api/kit/admin/starters/${encodeURIComponent(starterId)}`, input),
   emailSettings: () => call<EmailSettings>("GET", "/api/kit/admin/email"),
   saveEmailSite: (body: { siteUrl: string; fromAddress: string; fromName: string | null }) => call<EmailSettings>("PUT", "/api/kit/admin/email", body),
   addEmailSender: (driver: string, fields: Record<string, string>) => call<EmailSettings>("POST", "/api/kit/admin/email/senders", { ...fields, driver }),
@@ -2033,8 +2786,19 @@ export const kitApi = {
   saveCaptchaSettings: (body: { provider: string | null; siteKey: string | null; secret: string; forms: string[] }) =>
     call<CaptchaSettings>("PUT", "/api/kit/admin/captcha", body),
   dashboard: (from?: string, to?: string) => call<AdminDashboard>("GET", `/api/kit/admin/dashboard${query({ from, to })}`),
-  costReport: (by: string, from?: string, to?: string, page = 1) =>
-    call<CostReport>("GET", `/api/kit/admin/costs${query({ by, from, to, page: page > 1 ? String(page) : undefined })}`),
+  costReport: (by: string, from?: string, to?: string, page = 1, customer?: string) =>
+    call<CostReport>("GET", `/api/kit/admin/costs${query({ by, from, to, page: page > 1 ? String(page) : undefined, customer })}`),
+  platformBilling: () => call<PlatformBilling>("GET", "/api/kit/admin/platform-billing"),
+  setPlatformBalanceAlert: (thresholdUsd: string | null) =>
+    call<PlatformBillingState>("PUT", "/api/kit/admin/platform-billing/alert", { thresholdUsd }),
+  invoiceSettings: () => call<InvoiceSettingsAnswer>("GET", "/api/kit/admin/invoice-settings"),
+  setInvoiceSettings: (s: InvoiceSettings) =>
+    call<InvoiceSettingsAnswer>("PUT", "/api/kit/admin/invoice-settings", {
+      prefix: s.prefix, name: s.name, address: s.address, taxNumber: s.taxNumber, email: s.email, taxName: s.taxName, taxRate: s.taxRate,
+    }),
+  customerInvoices: (id: string, page = 1) =>
+    call<CustomerInvoiceList>("GET", `/api/kit/admin/customers/${encodeURIComponent(id)}/invoices${query({ page: page > 1 ? String(page) : undefined })}`),
+  customerInvoice: (id: string) => call<AdminInvoice>("GET", `/api/kit/admin/invoices/${encodeURIComponent(id)}`),
   setCustomerLimits: (id: string, body: { maxConcurrentCalls: number | null; monthlyCapUsd: string | null }) =>
     call<Customer>("PUT", `/api/kit/admin/customers/${encodeURIComponent(id)}/limits`, body),
   closeCustomer: (id: string, confirm: string) => call<Customer>("POST", `/api/kit/admin/customers/${encodeURIComponent(id)}/close`, { confirm }),
@@ -2053,6 +2817,12 @@ export const kitApi = {
   retryVoicePlatformWrite: (id: number) => call<VoicePlatformHealth>("POST", `/api/kit/admin/telenow/writes/${id}/retry`, {}),
   retryVoicePlatformEvent: (id: number) => call<VoicePlatformHealth>("POST", `/api/kit/admin/telenow/events/${id}/retry`, {}),
   reconcileCustomer: (customerId: string) => call<VoicePlatformHealth>("POST", `/api/kit/admin/telenow/reconcile/${encodeURIComponent(customerId)}`, {}),
+  platformProcessingCountry: (fresh = false) =>
+    call<ProcessingCountry>("GET", `/api/kit/admin/telenow/processing-country${query({ fresh: fresh ? "1" : undefined })}`),
+  customerProcessingCountry: (id: string, fresh = false) =>
+    call<ProcessingCountry>("GET", `/api/kit/admin/customers/${encodeURIComponent(id)}/processing-country${query({ fresh: fresh ? "1" : undefined })}`),
+  customerCallHealth: (id: string, minutes?: number) =>
+    call<CallHealth>("GET", `/api/kit/admin/customers/${encodeURIComponent(id)}/call-health${query({ minutes: minutes === undefined ? undefined : String(minutes) })}`),
   websiteSettings: () => call<WebsiteSettings>("GET", "/api/kit/admin/website"),
   saveWebsiteSettings: (content: WebsiteContent) => call<WebsiteSettings>("PUT", "/api/kit/admin/website", content),
   ssoSettings: () => call<SsoSettings>("GET", "/api/kit/admin/sso"),
@@ -2115,6 +2885,9 @@ export const kitApi = {
   campaignProgress: (id: string) => call<CampaignProgress>("GET", `/api/kit/console/campaigns/${encodeURIComponent(id)}/progress`),
   addCampaignTargets: (id: string, csv: string) =>
     call<{ added: number; skipped: number; noCountryCode: number }>("POST", `/api/kit/console/campaigns/${encodeURIComponent(id)}/targets`, { csv }),
+  setCampaignSource: (id: string, url: string) =>
+    call<{ added: CampaignLinkRead; campaign: Campaign }>("PUT", `/api/kit/console/campaigns/${encodeURIComponent(id)}/source`, { url }),
+  removeCampaignSource: (id: string) => call<void>("DELETE", `/api/kit/console/campaigns/${encodeURIComponent(id)}/source`),
   startCampaign: (id: string) => call<Campaign>("POST", `/api/kit/console/campaigns/${encodeURIComponent(id)}/start`, {}),
   pauseCampaign: (id: string) => call<Campaign>("POST", `/api/kit/console/campaigns/${encodeURIComponent(id)}/pause`, {}),
   cancelCampaign: (id: string) => call<Campaign>("POST", `/api/kit/console/campaigns/${encodeURIComponent(id)}/cancel`, {}),
@@ -2144,6 +2917,10 @@ export const kitApi = {
     call<KnowledgeDocument>("POST", `/api/kit/console/knowledge/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}/retry`, {}),
   deleteKnowledgeDocument: (id: string, documentId: string) =>
     call<void>("DELETE", `/api/kit/console/knowledge/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}`),
+  knowledgeTable: (id: string, documentId: string, page: { offset: number; limit: number }) =>
+    call<KnowledgeTable>("GET", `/api/kit/console/knowledge/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}/table${query({ offset: String(page.offset), limit: String(page.limit) })}`),
+  setKnowledgeColumnTypes: (id: string, documentId: string, types: Record<string, KnowledgeColumnType>) =>
+    call<{ columns: KnowledgeTableColumn[] }>("PATCH", `/api/kit/console/knowledge/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}/table`, { types }),
   setAgentKnowledge: (agentId: string, knowledgeBaseIds: string[]) =>
     call<{ knowledgeBases: KnowledgeBaseRef[]; syncState: Agent["syncState"]; syncError: string | null }>(
       "PUT", `/api/kit/console/agents/${encodeURIComponent(agentId)}/knowledge`, { knowledgeBaseIds }),
@@ -2153,11 +2930,34 @@ export const kitApi = {
   buyNumber: (number: string, country: string) => call<PhoneNumber>("POST", "/api/kit/console/numbers", { number, country }),
   setNumberAgent: (id: string, agentId: string | null) => call<PhoneNumber>("PUT", `/api/kit/console/numbers/${encodeURIComponent(id)}/agent`, { agentId }),
   releaseNumber: (id: string) => call<void>("DELETE", `/api/kit/console/numbers/${encodeURIComponent(id)}`),
+  setNumberRouting: (id: string, routed: boolean) => call<PhoneNumber>("PUT", `/api/kit/console/numbers/${encodeURIComponent(id)}/routing`, { routed }),
+  setNumberCallerId: (id: string, agentCallerId: boolean) =>
+    call<PhoneNumber>("PUT", `/api/kit/console/numbers/${encodeURIComponent(id)}/caller-id`, { agentCallerId }),
+  setNumberUnanswered: (id: string, unanswered: Unanswered) =>
+    call<PhoneNumber>("PUT", `/api/kit/console/numbers/${encodeURIComponent(id)}/unanswered`, { unanswered }),
+  lostNumbers: () => call<{ numbers: LostNumber[] }>("GET", "/api/kit/console/numbers/lost"),
+  getNumberBack: (id: string) => call<GetBackOutcome>("POST", `/api/kit/console/numbers/${encodeURIComponent(id)}/get-back`),
+  numberRenewals: () => call<NumberRenewals>("GET", "/api/kit/console/numbers/renewals"),
+  routing: () => call<RoutingPage>("GET", "/api/kit/console/routing"),
+  createRoutingRule: (input: RoutingRuleInput & { name: string; action: "answer" | "refuse" }) =>
+    call<RoutingRule>("POST", "/api/kit/console/routing/rules", input),
+  updateRoutingRule: (id: string, input: RoutingRuleInput) => call<RoutingRule>("PATCH", `/api/kit/console/routing/rules/${encodeURIComponent(id)}`, input),
+  deleteRoutingRule: (id: string) => call<void>("DELETE", `/api/kit/console/routing/rules/${encodeURIComponent(id)}`),
+  orderRoutingRules: (ids: string[]) => call<{ rules: RoutingRule[] }>("PUT", "/api/kit/console/routing/order", { ids }),
+  tryRouting: (input: RoutingTryInput) => call<RoutingTry>("POST", "/api/kit/console/routing/try", input),
+  checkRouting: (numberId: string) => call<RoutingCheck>("POST", "/api/kit/console/routing/check", { numberId }),
   calls: (page = 1, filter: CallFilter = {}) =>
-    call<CallPage>("GET", `/api/kit/console/calls${query({ page: String(page), agentId: filter.agentId, number: filter.number, placedBy: filter.placedBy })}`),
+    call<CallPage>("GET", `/api/kit/console/calls${query({ page: String(page), agentId: filter.agentId, number: filter.number, placedBy: filter.placedBy,
+      from: filter.from, to: filter.to, timeZone: filter.timeZone, outcome: filter.outcome, channel: filter.channel })}`),
+  insights: (q: InsightsQuery = {}) =>
+    call<Insights>("GET", `/api/kit/console/insights${query({ from: q.from, to: q.to, timeZone: q.timeZone, agentId: q.agentId })}`),
+  callerMemory: () => call<CallerMemory>("GET", "/api/kit/console/memory"),
+  forgetCaller: (caller: string) => call<{ removed: boolean }>("DELETE", `/api/kit/console/memory?${new URLSearchParams({ caller }).toString()}`),
   call: (id: string) => call<CallDetail>("GET", `/api/kit/console/calls/${encodeURIComponent(id)}`),
   liveCalls: () => call<LiveCalls>("GET", "/api/kit/console/calls/live"),
   listenToLiveCall: (id: string) => call<{ wsUrl: string }>("POST", `/api/kit/console/calls/${encodeURIComponent(id)}/listen`, {}),
+  tellAgent: (id: string, note: { text: string; sayNow: boolean }) =>
+    call<{ note: AgentNote }>("POST", `/api/kit/console/calls/${encodeURIComponent(id)}/agent-notes`, { text: note.text, sayNow: note.sayNow }),
   callWork: (id: string) => call<CallWork>("GET", `/api/kit/console/calls/${encodeURIComponent(id)}/work`),
   addCallNote: (id: string, body: string) => call<CallWork>("POST", `/api/kit/console/calls/${encodeURIComponent(id)}/notes`, { body }),
   setCallWrapup: (id: string, wrapup: string | null) => call<CallWork>("PUT", `/api/kit/console/calls/${encodeURIComponent(id)}/wrapup`, { wrapup }),
@@ -2180,6 +2980,22 @@ export function ssoStartUrl(providerId: string): string {
 /** Where a campaign's people, or one group of them, download from as a CSV file. */
 export function campaignExportUrl(id: string, show?: CampaignPeopleGroup): string {
   return `/api/kit/console/campaigns/${encodeURIComponent(id)}/targets/export${query({ show })}`;
+}
+
+/** Where the calls a filter picks download from as a CSV file (exportCalls), started times in `timeZone`; a link, with the session cookie. */
+export function callsExportUrl(filter: Omit<CallFilter, "placedBy"> = {}): string {
+  return `/api/kit/console/calls/export${query({ agentId: filter.agentId, number: filter.number, from: filter.from, to: filter.to,
+    timeZone: filter.timeZone, outcome: filter.outcome, channel: filter.channel })}`;
+}
+
+/** Where the account's do-not-call list downloads from as a CSV file (exportDnc). */
+export function dncExportUrl(): string {
+  return "/api/kit/console/dnc/export";
+}
+
+/** Where the account's consent records, withdrawn ones too, download from as a CSV file (exportConsent). */
+export function consentExportUrl(): string {
+  return "/api/kit/console/consent/export";
 }
 
 /** Where a call's recording plays from (getCallRecording): an `<audio>` element loads it, with the session cookie. */

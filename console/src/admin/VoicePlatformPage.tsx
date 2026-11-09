@@ -4,6 +4,9 @@
  * about it.
  * - Scheduled jobs first, loudly, when they do not run: without the one cron line nothing is charged, synced or sent.
  * - The key: connected, rejected, last checked.
+ * - The operator's account's processing country (ProcessingCountry.tsx): read on its own, so its failure never blocks
+ *   the rest of the page.
+ * - Call health (PlatformCallHealth.tsx): the providers that failed on customers' recent calls, at the last sweep.
  * - Events from the voice platform: the endpoint, the last one received, how many wait or failed; a failed one can be
  *   tried again.
  * - Changes sent to the voice platform: how many wait, the ones it refused, each with its reason and "Try again".
@@ -18,6 +21,8 @@ import { Link } from "react-router-dom";
 import { kitApi, type VoicePlatformHealth } from "../api";
 import { t } from "../text";
 import { money, rounded } from "../wallet/money";
+import { PlatformCallHealth } from "./PlatformCallHealth";
+import { PlatformProcessingCountry } from "./ProcessingCountry";
 
 /** Dollar figures from the voice platform, to the cent. */
 const CENTS = 2;
@@ -67,6 +72,10 @@ export function VoicePlatformPage() {
               </>
             )}
           </section>
+
+          <PlatformProcessingCountry />
+
+          <PlatformCallHealth summary={health.callHealth} />
 
           <section aria-labelledby="platform-events">
             <h2 id="platform-events">{t("platformEvents")}</h2>

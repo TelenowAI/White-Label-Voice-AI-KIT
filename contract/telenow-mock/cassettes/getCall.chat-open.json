@@ -1,0 +1,171 @@
+{
+  "operationId": "getCall",
+  "recorded": "2026-11-07, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key, a stand-in language model behind telenow_onprem (llm_stub_k15.py), speech providers with placeholder keys, and every other outbound HTTP request sent to a dead local proxy (contract_k15chat.py); left out, as Telenow's released document does not declare it yet: `conversationParts`",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/2f363f7a-c2b0-5d37-9cbd-2b881410b27c/calls/cd59dbbd-b19e-5940-8eb3-b1fa23d56392",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "agent_audible_count": null,
+        "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+        "agent_name": "Website helper",
+        "answered_by": null,
+        "artifacts": {
+          "analysis": false,
+          "cost": false,
+          "latency": false,
+          "recording": false,
+          "trace": false
+        },
+        "audio_gap_count": null,
+        "call_mode": "agent",
+        "call_sid": null,
+        "caller_memory": null,
+        "channel": "chat",
+        "charge_usd": null,
+        "completeness": {
+          "analysis": "not_applicable",
+          "metrics": "pending",
+          "recording": "pending",
+          "transcript": "present"
+        },
+        "content_purged_at": null,
+        "created_at": "2026-11-07T20:11:54.607089Z",
+        "direction": "web",
+        "disposition": null,
+        "duration_sec": null,
+        "end_time": null,
+        "flow_ms_avg": null,
+        "from_number": null,
+        "id": "cd59dbbd-b19e-5940-8eb3-b1fa23d56392",
+        "initiated_by": null,
+        "initiated_by_api_key": null,
+        "initiated_by_email": null,
+        "initiated_by_name": null,
+        "initiated_via": null,
+        "lead": null,
+        "llm_cached_tokens": 0,
+        "llm_completion_tokens": 54,
+        "llm_ms_avg": null,
+        "llm_prompt_tokens": 380,
+        "llm_total_tokens": 434,
+        "net_rtt_ms_avg": null,
+        "objectives_state": null,
+        "org_id": "2f363f7a-c2b0-5d37-9cbd-2b881410b27c",
+        "participants": {
+          "30c9c22e-088e-5fcd-9ed7-f6e2ad235492": "Website helper"
+        },
+        "phone_number": null,
+        "post_call": [],
+        "recording_id": null,
+        "recordings": [],
+        "resp_ms_avg": null,
+        "resp_ms_max": null,
+        "resp_samples": null,
+        "source": "chat_api",
+        "stack": [],
+        "start_time": "2026-11-07T20:11:54.607089Z",
+        "status": "active",
+        "stt_ms_avg": null,
+        "to_number": null,
+        "transcript": [
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.615834Z",
+            "role": "user",
+            "text": "Hello, are you open on Saturday?"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.635542Z",
+            "role": "assistant",
+            "text": "Thanks for your message. You said: Hello, are you open on Saturday?"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.650318Z",
+            "role": "user",
+            "text": "Thanks, and on Sunday?"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.665564Z",
+            "role": "assistant",
+            "text": "Thanks for your message. You said: Thanks, and on Sunday?"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.688652Z",
+            "role": "user",
+            "text": "One more"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.703804Z",
+            "role": "assistant",
+            "text": "Thanks for your message. You said: One more"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.714853Z",
+            "role": "user",
+            "text": "Please fail this one"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.727660Z",
+            "role": "assistant",
+            "text": "I'm sorry, I ran into an issue. Could you try again?"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:54.740022Z",
+            "role": "user",
+            "text": "Please answer slowly"
+          },
+          {
+            "agent_id": "30c9c22e-088e-5fcd-9ed7-f6e2ad235492",
+            "at": "2026-11-07T20:11:58.758449Z",
+            "role": "assistant",
+            "text": "Thanks for your message. You said: Please answer slowly"
+          }
+        ],
+        "tts_ms_avg": null,
+        "turn_hold_ms_avg": null,
+        "updated_at": "2026-11-07T20:11:54.607089Z",
+        "user_id": "6f9f2963-3265-5655-89bb-ddfbc4c14e05",
+        "variables": {
+          "current_date": "2026-11-08",
+          "current_datetime": "Sunday, 08 November 2026, 01:41 AM",
+          "current_ist_datetime": "Sunday, 08 November 2026, 01:41 AM",
+          "current_ist_weekday": "Sunday",
+          "current_time": "01:41 AM",
+          "current_timezone": "Asia/Kolkata",
+          "current_utc_offset": "+05:30",
+          "current_weekday": "Sunday",
+          "day_after_tomorrow_date": "Tuesday, 10 November 2026",
+          "today_date": "Sunday, 08 November 2026",
+          "tomorrow_date": "Monday, 09 November 2026"
+        },
+        "voiceStackIncidents": [
+          {
+            "attribution": "provider_outage",
+            "component": "llm",
+            "createdAt": "2026-11-07T20:11:54.728119Z",
+            "error": "openai HTTP 500 Internal Server Error: {\"error\": {\"message\": \"stand-in failure\", \"type\": \"server_error\"}}",
+            "keySource": "platform",
+            "provider": "telenow_onprem"
+          }
+        ],
+        "wrapup_disposition": null
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

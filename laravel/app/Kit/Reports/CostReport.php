@@ -11,7 +11,8 @@ use Illuminate\Validation\Rule;
 /**
  * Admin → Cost vs price (SELF_HOSTED_KIT_PLAN.md §4.6 c): over a Period, the customers' price beside what Telenow
  * charged the operator, and the margin, grouped by customer, by what was charged (a priced line's subject: a call all
- * in, a call's component, a number fee), by plan or by day (config('kit.reports.groups')), with the totals. Read from
+ * in, a call's component, a number fee), by plan or by day (config('kit.reports.groups')), with the totals — of every
+ * customer, or of one (`customer`: their components, say). Read from
  * the daily totals (App\Kit\Wallet\ChargeRollups), a few rows at a time, so the cost of a report is days × customers
  * whatever the number of calls. A call by call view is each customer's wallet (Admin\CustomerWalletController).
  *
@@ -25,7 +26,9 @@ final class CostReport
         $values = Validator::make($input, [
             'by' => ['nullable', Rule::in(config('kit.reports.groups'))],
             'page' => ['nullable', 'integer', 'min:1'],
-        ])->validate();
+            'customer' => ['nullable', 'string', 'uuid', Rule::exists('workspaces', 'id')],
+        ], [], ['customer' => __('reports.fields.customer')])->validate();
+        $customer = isset($values['customer']) ? Workspace::query()->find($values['customer']) : null;
         $by = $values['by'] ?? config('kit.reports.groups')[0];
         $groups = [];
         $totals = [];
@@ -38,10 +41,10 @@ final class CostReport
                 'component' => $row->subject,
             };
             ($groups[$key][$row->currency] ??= new Totals($row->currency))->add($row);
-        });
+        }, $customer?->id);
         $this->read($period, true, function (object $row) use (&$totals) {
             ($totals[$row->currency] ??= new Totals($row->currency))->add($row);
-        });
+        }, $customer?->id);
 
         $rows = [];
         foreach ($groups as $key => $byCurrency) {
@@ -60,6 +63,7 @@ final class CostReport
         return [
             'period' => $period->toArray(),
             'by' => $by,
+            'customer' => $customer === null ? null : ['id' => $customer->id, 'name' => $customer->name],
             'rows' => array_map(fn (array $r) => ['key' => $r['key'], 'label' => $labels[$r['key']]] + array_diff_key($r, ['key' => 1, 'sort' => 1]), $shown),
             'totals' => array_values(array_map(fn (Totals $t) => $t->toArray(), $totals)),
             'page' => $page,
@@ -68,11 +72,12 @@ final class CostReport
         ];
     }
 
-    /** Each daily-total row of the period: the charges as a whole, or their priced lines. */
-    public function read(Period $period, bool $wholes, callable $each): void
+    /** Each daily-total row of the period: the charges as a whole, or their priced lines; one customer's, or every customer's. */
+    public function read(Period $period, bool $wholes, callable $each, ?string $customer = null): void
     {
         DB::table('charge_rollups')
             ->whereBetween('day', [$period->from->toDateString(), $period->to->toDateString()])
+            ->when($customer !== null, fn ($q) => $q->where('workspace_id', $customer))
             ->when($wholes, fn ($q) => $q->where('subject', ''), fn ($q) => $q->where('subject', '!=', ''))
             ->lazyById(config('kit.reports.read_chunk'))
             ->each($each);

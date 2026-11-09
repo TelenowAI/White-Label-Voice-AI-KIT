@@ -1,0 +1,18 @@
+{
+  "operationId": "setNumberInboundAction",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; a number's release for unpaid rent (release_reason, reclaim_deadline_at) and the parent's empty wallet set by SQL on that database (contract_k27numbers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/voice/numbers/c90520dc-eff2-5a2b-8fba-9bbc3bc6eaf8/inbound-action",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "invalid inbound action 'voicemail' (expected one of speak, forward, reject, no-answer)",
+      "success": false
+    }
+  },
+  "serve": false
+}

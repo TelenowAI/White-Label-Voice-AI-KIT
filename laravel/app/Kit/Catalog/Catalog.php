@@ -22,7 +22,8 @@ use Illuminate\Validation\ValidationException;
  *   field Telenow adds later — in settings (`catalog.copy`). `kit:catalog` and Admin → Catalog call it.
  * - The operator's curation (setting `catalog.curation`): which providers customers may pick — none until offered —
  *   and, of an offered language model provider, which models (all until switched off), each under a name of the
- *   operator's or the catalog's. A name that carries the platform's own name (config('kit.telenow.name')) is never
+ *   operator's or the catalog's. The open-model provider (OpenModels::provider(), OpenRouter) also carries the models the
+ *   operator added from its own list (`extraModels`: id => offered, name, and the list's name for it), after the catalog's. A name that carries the platform's own name (config('kit.telenow.name')) is never
  *   offered. The new-agent defaults are the setting `agents.defaults` (by column), which agent creation reads.
  * - What customers see: offered providers under keys of the kit's own (publicKey(): never Telenow's ids), and an agent's
  *   stack checked against them and their voices (stack()), and each offered provider's own settings (App\Kit\Catalog\ProviderSettings), or a voice of the account's own cloned on that provider
@@ -49,6 +50,7 @@ final class Catalog
         private readonly OwnVoiceNames $ownVoices,
         private readonly ProviderSettings $providerSettings,
         private readonly RealtimeCatalog $realtime,
+        private readonly OpenModels $openModels,
     ) {}
 
     /** Copy Telenow's catalog now. */
@@ -148,12 +150,12 @@ final class Catalog
             $mine = $chosen[$p['id']] ?? [];
             $name = $this->ownName($mine['name'] ?? null) ?? $p['name'] ?? $p['id'];
             $models = array_map(function (array $m) use ($mine) {
-                $own = $mine['models'][$m['id']] ?? [];
+                $own = ($m['extra'] ?? false) ? $mine['extraModels'][$m['id']] : $mine['models'][$m['id']] ?? [];
                 $modelName = $this->ownName($own['name'] ?? null) ?? $m['name'] ?? $m['id'];
 
                 return $m + ['displayName' => $modelName, 'offered' => ($own['offered'] ?? true) === true && ($m['enabled'] ?? true) !== false
                     && ! self::namesPlatform($modelName), 'ownName' => $this->ownName($own['name'] ?? null), 'namesPlatform' => self::namesPlatform($modelName)];
-            }, $kind === 'llm' ? ($p['models'] ?? []) : []);
+            }, $kind === 'llm' ? [...($p['models'] ?? []), ...$this->extraModels($p, $mine)] : []);
 
             // The copy's own `settings` are the fields as Telenow has them; what is shown and offered is them with the operator's choices.
             return ['settings' => $this->providerSettings->curated($p['settings'] ?? [], is_array($mine['settings'] ?? null) ? $mine['settings'] : [])] + $p + [
@@ -163,8 +165,26 @@ final class Catalog
                 'namesPlatform' => self::namesPlatform($name),
                 'offered' => ($mine['offered'] ?? false) === true && ($p['enabled'] ?? true) !== false && ! self::namesPlatform($name),
                 'curatedModels' => $models,
+                'openModels' => $kind === 'llm' && $p['id'] === OpenModels::provider(),
             ];
         }, $this->copy()['kinds'][$kind] ?? []);
+    }
+
+    /** @return list<array> the models the operator added to the open-model provider, as the copy's are, marked `extra` (none that the copy has) */
+    private function extraModels(array $p, array $mine): array
+    {
+        if ($p['id'] !== OpenModels::provider()) {
+            return [];
+        }
+        $inCopy = array_column($p['models'] ?? [], 'id');
+        $extra = [];
+        foreach ((array) ($mine['extraModels'] ?? []) as $id => $m) {
+            if (is_array($m) && ! in_array((string) $id, $inCopy, true)) {
+                $extra[] = ['id' => (string) $id, 'name' => $m['listName'] ?? (string) $id, 'extra' => true];
+            }
+        }
+
+        return $extra;
     }
 
     /** @return list<array> the providers of a kind customers may pick */
@@ -333,6 +353,10 @@ final class Catalog
                     }
                     $entry['models'][$modelId] = $own;
                 }
+                // The models added to the open-model provider: those sent are its added models now; none sent, those added before stay.
+                $entry['extraModels'] = array_key_exists('extraModels', $choice)
+                    ? $this->extraChoices($p, $choice['extraModels'], $curation[$kind][$id]['extraModels'] ?? [], $entry['offered'], "kinds.{$kind}.{$id}.extraModels", $errors)
+                    : ($curation[$kind][$id]['extraModels'] ?? []);
                 // A provider's settings sent are its settings now; none sent, those chosen before stay.
                 $entry['settings'] = array_key_exists('settings', $choice)
                     ? $this->providerSettings->choices($p['settings'] ?? [], $choice['settings'], "kinds.{$kind}.{$id}.settings", $errors)
@@ -353,6 +377,65 @@ final class Catalog
             throw $e;
         }
         $this->settings->put(self::DEFAULTS, $columns);
+    }
+
+    /**
+     * The models the operator sends as added to the open-model provider, checked: each a model of OpenRouter's list when added (one added before
+     * stays, under the list's name of then, whether the list can be read now or not), none the catalog has, at most
+     * config('kit.catalog.open_models.models_max'), each name as a model's.
+     *
+     * @return array<string, array{offered: bool, name: ?string, listName: string}>
+     */
+    private function extraChoices(array $p, mixed $sent, array $before, bool $offered, string $at, array &$errors): array
+    {
+        if ($p['id'] !== OpenModels::provider() || ! is_array($sent) || array_is_list($sent) && $sent !== []) {
+            $errors[$at] = [__('catalog.open_models_not_here')];
+
+            return $before;
+        }
+        $max = (int) config('kit.catalog.open_models.models_max');
+        if (count($sent) > $max) {
+            $errors[$at] = [__('catalog.open_models_max', ['max' => $max])];
+
+            return $before;
+        }
+        $inCopy = array_column($p['models'] ?? [], 'id');
+        $nameMax = config('kit.agents.name_max_length');
+        $list = null;
+        $out = [];
+        foreach ($sent as $id => $m) {
+            $id = (string) $id;
+            if (! OpenModels::shaped($id) || ! is_array($m)) {
+                $errors["{$at}.{$id}"] = [__('catalog.open_model_unknown')];
+
+                continue;
+            }
+            if (in_array($id, $inCopy, true)) {
+                $errors["{$at}.{$id}"] = [__('catalog.open_model_in_catalog')];
+
+                continue;
+            }
+            // Added before: kept under OpenRouter's name of then, the list not read. New: it must be in the list, read once for all of them.
+            $listName = is_array($before[$id] ?? null) && is_string($before[$id]['listName'] ?? null) ? $before[$id]['listName'] : null;
+            if ($listName === null) {
+                $list ??= $this->openModels->all() ?? [];
+                $listName = $list[$id] ?? null;
+            }
+            if ($listName === null) {
+                $errors["{$at}.{$id}"] = [$list === [] ? __('catalog.open_models_unread') : __('catalog.open_model_unknown')];
+
+                continue;
+            }
+            $own = ['offered' => (bool) ($m['offered'] ?? true), 'name' => $this->ownName($m['name'] ?? null), 'listName' => $listName];
+            if ($own['name'] !== null && mb_strlen($own['name']) > $nameMax) {
+                $errors["{$at}.{$id}.name"] = [__('catalog.name_max', ['max' => $nameMax])];
+            } elseif ($offered && $own['offered'] && self::namesPlatform($own['name'] ?? $listName)) {
+                $errors["{$at}.{$id}.name"] = [__('catalog.names_platform', ['platform' => config('kit.telenow.name')])];
+            }
+            $out[$id] = $own;
+        }
+
+        return $out;
     }
 
     /** @return array<string, ?string> the defaults by column, each one offered (or none) */

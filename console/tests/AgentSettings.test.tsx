@@ -14,7 +14,7 @@ function agent(settings: Partial<AgentSettings> = {}): Agent {
     stack: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
     settings: { ...agentSettings, ...settings },
     stackNames: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
-    stackCheck: null, knowledgeBases: [], syncState: "synced", syncError: null, createdAt: "2026-11-03T10:00:00Z", updatedAt: "2026-11-03T10:00:00Z",
+    stackCheck: null, knowledgeBases: [], logoUrl: null, syncState: "synced", syncError: null, createdAt: "2026-11-03T10:00:00Z", updatedAt: "2026-11-03T10:00:00Z",
   };
 }
 

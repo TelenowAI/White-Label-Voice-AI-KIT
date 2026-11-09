@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kit\Console;
 use App\Kit\Knowledge\AgentKnowledge;
 use App\Kit\Knowledge\Knowledge;
 use App\Kit\Knowledge\KnowledgeRefused;
+use App\Kit\Knowledge\KnowledgeTables;
 use App\Models\Agent;
 use App\Models\KnowledgeBase;
 use App\Models\KnowledgeDocument;
@@ -17,14 +18,15 @@ use Illuminate\Support\Str;
 /**
  * Console → Knowledge (contract/kit-api.yaml listKnowledgeBases, createKnowledgeBase, getKnowledgeBase,
  * deleteKnowledgeBase, addKnowledgeText, uploadKnowledgeFile, addKnowledgePage, retryKnowledgeDocument,
- * deleteKnowledgeDocument, setAgentKnowledge): the account's knowledge bases, read from the kit's DB, each with how many
- * of its documents are ready, still being read and failed, and the agents that answer from it; a base with its
- * documents (each in the kit's words: saving, being read, ready, or failed and why); making and deleting them; and which
- * bases an agent answers from. Every member may. Never Telenow's ids, its status words or its error text.
+ * deleteKnowledgeDocument, setAgentKnowledge, getKnowledgeTable, setKnowledgeColumnTypes): the account's knowledge bases, read from the
+ * kit's DB, each with how many of its documents are ready, still being read and failed, and the agents that answer from it; a base with its
+ * documents (each in the kit's words: saving, being read, ready, or failed and why, and whether it is a table); making and deleting them;
+ * which bases an agent answers from; a table document's columns and rows, and how its columns are read (KnowledgeTables). Every member may.
+ * Never Telenow's ids, its status words or its error text.
  */
 final class KnowledgeController
 {
-    public function __construct(private readonly Knowledge $knowledge, private readonly AgentKnowledge $agentKnowledge) {}
+    public function __construct(private readonly Knowledge $knowledge, private readonly AgentKnowledge $agentKnowledge, private readonly KnowledgeTables $tables) {}
 
     public function index(Request $request): JsonResponse
     {
@@ -87,6 +89,18 @@ final class KnowledgeController
 
             return response()->noContent();
         });
+    }
+
+    /** A table document's columns and a page of its rows (`offset`, `limit`), read live. */
+    public function table(Request $request, string $id, string $documentId): JsonResponse|Response
+    {
+        return $this->withDocument($request, $id, $documentId, fn (KnowledgeDocument $d) => response()->json($this->tables->read($d, $request->query())));
+    }
+
+    /** Change how some of a table's columns are read; answers its columns as they are now. */
+    public function setTableTypes(Request $request, string $id, string $documentId): JsonResponse|Response
+    {
+        return $this->withDocument($request, $id, $documentId, fn (KnowledgeDocument $d) => response()->json(['columns' => $this->tables->setTypes($d, $request->all())]));
     }
 
     /** Which bases an agent answers from, all at once; answers the agent's bases. */
@@ -172,6 +186,7 @@ final class KnowledgeController
             'source' => $d->source_uri,
             'chars' => $d->char_count,
             'createdAt' => $d->created_at->toIso8601String(),
+            'table' => KnowledgeTables::isTable($d),
         ] + self::state($d);
     }
 

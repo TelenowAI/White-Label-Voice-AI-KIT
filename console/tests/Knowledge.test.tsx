@@ -31,7 +31,7 @@ function base(over: Partial<KnowledgeBase> & { id: string }): KnowledgeBase {
 }
 
 function doc(over: Partial<KnowledgeDocument> & { id: string; title: string }): KnowledgeDocument {
-  return { kind: "text", source: null, chars: 40, state: "ready", problem: null, createdAt: "2026-10-30T14:00:00Z", ...over };
+  return { kind: "text", source: null, chars: 40, state: "ready", problem: null, createdAt: "2026-10-30T14:00:00Z", table: false, ...over };
 }
 
 const faq = base({ id: "k1" });
@@ -172,7 +172,7 @@ describe("an agent's knowledge", () => {
     stack: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
     settings: agentSettings,
     stackNames: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
-    stackCheck: null, knowledgeBases: [{ id: "k1", name: "Clinic FAQ" }], createdAt: "2026-10-30T09:00:00Z", updatedAt: "2026-10-30T09:00:00Z",
+    stackCheck: null, knowledgeBases: [{ id: "k1", name: "Clinic FAQ" }], logoUrl: null, createdAt: "2026-10-30T09:00:00Z", updatedAt: "2026-10-30T09:00:00Z",
   };
 
   it("ticks the bases it answers from and saves the whole set", async () => {

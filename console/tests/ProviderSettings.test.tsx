@@ -53,7 +53,7 @@ const agent = (over: Partial<Agent> = {}): Agent => ({
   stack: { llmProvider: "llm-a", llmModel: "m1", sttProvider: "stt-a", ttsProvider: "tts-a", ttsVoice: "vikram" },
   stackNames: { llmProvider: "Thinking", llmModel: "Quick", sttProvider: "Listening", ttsProvider: "Studio voices", ttsVoice: "Vikram" },
   settings: { ...agentSettings, ttsSettings: { values: { speed: 1.2 } } },
-  stackCheck: null, knowledgeBases: [], createdAt: "2026-11-05T09:00:00Z", updatedAt: "2026-11-05T09:00:00Z", ...over,
+  stackCheck: null, knowledgeBases: [], logoUrl: null, createdAt: "2026-11-05T09:00:00Z", updatedAt: "2026-11-05T09:00:00Z", ...over,
 });
 
 function setup(answers: Record<string, unknown> = {}) {

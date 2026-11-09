@@ -1,0 +1,68 @@
+{
+  "operationId": "listLedger",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; a number's release for unpaid rent (release_reason, reclaim_deadline_at) and the parent's empty wallet set by SQL on that database (contract_k27numbers.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/845e15e1-bd99-59b1-9ed0-fb5220c74ad7/billing/ledger",
+    "query": "updatedAfter=2020-01-01T00%3A00%3A00.000Z",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "amountUsd": "-5.2500000000",
+            "balanceAfterUsd": null,
+            "createdAt": "2026-11-08T15:54:10.512151Z",
+            "createdBy": "number-purchase-prepaid",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "c27bf9e1-3efc-578a-af28-28d5e10a38c5",
+            "note": "Number rental 918045671001 (from 2026-11-08)",
+            "refId": "c90520dc-eff2-5a2b-8fba-9bbc3bc6eaf8",
+            "refKind": "rental",
+            "sourceOrgId": "845e15e1-bd99-59b1-9ed0-fb5220c74ad7"
+          },
+          {
+            "amountUsd": "-5.2500000000",
+            "balanceAfterUsd": null,
+            "createdAt": "2026-11-08T15:54:10.555251Z",
+            "createdBy": "number-purchase-prepaid",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "b17e4bec-e1da-59c0-9339-092ee6d8c88a",
+            "note": "Number rental 918045671002 (from 2026-11-08)",
+            "refId": "a3e1ccc2-419e-5205-b2ac-d2ada15e30d8",
+            "refKind": "rental",
+            "sourceOrgId": "845e15e1-bd99-59b1-9ed0-fb5220c74ad7"
+          },
+          {
+            "amountUsd": "-5.2500000000",
+            "balanceAfterUsd": null,
+            "createdAt": "2026-11-08T15:54:15.383586Z",
+            "createdBy": "number-purchase-prepaid",
+            "entryType": "charge",
+            "fxAmount": null,
+            "fxCurrency": null,
+            "fxRate": null,
+            "id": "8621197f-ca70-501c-8d47-5a3b6bbe967f",
+            "note": "Number rental 918045671001 (from 2026-11-08)",
+            "refId": "e03a8b83-e69e-5c42-b8fa-a13e34faf07b",
+            "refKind": "rental",
+            "sourceOrgId": "845e15e1-bd99-59b1-9ed0-fb5220c74ad7"
+          }
+        ],
+        "limit": 50,
+        "nextCursor": "2026-11-08T15:54:15.383586Z_8621197f-ca70-501c-8d47-5a3b6bbe967f"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

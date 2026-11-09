@@ -6,12 +6,13 @@
  * columns its agent uses (read live, once); how it went; adding people from a CSV (read in the browser, checked against the backend's
  * size limit first); start / resume / pause, and cancel or delete only after asking; its people. While it is saving or calling it is looked at again.
  *
- * Not here: the list and making a campaign (CampaignsPage.tsx); its people (CampaignPeople.tsx); how it went (CampaignProgress.tsx); changing its settings (CampaignSettingsForm.tsx); the words for a status or outcome (words.ts).
+ * Not here: the list and making a campaign (CampaignsPage.tsx); its people (CampaignPeople.tsx); how it went (CampaignProgress.tsx); changing its settings (CampaignSettingsForm.tsx); its people from a link (CampaignLink.tsx); the words for a status or outcome (words.ts).
  */
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { KitApiError, kitApi, type Campaign, type CampaignLimits, type CampaignPeopleGroup, type CampaignReach, type CampaignTargetPage } from "../api";
 import { t } from "../text";
+import { CampaignLink } from "./CampaignLink";
 import { CampaignPeople } from "./CampaignPeople";
 import { CampaignProgress } from "./CampaignProgress";
 import { CampaignSettingsForm } from "./CampaignSettingsForm";
@@ -96,6 +97,7 @@ export function CampaignPage() {
           {campaign.syncState === "synced" && OPEN.includes(campaign.status) && <Live campaignId={campaign.id} limits={limits} />}
           <Actions campaign={campaign} onChanged={setCampaign} onError={setFailure} />
           {OPEN.includes(campaign.status) && limits && <AddPeople campaignId={campaign.id} limits={limits} onAdded={load} />}
+          <CampaignLink key={campaign.id} campaign={campaign} limits={limits} open={OPEN.includes(campaign.status)} onChanged={setCampaign} onAdded={load} />
           {campaign.status !== "saving" && campaign.status !== "failed" && <CampaignProgress campaignId={campaign.id} />}
           <CampaignPeople
             campaign={campaign}

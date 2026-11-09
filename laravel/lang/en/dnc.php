@@ -15,4 +15,6 @@ return [
     'import_too_big' => 'The file is too big: :mb MB at most.',
     'import_refused' => 'The file could not be read as a list of numbers: one number per line, then a comma and a reason if you like.',
     'import_unavailable' => 'The file could not be imported just now. Try again shortly.',
+    'export_file' => 'do-not-call',
+    'export_columns' => ['number' => 'Number', 'reason' => 'Reason', 'source' => 'Source', 'added' => 'Added'],
 ];

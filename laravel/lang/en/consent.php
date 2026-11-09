@@ -27,4 +27,9 @@ return [
     'required_by_operator' => 'Your provider requires consent for every call, so this cannot be turned off.',
     'held_by_provider' => 'The account your service runs under requires consent, so this cannot be turned off here.',
     'only_managers' => 'Only someone who manages this account can change this.',
+    'export_file' => 'consent',
+    'export_columns' => [
+        'number' => 'Number', 'type' => 'Consent', 'scope' => 'Covers', 'source' => 'Source', 'disclosureVersion' => 'Disclosure version',
+        'given' => 'Given', 'expires' => 'Ends', 'withdrawn' => 'Withdrawn', 'note' => 'Note',
+    ],
 ];

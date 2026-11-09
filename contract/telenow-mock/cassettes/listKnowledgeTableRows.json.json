@@ -1,0 +1,63 @@
+{
+  "operationId": "listKnowledgeTableRows",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the files and their contents are ours (contract_k19tables.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/ad21b3f8-2e31-596b-bb62-8eb18ba65dea/knowledge-bases/52610ecc-2139-5dd0-ab6d-89e27aea9a45/documents/9539ce10-0234-5cd8-b509-6621fb595570/rows",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "columns": [
+          {
+            "name": "hours",
+            "sql_name": "hours",
+            "type": "text"
+          },
+          {
+            "name": "name",
+            "sql_name": "name",
+            "type": "text"
+          },
+          {
+            "name": "room",
+            "sql_name": "room",
+            "type": "text"
+          },
+          {
+            "name": "weekends",
+            "sql_name": "weekends",
+            "type": "bool"
+          }
+        ],
+        "limit": 50,
+        "offset": 0,
+        "rowCount": 3,
+        "rows": [
+          {
+            "hours": "{\"mon\":\"9-5\"}",
+            "name": "Dr. Rao",
+            "room": 2,
+            "weekends": true
+          },
+          {
+            "hours": null,
+            "name": "Dr. Iyer",
+            "room": 3,
+            "weekends": false
+          },
+          {
+            "name": "Dr. Shah",
+            "room": "4B",
+            "weekends": true
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

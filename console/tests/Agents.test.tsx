@@ -1,7 +1,7 @@
 /**
  * Console → Agents (agents/): the list; building an agent and landing on its page; the backend's refused fields shown
  * at their inputs; changing one (only an existing agent has "takes calls"); retrying a refused one; deleting after
- * being asked twice; and the test call — joined with exactly the session the backend answered (@telenow/client is
+ * being asked twice; its chat box section in its place; and the test call — joined with exactly the session the backend answered (@telenow/client is
  * replaced by a recorder here: no microphone, no network), its transcript shown as it comes, hung up by the button or
  * by leaving the page, and never joined when the backend refuses it.
  */
@@ -48,6 +48,7 @@ const signedIn = {
   "GET /api/kit/console/catalog": nothingOffered,
   "GET /api/kit/console/agents/settings-form": settingsForm,
   "GET /api/kit/console/agents/a1/webhooks": { webhooks: [], events: ["call.completed"] },
+  "GET /api/kit/console/agents/a1/web-chat": { allowed: false, priced: true, enabled: false, websites: [], title: null, greeting: null, snippet: null },
   "GET /api/kit/console/team": { members: [], invites: [] },
   "GET /api/kit/console/knowledge": { knowledgeBases: [], limits: { fileMaxBytes: 20971520, fileTypes: ["pdf", "txt"], textMaxLength: 500000 } },
 };
@@ -62,7 +63,7 @@ function agent(over: Partial<Agent> = {}): Agent {
     stack: { llmProvider: "openai", llmModel: "gpt-5.4-mini", sttProvider: "deepgram", ttsProvider: "openai", ttsVoice: "alloy" },
     settings: agentSettings,
     stackNames: { llmProvider: "OpenAI", llmModel: "GPT-5.4 mini", sttProvider: "Deepgram", ttsProvider: "Studio voices", ttsVoice: "Alloy" },
-    stackCheck: null, knowledgeBases: [],
+    stackCheck: null, knowledgeBases: [], logoUrl: null,
     syncState: "synced",
     syncError: null,
     createdAt: "2026-10-30T09:00:00Z",
@@ -187,6 +188,15 @@ describe("an agent's page", () => {
     expect(await screen.findByRole("heading", { name: "Agents" })).toBeTruthy();
     expect(screen.getByTestId("where").textContent).toBe("/console/agents");
     expect(sent.filter((s) => s.method === "DELETE").map((s) => s.path)).toEqual(["/api/kit/console/agents/a1"]);
+  });
+
+  it("shows its chat box for the customer's website right after where its calls are sent", async () => {
+    const sent = fakeKit({ ...signedIn, "GET /api/kit/console/agents/a1": agent() });
+    open("/console/agents/a1");
+    const webChat = (await screen.findByText("Web chat is not offered on this service yet.")).closest("section")!;
+    expect(within(webChat).getByRole("heading", { name: "Web chat" })).toBeTruthy();
+    expect(webChat.previousElementSibling?.querySelector("h2")?.textContent).toBe("Send calls to your own system");
+    expect(sent.filter((s) => s.path === "/api/kit/console/agents/a1/web-chat").map((s) => s.method)).toEqual(["GET"]);
   });
 
   it("says when a part of the voice setup is not chosen yet", async () => {

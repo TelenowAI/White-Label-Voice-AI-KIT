@@ -1,14 +1,15 @@
 /**
  * Console → Do not call (`/console/dnc`; contract/kit-api.yaml listDncEntries, addDncEntry, importDncEntries,
- * removeDncEntry): the account's list, newest first, searchable — each number with its reason, how it got there (added,
+ * removeDncEntry, exportDnc): the account's list, newest first, searchable — each number with its reason, how it got there (added,
  * imported, or the caller asked, linked to the call) and whether it is saved yet — adding one, importing a CSV (the
- * backend says how many it added and skipped), and removing one after asking (a caller's own opt-out asked twice).
+ * backend says how many it added and skipped), downloading the whole list as a CSV file, and removing one after asking (a caller's
+ * own opt-out asked twice).
  *
  * Not here: enforcement (the voice platform never dials a number on the list).
  */
 import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { KitApiError, kitApi, type DncEntry, type DncPage as Page } from "../api";
+import { KitApiError, dncExportUrl, kitApi, type DncEntry, type DncPage as Page } from "../api";
 import { t, type TextKey } from "../text";
 
 const sources: Record<string, TextKey> = { manual: "sourceManual", csv: "sourceCsv", opt_out: "sourceOptOut" };
@@ -54,6 +55,7 @@ export function DncPage() {
     <section aria-labelledby="dnc-title">
       <h1 id="dnc-title">{t("dncTitle")}</h1>
       <p className="muted">{t("dncHelp")}</p>
+      <p><a href={dncExportUrl()} download>{t("downloadCsv")}</a></p>
       <AddNumber onAdded={load} />
       <ImportCsv
         onImported={(counts) => {

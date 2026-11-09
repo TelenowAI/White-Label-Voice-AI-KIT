@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Kit\Console;
 
+use App\Kit\Calls\CallFilters;
+use App\Kit\Calls\CallsExport;
 use App\Kit\Calls\ListenIn;
+use App\Kit\Calls\AgentNoteRefused;
+use App\Kit\Calls\AgentNotes;
 use App\Kit\Calls\ListenRefused;
 use App\Kit\Calls\LiveCalls;
 use App\Kit\Telenow\TelenowClient;
@@ -27,7 +31,7 @@ final class CallsController
     /** The analysis fields a customer sees. */
     private const ANALYSIS = ['summary', 'sentiment', 'disposition', 'actionItems', 'customData', 'qa'];
 
-    public function __construct(private readonly TelenowClient $telenow, private readonly LiveCalls $live, private readonly ListenIn $listen) {}
+    public function __construct(private readonly TelenowClient $telenow, private readonly LiveCalls $live, private readonly ListenIn $listen, private readonly AgentNotes $notes) {}
 
     public function index(Request $request): JsonResponse
     {
@@ -36,16 +40,7 @@ final class CallsController
         $membership = $this->membership($request);
         $query = Call::query()->with(['agent', 'placer', 'requester'])->where('workspace_id', $membership->workspace_id)
             ->orderByDesc('started_at')->orderByDesc('id');
-        $agent = $request->query('agentId');
-        if (is_string($agent) && $agent !== '') {
-            $query->where('agent_id', Str::isUuid($agent) ? $agent : null);
-        }
-        // One person's calls: their number as either end, however it was written.
-        $number = $request->query('number');
-        if (is_string($number) && trim($number) !== '') {
-            $digits = Call::digits($number);
-            $query->where(fn ($q) => $q->where('from_digits', $digits)->orWhere('to_digits', $digits));
-        }
+        CallFilters::apply($query, $request->query());
         if ($request->query('placedBy') === 'me') {
             $query->where('placed_by', $membership->user_id);
         }
@@ -53,7 +48,15 @@ final class CallsController
         return response()->json([
             'calls' => $query->clone()->forPage($page, $perPage)->get()->map(fn (Call $c) => $this->summary($c, $membership->user_id))->all(),
             'total' => $query->count(), 'page' => $page, 'perPage' => $perPage,
+            'outcomes' => Call::query()->where('workspace_id', $membership->workspace_id)->whereNotNull('outcome')->groupBy('outcome')
+                ->orderByRaw('count(*) desc')->orderBy('outcome')->limit(config('kit.calls.outcomes_max'))->pluck('outcome')->all(),
         ]);
+    }
+
+    /** The same calls as a file (contract exportCalls). */
+    public function export(Request $request, CallsExport $export): StreamedResponse
+    {
+        return $export->download($this->membership($request)->workspace, $request->query());
     }
 
     public function live(Request $request): JsonResponse
@@ -79,6 +82,20 @@ final class CallsController
         }
     }
 
+    /** Tell the agent on a live call something (AgentNotes); answers the note as kept. */
+    public function tellAgent(Request $request, string $id): JsonResponse
+    {
+        $call = $this->find($request, $id);
+        if ($call === null) {
+            return $this->notFound();
+        }
+        try {
+            return response()->json(['note' => $this->notes->tell($this->membership($request), $call, $request->all())], 202);
+        } catch (AgentNoteRefused $e) {
+            return response()->json(['message' => $e->getMessage()], $e->status);
+        }
+    }
+
     public function show(Request $request, string $id): JsonResponse
     {
         $call = $this->find($request, $id);
@@ -86,6 +103,8 @@ final class CallsController
         return $call === null ? $this->notFound() : response()->json($this->detail($call, $this->membership($request)->user_id) + [
             'canListen' => $this->listen->mayListen($this->membership($request), $call),
             'listens' => $this->listen->listeners($call),
+            'canTellAgent' => $this->notes->mayTell($this->membership($request), $call),
+            'agentNotes' => $this->notes->of($call),
         ]);
     }
 

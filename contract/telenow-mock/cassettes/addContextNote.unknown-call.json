@@ -1,0 +1,18 @@
+{
+  "operationId": "addContextNote",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; a web chat with a stand-in language model and a phone call through a stand-in carrier; the notes are ours (contract_k22notes.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/sessions/3af44d12-73c5-5e86-bdb6-aa1b022a64f5/context",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Session not found",
+      "success": false
+    }
+  },
+  "serve": false
+}

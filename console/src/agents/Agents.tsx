@@ -1,7 +1,8 @@
 /**
  * Console → Agents (`/console/agents`; contract/kit-api.yaml listAgents): the current account's agents, the latest
  * changed first, a page at a time, each saying whether it takes calls and whether the voice platform has its latest
- * change (saved, saving with the reason it is still trying, or not saved with why). Links to building a new one.
+ * change (saved, saving with the reason it is still trying, or not saved with why), with its logo small beside its name
+ * (decorative: hidden when it does not load). Links to building a new one.
  *
  * Not here: one agent's page, its editor and its test call (AgentPage.tsx, TestCall.tsx).
  */
@@ -54,6 +55,7 @@ export function Agents() {
               {data.agents.map((a) => (
                 <tr key={a.id} data-agent={a.id}>
                   <td>
+                    {a.logoUrl && <img className="agent-logo-thumb" src={a.logoUrl} alt="" onError={(e) => { e.currentTarget.hidden = true; }} />}
                     <Link to={`/console/agents/${a.id}`}>{a.name}</Link>
                   </td>
                   <td>{t(a.isActive ? "agentActive" : "agentPaused")}</td>

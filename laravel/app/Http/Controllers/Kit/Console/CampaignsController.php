@@ -6,6 +6,7 @@ use App\Kit\Campaigns\CampaignPeople;
 use App\Kit\Campaigns\CampaignProgress;
 use App\Kit\Campaigns\CampaignRefused;
 use App\Kit\Campaigns\CampaignRetries;
+use App\Kit\Campaigns\CampaignSources;
 use App\Kit\Campaigns\Campaigns;
 use App\Models\Campaign;
 use App\Models\WorkspaceMember;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 final class CampaignsController
 {
-    public function __construct(private readonly Campaigns $campaigns, private readonly CampaignPeople $people, private readonly CampaignRetries $retries, private readonly CampaignProgress $progress) {}
+    public function __construct(private readonly Campaigns $campaigns, private readonly CampaignPeople $people, private readonly CampaignRetries $retries, private readonly CampaignProgress $progress, private readonly CampaignSources $sources) {}
 
     public function index(Request $request): JsonResponse
     {
@@ -38,7 +39,8 @@ final class CampaignsController
                 ->orderByDesc('created_at')->orderByDesc('id')->get()->map($this->present(...))->all(),
             'limits' => ['nameMaxLength' => $c['name_max_length'], 'concurrency' => $c['concurrency'], 'maxAttempts' => $c['max_attempts'], 'retryGapMinutes' => $c['retry_gap_minutes'],
                 'machineDetection' => $c['machine_detection'], 'phoneColumns' => $c['phone_columns'],
-                'importMaxBytes' => $c['import_max_bytes'], 'importMaxRows' => $c['import_max_rows']],
+                'importMaxBytes' => $c['import_max_bytes'], 'importMaxRows' => $c['import_max_rows'],
+                'linksAllowed' => $this->sources->allowed(), 'linkEveryMinutes' => $c['link_every_minutes']],
         ]);
     }
 
@@ -69,6 +71,26 @@ final class CampaignsController
     public function addTargets(Request $request, string $id): JsonResponse|Response
     {
         return $this->with($request, $id, fn (Campaign $c) => response()->json($this->campaigns->addTargets($c, $request->all())));
+    }
+
+    /** People from a link: set it and read it now (CampaignSources); answers what it added and the campaign. */
+    public function setSource(Request $request, string $id): JsonResponse|Response
+    {
+        return $this->with($request, $id, function (Campaign $c) use ($request) {
+            $added = $this->sources->set($c, $request->all());
+
+            return response()->json(['added' => $added, 'campaign' => $this->present($c->fresh()->load('agent', 'callerId'))]);
+        });
+    }
+
+    /** Stop following the campaign's link; the people it added stay. */
+    public function removeSource(Request $request, string $id): JsonResponse|Response
+    {
+        return $this->with($request, $id, function (Campaign $c) {
+            $this->sources->remove($c);
+
+            return response()->noContent();
+        });
     }
 
     public function targets(Request $request, string $id): JsonResponse|Response
@@ -201,6 +223,9 @@ final class CampaignsController
             'pushed' => array_merge(['added' => 0, 'duplicates' => 0, 'suppressed' => 0, 'skipped' => 0], (array) ($c->push_summary ?? [])),
             'syncState' => $c->sync_state,
             'syncError' => $c->sync_error,
+            // People from a link (CampaignSources): the link, when it was last read, why not (the customer's words), and how many it added.
+            'source' => $c->source_url === null ? null : ['url' => $c->source_url, 'checkedAt' => $c->source_checked_at?->toIso8601String(),
+                'problem' => $c->source_problem, 'added' => (int) $c->source_added],
             'startedAt' => $c->started_at?->toIso8601String(),
             'completedAt' => $c->completed_at?->toIso8601String(),
             'createdAt' => $c->created_at->toIso8601String(),

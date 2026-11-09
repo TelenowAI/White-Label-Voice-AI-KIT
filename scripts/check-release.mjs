@@ -5,8 +5,9 @@
  * - nothing private or made by a running install: no `.env`, database file, log, macOS metadata, install lock, and
  *   storage/ and bootstrap/cache/ holding only .gitignore files;
  * - no tests, no Composer dev package (composer.lock's `packages-dev`), and every runtime package (`packages`);
- * - what runs it: vendor/autoload.php, artisan, public/index.php and its .htaccess, the theme's style sheet, and the
- *   built console (public/<build dir>/index.html) with every script and style sheet it loads;
+ * - what runs it: vendor/autoload.php, artisan, public/index.php and its .htaccess, the theme's style sheet, the chat
+ *   box script customers put on their websites (public/chat/widget.js), and the built console
+ *   (public/<build dir>/index.html) with every script and style sheet it loads;
  * - a root .htaccess that sends every request into public/, a deny-all .htaccess in every other top-level folder, and
  *   a public/.htaccess that never serves a file whose name starts with a dot.
  *
@@ -56,7 +57,7 @@ export function checkRelease(zip) {
   const version = files.has("VERSION") ? read(zip, `${top}VERSION`).trim() : null;
   if (`voice-kit-${version}` !== expected) problems.push(`VERSION says ${version}, the zip is ${expected}`);
 
-  for (const need of ["artisan", "composer.json", "composer.lock", "vendor/autoload.php", "public/index.php", "public/.htaccess", "public/theme/default.css"]) {
+  for (const need of ["artisan", "composer.json", "composer.lock", "vendor/autoload.php", "public/index.php", "public/.htaccess", "public/theme/default.css", "public/chat/widget.js"]) {
     if (!files.has(need)) problems.push(`missing ${need}`);
   }
 

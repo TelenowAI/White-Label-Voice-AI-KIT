@@ -2,7 +2,8 @@
  * Console → Numbers (numbers/): the account's numbers in the console's words (where, the agent answering, rent and
  * renewal, a change not saved yet or refused, a release not through yet), every saved agent to choose from (all pages),
  * choosing one (the backend's word on it), finding numbers for sale (the backend's word on a field), buying one only
- * after its price is confirmed, and releasing one only after asking.
+ * after its price is confirmed, and releasing one only after asking. The controls under each agent, the renewals and the lost numbers:
+ * NumberControls.test.tsx.
  */
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -29,7 +30,7 @@ function agent(id: string, name: string): Agent {
     stack: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
     settings: agentSettings,
     stackNames: { llmProvider: null, llmModel: null, sttProvider: null, ttsProvider: null, ttsVoice: null },
-    stackCheck: null, knowledgeBases: [],
+    stackCheck: null, knowledgeBases: [], logoUrl: null,
     syncState: "synced", syncError: null, createdAt: "2026-10-30T09:00:00Z", updatedAt: "2026-10-30T09:00:00Z",
   };
 }
@@ -42,13 +43,15 @@ const signedIn = {
   "GET /api/kit/console/workspaces": one,
   "GET /api/kit/console/agents?page=1": { agents: [frontDesk], total: 2, page: 1, perPage: 1 },
   "GET /api/kit/console/agents?page=2": { agents: [billing], total: 2, page: 2, perPage: 1 },
+  "GET /api/kit/console/numbers/renewals": { charging: false, balance: null, soonDays: 7, numbers: [] },
+  "GET /api/kit/console/numbers/lost": { numbers: [] },
 };
 
 function number(over: Partial<PhoneNumber> & { id: string }): PhoneNumber {
   return {
     number: "+918045671001", country: "India", region: "Karnataka", type: "local", agent: null,
     monthlyPrice: { amount: "522.90", currency: "INR" }, nextRenewalAt: "2026-11-30T13:32:12+00:00", releasing: false,
-    syncState: "synced", syncError: null, createdAt: "2026-10-30T13:32:12+00:00", ...over,
+    routed: false, agentCallerId: false, unanswered: "message", syncState: "synced", syncError: null, createdAt: "2026-10-30T13:32:12+00:00", ...over,
   };
 }
 
@@ -84,8 +87,11 @@ describe("the numbers", () => {
     open();
     const rows = await yours();
     expect(rows.map((r) => within(r).getAllByRole("cell").map((c) => c.textContent))).toEqual([
-      ["+918045671001", "Karnataka, India", "No agentFront deskBilling", "₹522.90", new Date("2026-11-30T13:32:12+00:00").toLocaleDateString(), "Release"],
-      ["+918045671002FailedThis could not be done. Try again, or ask support.", "Karnataka, India", "No agentFront deskBilling", "Not priced", new Date("2026-11-30T13:32:12+00:00").toLocaleDateString(), "Release"],
+      ["+918045671001", "Karnataka, India", "No agentFront deskBillingFront desk's caller idFront desk's calls come from this number when a call names none.", "₹522.90",
+        new Date("2026-11-30T13:32:12+00:00").toLocaleDateString(), "Release"],
+      ["+918045671002FailedThis could not be done. Try again, or ask support.", "Karnataka, India",
+        "No agentFront deskBillingWhen no agent answersSay no one is availableA busy lineLine unavailableA busy line or an unavailable line does not answer the call.", "Not priced",
+        new Date("2026-11-30T13:32:12+00:00").toLocaleDateString(), "Release"],
       ["+918045671003Being releasedNot saved yet. It will be tried again shortly.", "Karnataka, India", "No agent", "₹522.90", "", ""],
       ["+918045671004FailedThis could not be done. Try again, or ask support.", "Karnataka, India", "No agent", "₹522.90", "", "Try releasing again"],
     ]);

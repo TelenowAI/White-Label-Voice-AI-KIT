@@ -57,6 +57,9 @@ final class Calls
                 $columns[$extra['column']] = Arr::get($this->extra($extra['operationId'], $key, $org, $telenowId), $extra['objectAt'] ?? '');
             }
         }
+        // Its sentiment as its own column, so insights count calls by it without reading every analysis.
+        $sentiment = ($columns['analysis'] ?? $call->analysis)['sentiment'] ?? null;
+        $columns['sentiment'] = is_string($sentiment) && trim($sentiment) !== '' ? mb_substr(mb_strtolower(trim($sentiment)), 0, 32) : null;
         $reads = $call->reads + 1;
         $agentId = $this->agentId($workspace, $object['agent_id'] ?? null);
         $final = $this->final($columns, $agentId);
@@ -180,11 +183,15 @@ final class Calls
 
     /**
      * Over, and nothing the console shows still pending. Telenow says a recording is `pending` for as long as there is none, and never finds one missing on an agent that records
-     * nothing (its integrity worker leaves those out), so such an agent has no recording to wait for.
+     * nothing (its integrity worker leaves those out), so such an agent has no recording to wait for; nor has a call on a channel that is never recorded, such as a chat
+     * (config('kit.calls.unrecorded_channels')).
      */
     private function final(array $columns, ?string $agentId): bool
     {
         $parts = config('kit.calls.wait_for');
+        if (in_array($columns['channel'] ?? null, config('kit.calls.unrecorded_channels'), true)) {
+            $parts = array_diff($parts, ['recording']);
+        }
         if ($agentId !== null && (Agent::query()->whereKey($agentId)->value('settings')['recording'] ?? true) === false) {
             $parts = array_diff($parts, ['recording']);
         }

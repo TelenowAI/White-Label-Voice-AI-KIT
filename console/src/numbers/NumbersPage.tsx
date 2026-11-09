@@ -3,14 +3,28 @@
  * setPhoneNumberAgent, releasePhoneNumber): the account's numbers — where each is, the agent that answers it (chosen
  * here), its rent and renewal, and whether a change is saved yet — finding numbers for sale by country and digits, each
  * with its setup and monthly price on the account's plan, buying one only after the price is confirmed, and releasing
- * one only after asking (one whose release has not gone through yet is listed, and can be released again).
+ * one only after asking (one whose release has not gone through yet is listed, and can be released again). A number whose calls follow the
+ * account's call routing rules is marked, with a link to Call routing; its agent cannot be set to none while it is (the backend's word shows).
+ * Under a number's agent: whether it is that agent's caller id (NumberCallerId.tsx; the list is read again after, as the agent's other number
+ * stops being it), or, with no agent, what a call to it does (NumberUnanswered.tsx). The renewals (getNumberRenewals) give each number's renewal
+ * its rent and a marker (NumberRenewal.tsx) and a warning near the top when the balance does not cover them (RenewalWarning.tsx); numbers given
+ * up that can still be got back are listed below (LostNumbers.tsx), and one that came back is said and the lists read again.
  *
  * Not here: what a number costs (the backend prices it; the setup and rent are charged to the wallet).
+ *
+ * This folder (numbers/): NumbersPage.tsx (this page: its rows, finding and buying), NumberCallerId.tsx, NumberUnanswered.tsx,
+ * NumberRenewal.tsx, RenewalWarning.tsx, LostNumbers.tsx, LostNumberRow.tsx.
  */
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { KitApiError, kitApi, type Agent, type AvailableNumber, type PhoneNumber } from "../api";
+import { Link } from "react-router-dom";
+import { KitApiError, kitApi, type Agent, type AvailableNumber, type NumberRenewal as Renewal, type NumberRenewals, type PhoneNumber } from "../api";
 import { money } from "../wallet/money";
 import { t } from "../text";
+import { LostNumbers } from "./LostNumbers";
+import { NumberCallerId } from "./NumberCallerId";
+import { NumberRenewal } from "./NumberRenewal";
+import { NumberUnanswered } from "./NumberUnanswered";
+import { RenewalWarning } from "./RenewalWarning";
 
 function message(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
@@ -31,10 +45,13 @@ async function allAgents(): Promise<Agent[]> {
 export function NumbersPage() {
   const [numbers, setNumbers] = useState<PhoneNumber[] | null>(null);
   const [agents, setAgents] = useState<Agent[]>([]);
+  const [renewals, setRenewals] = useState<NumberRenewals | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    // The renewals add to the list; without them each number shows its own renewal date.
+    kitApi.numberRenewals().then(setRenewals, () => setRenewals(null));
     try {
       setNumbers((await kitApi.numbers()).numbers);
       setFailure(null);
@@ -54,6 +71,7 @@ export function NumbersPage() {
       <p className="muted">{t("numbersHelp")}</p>
       {notice && <p role="status">{notice}</p>}
       {failure && <p role="alert" className="error">{failure}</p>}
+      {renewals && <RenewalWarning renewals={renewals} />}
       <h2>{t("numbersYours")}</h2>
       {numbers && numbers.length === 0 && <p className="muted">{t("numbersEmpty")}</p>}
       {numbers && numbers.length > 0 && (
@@ -75,7 +93,13 @@ export function NumbersPage() {
                   key={n.id}
                   number={n}
                   agents={agents}
+                  renewal={renewals?.numbers.find((r) => r.id === n.id)}
+                  charging={renewals?.charging === true}
                   onChanged={(changed) => setNumbers((list) => list?.map((x) => (x.id === changed.id ? changed : x)) ?? null)}
+                  onCallerId={(changed) => {
+                    setNumbers((list) => list?.map((x) => (x.id === changed.id ? changed : x)) ?? null);
+                    void load();
+                  }}
                   onReleased={load}
                   onError={setFailure}
                 />
@@ -84,6 +108,12 @@ export function NumbersPage() {
           </table>
         </div>
       )}
+      <LostNumbers
+        onRestored={(n) => {
+          setNotice(t("numbersGotBack", { number: n.number }));
+          void load();
+        }}
+      />
       <FindNumber
         onBought={(n) => {
           setNotice(t("numbersBought", { number: n.number }));
@@ -94,10 +124,15 @@ export function NumbersPage() {
   );
 }
 
-function Row({ number: n, agents, onChanged, onReleased, onError }: {
+function Row({ number: n, agents, renewal, charging, onChanged, onCallerId, onReleased, onError }: {
   number: PhoneNumber;
   agents: Agent[];
+  /** Its next rent as the renewals read it. */
+  renewal: Renewal | undefined;
+  charging: boolean;
   onChanged: (n: PhoneNumber) => void;
+  /** Its caller id switch saved: the agent's other number may have changed too. */
+  onCallerId: (n: PhoneNumber) => void;
   onReleased: () => void;
   onError: (m: string) => void;
 }) {
@@ -136,6 +171,12 @@ function Row({ number: n, agents, onChanged, onReleased, onError }: {
     <tr data-number={n.id}>
       <td>
         {n.number}
+        {n.routed && (
+          <>
+            {" "}
+            <Link to="/console/routing" className="badge">{t("numbersRouted")}</Link>
+          </>
+        )}
         {n.syncState !== "synced" && (
           <div className={`sync sync-${n.syncState}`}>
             <span>{t(n.syncState === "failed" ? "syncFailed" : n.releasing ? "numbersReleasing" : "syncPending")}</span>
@@ -156,11 +197,12 @@ function Row({ number: n, agents, onChanged, onReleased, onError }: {
               ))}
             </select>
             {agentError && <small role="alert" className="error">{agentError}</small>}
+            {n.agent ? <NumberCallerId number={n} agent={n.agent} onSaved={onCallerId} /> : <NumberUnanswered number={n} onSaved={onChanged} />}
           </>
         )}
       </td>
       <td>{n.monthlyPrice ? money(n.monthlyPrice.amount, n.monthlyPrice.currency) : t("notPriced")}</td>
-      <td>{n.nextRenewalAt && !n.releasing ? new Date(n.nextRenewalAt).toLocaleDateString() : ""}</td>
+      <td><NumberRenewal number={n} renewal={renewal} charging={charging} /></td>
       <td>
         {n.releasing ? (
           n.syncState === "failed" && (

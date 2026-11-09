@@ -1,10 +1,9 @@
 /**
  * scripts/check-release.mjs against small zips made here (the system `zip`): a release shaped like a good one passes,
  * and each way a release can be wrong — something private or made by a running install inside, the tests or a dev
- * package inside, a runtime package or the built console missing, the console loading what is not there, a folder
- * left without its deny-all .htaccess, a root .htaccess that does not send requests into public/, a public/.htaccess
- * that serves dotfiles, a VERSION that is
- * not the zip's — is named. Run with `node --test scripts/*.test.mjs` (the root package's `test:release`).
+ * package inside, a runtime package, the built console or the chat box script missing, the console loading what is
+ * not there, a folder left without its deny-all .htaccess, a root .htaccess that does not send requests into public/,
+ * a public/.htaccess that serves dotfiles, a VERSION that is not the zip's — is named. Run with `node --test scripts/*.test.mjs` (the root package's `test:release`).
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
@@ -41,6 +40,7 @@ function good() {
     "public/index.php": "<?php\n",
     "public/.htaccess": `RewriteEngine On\n<FilesMatch "^\\.">\n    ${DENY}</FilesMatch>\n`,
     "public/theme/default.css": "body{}\n",
+    "public/chat/widget.js": "(() => {})();\n",
     "public/console-app/index.html": '<script type="module" src="/console-app/assets/a.js"></script><link rel="stylesheet" href="/console-app/assets/a.css">',
     "public/console-app/assets/a.js": "",
     "public/console-app/assets/a.css": "",
@@ -80,6 +80,7 @@ describe("check-release", () => {
     "a dev package": [{ "vendor/acme/dev-tool/src/B.php": "<?php" }, /^a dev package: vendor\/acme\/dev-tool$/],
     "a runtime package missing": [{ "vendor/acme/runtime/src/A.php": null }, /^missing the package vendor\/acme\/runtime$/],
     "no autoloader": [{ "vendor/autoload.php": null }, /^missing vendor\/autoload\.php$/],
+    "no chat box script": [{ "public/chat/widget.js": null }, /^missing public\/chat\/widget\.js$/],
     "no built console": [{ "public/console-app/index.html": null }, /^missing the built console \(public\/console-app\/index\.html\)$/],
     "the console loading what is not there": [{ "public/console-app/assets/a.js": null }, /loads \/console-app\/assets\/a\.js, not in the zip$/],
     "the console loading from outside its folder": [{ "public/console-app/index.html": '<script src="/assets/a.js"></script>' }, /loads \/assets\/a\.js, outside \/console-app\/$/],

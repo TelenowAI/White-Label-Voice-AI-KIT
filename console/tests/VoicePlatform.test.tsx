@@ -22,6 +22,7 @@ afterEach(() => {
 function health(over: Partial<VoicePlatformHealth> = {}): VoicePlatformHealth {
   return {
     telenow: { name: "Telenow", connected: true, account: "Acme Ops", keyRejected: false, error: null, checkedAt: "2026-10-31T11:55:00Z" },
+    callHealth: null,
     events: {
       registered: true, url: "https://voice.example/api/kit/telenow/events", registeredAt: "2026-10-30T10:00:00Z", checkedAt: null, error: null,
       lastReceivedAt: "2026-10-31T11:50:00Z", recentHours: 24, recent: 12, waiting: 1, failed: 1,
@@ -117,7 +118,7 @@ describe("Admin → Voice platform", () => {
       period: { from: "2026-10-01", to: "2026-10-31" }, money: [], topUps: [], creditsByHand: [],
       customers: { total: 0, active: 0, suspended: 0, notReady: 0, outOfCredit: null, new: 0 }, calls: { count: 0, seconds: 0, live: 0 },
       telenow: { name: "Telenow", billingUrl: "https://app.telenow.ai/billing", connected: true, keyRejected: false, error: null, checkedAt: null, account: null },
-      attention: { callsNotCharged: 0, failedWrites: 2, paymentsToReview: 0, customersNotSynced: 0, eventsFailed: 3, customersDrifting: 1, jobsNotRunning: true },
+      attention: { callsNotCharged: 0, failedWrites: 2, paymentsToReview: 0, customersNotSynced: 0, eventsFailed: 3, customersDrifting: 1, jobsNotRunning: true, providersFailing: 0 },
     };
     fakeKit({ "GET /api/kit/admin/dashboard": d });
     at(<DashboardPage />);

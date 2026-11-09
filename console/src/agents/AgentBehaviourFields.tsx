@@ -1,12 +1,19 @@
 /**
  * Console → one agent → how it speaks and listens: the groups of settings the backend declares (contract/kit-api.yaml
  * getAgentSettingsForm), drawn with no setting named here, so one the backend adds needs no change. Each group folds away, since
- * most agents only need a few of them, and opens by itself when a refusal is inside it.
+ * most agents only need a few of them, and opens by itself when a refusal is inside it. One setting is named: beside the one that has an
+ * agent remember callers, a link to what the agents remember (memory/MemoryPage.tsx).
  *
  * Not here: saving, which is AgentSettingsForm.tsx's one save; what they do (App\Kit\Agents\AgentBehaviour).
  */
+import { Fragment } from "react";
+import { Link } from "react-router-dom";
 import type { AgentSettings, AgentSettingsGroup, SetupField } from "../api";
 import { FieldInput } from "../setup/StepForm";
+import { t } from "../text";
+
+/** The setting that has an agent remember callers: what is remembered is shown, and forgotten, on its own page, linked beside it. */
+const REMEMBERS_CALLERS: keyof AgentSettings = "callerMemory";
 
 const stored = (settings: AgentSettings, name: string) => (settings as unknown as Record<string, unknown>)[name];
 
@@ -48,7 +55,10 @@ export function AgentBehaviourFields({ groups, values, errors, onChange }: {
             <small className="muted">{g.description}</small>
           </summary>
           {g.fields.filter((f) => shows(f, values)).map((f) => (
-            <FieldInput key={f.name} stepId="behaviour" field={f} value={values[f.name] ?? ""} errors={errors[`settings.${f.name}`] ?? []} onChange={(v) => onChange(f.name, v)} />
+            <Fragment key={f.name}>
+              <FieldInput stepId="behaviour" field={f} value={values[f.name] ?? ""} errors={errors[`settings.${f.name}`] ?? []} onChange={(v) => onChange(f.name, v)} />
+              {f.name === REMEMBERS_CALLERS && <p><Link to="/console/memory">{t("memoryAgentLink")}</Link></p>}
+            </Fragment>
           ))}
         </details>
       ))}

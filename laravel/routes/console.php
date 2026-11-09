@@ -40,6 +40,11 @@ Illuminate\Support\Facades\Schedule::command('kit:knowledge')->everyMinute()->wi
 
 // Customers' campaigns: where each stands and how each call went (App\Kit\Campaigns).
 Illuminate\Support\Facades\Schedule::command('kit:campaigns')->everyMinute()->withoutOverlapping();
+// Campaigns' contact links read again when due (App\Kit\Campaigns\CampaignSources).
+Illuminate\Support\Facades\Schedule::command('kit:campaign-links')->everyMinute()->withoutOverlapping();
+
+// The providers that failed on customers' recent calls, added up for Admin → Voice platform and the dashboard (App\Kit\Calls\CallHealth).
+Illuminate\Support\Facades\Schedule::command('kit:call-health')->cron('*/'.config('kit.call_health.sweep_minutes').' * * * *')->withoutOverlapping();
 
 // Transfer taken off customers' agents after the operator turned transfers off (App\Kit\Agents\AgentTransfers).
 Illuminate\Support\Facades\Schedule::command('kit:agents')->everyMinute()->withoutOverlapping();
@@ -54,4 +59,6 @@ Illuminate\Support\Facades\Schedule::command('kit:payments')->everyMinute()->wit
 Illuminate\Support\Facades\Schedule::command('kit:signups')->daily()->withoutOverlapping();
 
 // The money check between the kit and Telenow, a few customers at a time (App\Kit\Health\Reconciliation).
+Illuminate\Support\Facades\Schedule::command('kit:chats')->everyMinute()->withoutOverlapping();
+
 Illuminate\Support\Facades\Schedule::command('kit:reconcile')->everyFiveMinutes()->withoutOverlapping();

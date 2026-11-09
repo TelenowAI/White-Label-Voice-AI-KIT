@@ -1,0 +1,30 @@
+{
+  "operationId": "setInboundRouting",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; the endpoints routing points at are public pages that are not the kit (example.com, postman-echo.com) (contract_k26routing.py)",
+  "request": {
+    "method": "PUT",
+    "path": "/api/orgs/44c23e3e-30f8-502b-9563-b21848107464/inbound-routing",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "createdAt": "2026-11-08T11:01:20.215419Z",
+        "enabled": true,
+        "lastError": null,
+        "lastErrorAt": null,
+        "lastOkAt": null,
+        "orgId": "44c23e3e-30f8-502b-9563-b21848107464",
+        "signingSecret": null,
+        "signingSecretHint": "…xxxx",
+        "timeoutMs": 1500,
+        "updatedAt": "2026-11-08T11:01:20.226150Z",
+        "url": "https://example.com/kit-routing/k26"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

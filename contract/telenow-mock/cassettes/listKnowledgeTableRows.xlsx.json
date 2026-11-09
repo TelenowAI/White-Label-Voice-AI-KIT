@@ -1,0 +1,56 @@
+{
+  "operationId": "listKnowledgeTableRows",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; the files and their contents are ours (contract_k19tables.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/orgs/ad21b3f8-2e31-596b-bb62-8eb18ba65dea/knowledge-bases/52610ecc-2139-5dd0-ab6d-89e27aea9a45/documents/0770098c-6735-5d46-8605-aab5c61fcfc5/rows",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "columns": [
+          {
+            "name": "Product",
+            "sql_name": "product",
+            "type": "text"
+          },
+          {
+            "name": "Units",
+            "sql_name": "units",
+            "type": "number"
+          },
+          {
+            "name": "Reorder at",
+            "sql_name": "reorder_at",
+            "type": "number"
+          }
+        ],
+        "limit": 50,
+        "offset": 0,
+        "rowCount": 3,
+        "rows": [
+          {
+            "product": "Floss",
+            "reorder_at": 10,
+            "units": 40
+          },
+          {
+            "product": "Brushes",
+            "reorder_at": 20,
+            "units": 12
+          },
+          {
+            "product": "Mouthwash",
+            "reorder_at": 5,
+            "units": 0
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

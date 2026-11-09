@@ -1,0 +1,18 @@
+{
+  "operationId": "setNumberInboundAction",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with a sub-account's own key; numbers from a stand-in carrier; a number's release for unpaid rent (release_reason, reclaim_deadline_at) and the parent's empty wallet set by SQL on that database (contract_k27numbers.py)",
+  "request": {
+    "method": "POST",
+    "path": "/api/voice/numbers/a3e1ccc2-419e-5205-b2ac-d2ada15e30d8/inbound-action",
+    "query": "",
+    "apiKey": "vai_test_customer_acme"
+  },
+  "response": {
+    "status": 409,
+    "body": {
+      "error": "This number is answered by an agent, so it never reaches this setting. Unassign the agent first if you want the number to stop taking calls.",
+      "success": false
+    }
+  },
+  "serve": false
+}

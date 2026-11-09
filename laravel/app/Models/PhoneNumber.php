@@ -16,7 +16,8 @@ final class PhoneNumber extends Model
 
     protected function casts(): array
     {
-        return ['next_renewal_at' => 'datetime', 'released_at' => 'datetime'];
+        return ['next_renewal_at' => 'datetime', 'released_at' => 'datetime', 'routed' => 'boolean', 'agent_caller_id' => 'boolean',
+            'renewal_warned_for' => 'datetime', 'get_back_asked_at' => 'datetime'];
     }
 
     public function workspace(): BelongsTo

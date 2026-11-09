@@ -2,12 +2,14 @@
  * The customer console's frame (`/console/*`): staff looking at it as a customer see a read-only banner with a way back
  * (ViewingAsBanner); an invite link opens without signing in (InviteAccept); everything else
  * needs a signed-in member. Signed in: the account switcher (when the user belongs to several), the nav, the
- * "service paused" notice whenever the backend says so, and the page — Home, Agents (and one agent), Calls (and one
- * call), Phone, Follow-ups, Campaigns (and one campaign), Knowledge (and one base), Voices, Numbers, Wallet, Do not call,
- * Consent or Team.
+ * "service paused" notice whenever the backend says so, and the page — Home (with the account's call health:
+ * calls/CallHealthPanel.tsx), Agents (and one agent), Calls (and one
+ * call), Insights, Phone, Follow-ups, Campaigns (and one campaign), Knowledge (and one base, and a table in it), Voices, Numbers, Call routing,
+ * Wallet (and from it the invoices, and one invoice at `/console/invoices/:id`, the path the payment-received email links to), Do not call,
+ * Consent, Caller memory or Team.
  *
- * Not here: the pages themselves (agents/, calls/, phone/, campaigns/, knowledge/, voices/, numbers/, wallet/, dnc/,
- * consent/, team/, account/).
+ * Not here: the pages themselves (agents/, calls/, insights/, phone/, campaigns/, knowledge/, voices/, numbers/, routing/, wallet/,
+ * invoices/, dnc/, consent/, memory/, team/, account/).
  */
 import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
 import { NavLink, Navigate, Route, Routes, useNavigate } from "react-router-dom";
@@ -20,11 +22,18 @@ import { CampaignPage } from "../campaigns/CampaignPage";
 import { CampaignsPage } from "../campaigns/CampaignsPage";
 import { ConsentPage } from "../consent/ConsentPage";
 import { DncPage } from "../dnc/DncPage";
+import { InsightsPage } from "../insights/InsightsPage";
+import { InvoicePage } from "../invoices/InvoicePage";
+import { InvoicesPage } from "../invoices/InvoicesPage";
 import { KnowledgeBasePage } from "../knowledge/KnowledgeBasePage";
 import { KnowledgePage } from "../knowledge/KnowledgePage";
+import { KnowledgeTablePage } from "../knowledge/KnowledgeTablePage";
+import { MemoryPage } from "../memory/MemoryPage";
 import { NumbersPage } from "../numbers/NumbersPage";
 import { PhonePage } from "../phone/PhonePage";
+import { CallRoutingPage } from "../routing/CallRoutingPage";
 import { VoicesPage } from "../voices/VoicesPage";
+import { CallHealthPanel } from "../calls/CallHealthPanel";
 import { Calls } from "../calls/Calls";
 import { SignIn } from "../setup/SignIn";
 import { AccountPage } from "../account/AccountPage";
@@ -128,15 +137,18 @@ function Account({ viewing, onSignedOut }: { viewing: boolean; onSignedOut: () =
         <NavLink to="/console" end>{t("homeNav")}</NavLink>
         <NavLink to="/console/agents">{t("agentsTitle")}</NavLink>
         <NavLink to="/console/calls">{t("callsTitle")}</NavLink>
+        <NavLink to="/console/insights">{t("insightsTitle")}</NavLink>
         <NavLink to="/console/phone">{t("phoneTitle")}</NavLink>
         <NavLink to="/console/followups">{t("followUpsTitle")}</NavLink>
         <NavLink to="/console/campaigns">{t("campaignsTitle")}</NavLink>
         <NavLink to="/console/knowledge">{t("knowledgeTitle")}</NavLink>
         <NavLink to="/console/voices">{t("voicesTitle")}</NavLink>
         <NavLink to="/console/numbers">{t("numbersTitle")}</NavLink>
+        <NavLink to="/console/routing">{t("routingTitle")}</NavLink>
         <NavLink to="/console/wallet">{t("walletTitle")}</NavLink>
         <NavLink to="/console/dnc">{t("dncTitle")}</NavLink>
         <NavLink to="/console/consent">{t("consentTitle")}</NavLink>
+        <NavLink to="/console/memory">{t("memoryTitle")}</NavLink>
         <NavLink to="/console/team">{t("teamTitle")}</NavLink>
         <NavLink to="/console/account">{t("accountTitle")}</NavLink>
         {list && list.workspaces.length > 1 && (
@@ -175,6 +187,7 @@ function Account({ viewing, onSignedOut }: { viewing: boolean; onSignedOut: () =
               <section aria-labelledby="home-title">
                 <h1 id="home-title">{t("welcome", { name: home.workspace.name })}</h1>
                 <p className="muted">{viewing ? t("viewAsRole") : t("yourRole", { role: home.role })}</p>
+                <CallHealthPanel />
               </section>
             }
           />
@@ -183,17 +196,23 @@ function Account({ viewing, onSignedOut }: { viewing: boolean; onSignedOut: () =
           <Route path="agents/:id/flow" element={<Suspense fallback={<p className="muted">{t("loading")}</p>}><AgentFlowPage /></Suspense>} />
           <Route path="calls" element={<Calls />} />
           <Route path="calls/:id" element={<CallPage />} />
+          <Route path="insights" element={<InsightsPage />} />
           <Route path="phone" element={<PhonePage />} />
           <Route path="followups" element={<FollowUpsPage />} />
           <Route path="campaigns" element={<CampaignsPage />} />
           <Route path="campaigns/:id" element={<CampaignPage />} />
           <Route path="knowledge" element={<KnowledgePage />} />
           <Route path="knowledge/:id" element={<KnowledgeBasePage />} />
+          <Route path="knowledge/:baseId/documents/:documentId/table" element={<KnowledgeTablePage />} />
           <Route path="voices" element={<VoicesPage />} />
           <Route path="numbers" element={<NumbersPage />} />
+          <Route path="routing" element={<CallRoutingPage />} />
           <Route path="wallet" element={<WalletPage />} />
+          <Route path="invoices" element={<InvoicesPage />} />
+          <Route path="invoices/:id" element={<InvoicePage />} />
           <Route path="dnc" element={<DncPage />} />
           <Route path="consent" element={<ConsentPage />} />
+          <Route path="memory" element={<MemoryPage />} />
           <Route path="team" element={<TeamPanel calls={calls} />} />
           <Route path="account" element={<AccountPage />} />
           <Route path="*" element={<Navigate to="/console" replace />} />

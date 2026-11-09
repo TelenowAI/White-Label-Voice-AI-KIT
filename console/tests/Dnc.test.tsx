@@ -1,7 +1,8 @@
 /**
  * Console → Do not call (dnc/): the list in the console's words (how each number got there, a caller's opt-out linked
  * to its call, one not saved yet or refused), searching it, adding a number (the backend's word on a field), importing
- * a CSV (the backend's counts), and removing a number only after asking — a caller's own opt-out with a plainer warning.
+ * a CSV (the backend's counts), downloading the list as a CSV file (exportDnc), and removing a number only after asking — a caller's
+ * own opt-out with a plainer warning.
  */
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -58,6 +59,15 @@ describe("the do-not-call list", () => {
       ["+14155550199", "", "client"],
     ]);
     expect(within(rows[0]).getByRole("link", { name: "The caller asked" }).getAttribute("href")).toBe("/console/calls/c9");
+  });
+
+  it("downloads the whole list as a CSV file", async () => {
+    fakeKit({ ...signedIn, "GET /api/kit/console/dnc?page=1": list });
+    open();
+    await screen.findAllByRole("row");
+    const link = screen.getByRole("link", { name: "Download CSV" });
+    expect(link.getAttribute("href")).toBe("/api/kit/console/dnc/export");
+    expect(link.hasAttribute("download")).toBe(true);
   });
 
   it("searches the list", async () => {

@@ -691,7 +691,8 @@ class PaymentsTest extends TestCase
             $this->assertCount(1, $messages);
             $this->assertSame([['ana@dental.example'], 'Payment received: 500.00 INR'], [$messages[0]['to'], $messages[0]['subject']]);
             $this->assertStringContainsString('we received your payment of 500.00 INR for Acme Dental', $messages[0]['text']);
-            $this->assertSame(self::SITE.'/console/wallet', SmtpSink::link($messages[0], self::SITE));
+            // It links to the payment's invoice (App\Kit\Invoices\CustomerInvoices).
+            $this->assertSame(self::SITE.'/console/invoices/'.\App\Models\CustomerInvoice::query()->where('payment_id', $id)->sole()->id, SmtpSink::link($messages[0], self::SITE));
         } finally {
             $sink->stop();
         }

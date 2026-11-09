@@ -1,0 +1,21 @@
+{
+  "operationId": "getProcessingCountry",
+  "recorded": "2026-11-08, Telenow's live release bfd2df4 (deployed 2026-11-06; kitchat_g1, sha256 b0d8db8a) on the build server, throwaway database, with the operator's (top-level) key and a sub-account's own; the release reaching openrouter.ai's public model list only; the operator's country changed by SQL on that database (contract_k31openrouter.py)",
+  "request": {
+    "method": "GET",
+    "path": "/api/catalog/processing-country",
+    "query": "",
+    "apiKey": "vai_test_operator_admin"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "country": "DE",
+        "source": "OrgCountry"
+      },
+      "success": true
+    }
+  },
+  "serve": false
+}

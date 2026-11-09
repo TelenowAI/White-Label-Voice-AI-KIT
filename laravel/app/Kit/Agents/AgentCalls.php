@@ -191,6 +191,8 @@ final class AgentCalls
 
     private function ownNumber(Agent $agent): ?PhoneNumber
     {
-        return PhoneNumber::query()->where('workspace_id', $agent->workspace_id)->where('agent_id', $agent->id)->whereNull('released_at')->whereNotNull('telenow_id')->orderBy('e164')->first();
+        // Its caller id first (Telenow's own order when a call names none: the agent's default, then a number it answers).
+        return PhoneNumber::query()->where('workspace_id', $agent->workspace_id)->where('agent_id', $agent->id)->whereNull('released_at')->whereNotNull('telenow_id')
+            ->orderByDesc('agent_caller_id')->orderBy('e164')->first();
     }
 }
