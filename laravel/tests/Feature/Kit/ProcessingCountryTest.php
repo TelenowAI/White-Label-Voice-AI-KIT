@@ -62,6 +62,7 @@ class ProcessingCountryTest extends TestCase
 
     public function test_the_operators_is_read_with_its_key_kept_a_while_and_read_afresh_when_asked(): void
     {
+        $this->freezeSecond(); // checkedAt is compared with now(): a running clock can tick between the two
         $this->answers = ['getProcessingCountry.operator', 'getProcessingCountry.operator-changed'];
         $first = $this->actingAs($this->support)->getJson('/api/kit/admin/telenow/processing-country')->assertOk()
             ->assertJson(['country' => 'IN', 'source' => 'country', 'checkedAt' => now()->toIso8601String()]);
@@ -79,6 +80,7 @@ class ProcessingCountryTest extends TestCase
 
     public function test_a_customers_is_read_with_their_own_key_and_kept_apart_from_the_operators(): void
     {
+        $this->freezeSecond(); // checkedAt is compared with now(): a running clock can tick between the two
         $this->answers = ['getProcessingCountry.operator-changed', 'getProcessingCountry.older-sub-account'];
         $this->actingAs($this->support)->getJson('/api/kit/admin/telenow/processing-country')->assertOk()->assertJsonPath('country', 'DE');
         $this->actingAs($this->support)->getJson("/api/kit/admin/customers/{$this->acme->id}/processing-country")->assertOk()
