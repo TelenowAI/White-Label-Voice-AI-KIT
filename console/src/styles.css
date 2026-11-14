@@ -1,11 +1,47 @@
 /*
- * The console's base styles. Every colour is a brand variable (`--color-<role>`, set by brand.ts from the
- * operator's brand); the fallbacks only show before the brand arrives.
+ * The console's styles: the customer console, the admin panel, the setup wizard and the sign-in pages. Every colour
+ * comes from the operator's brand: brand.ts sets each colour role as `--color-<role>` (primary, primary-contrast,
+ * background, surface, text, muted, and any role the operator adds); the fallbacks only show before the brand arrives.
+ * The shades in between (lines, the brand's tint, links, the status tints) are mixed from those roles, so a brand change
+ * needs no rebuild, and text on a brand tint is always the text colour, never the brand colour, so any brand colour
+ * keeps it readable.
+ *
+ * In order: the colours, the page, the brand bar, the signed-in frame (shell/AppShell.tsx), text, buttons, fields,
+ * tables, cards and notices; then each page's own pieces; then printing.
  */
 :root {
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: var(--color-text, #111827);
-  background: var(--color-background, #ffffff);
+  --kit-primary: var(--color-primary, #4f46e5);
+  --kit-on-primary: var(--color-primary-contrast, #ffffff);
+  --kit-text: var(--color-text, #111827);
+  /* Cards, fields and the side menu. */
+  --kit-card: var(--color-background, #ffffff);
+  /* The page behind the cards in the signed-in areas. */
+  --kit-ground: var(--color-surface, #f6f7f9);
+  /* Quieter words: the brand's muted colour pulled a little towards the text, so it stays readable on the ground too. */
+  --kit-muted: color-mix(in srgb, var(--color-muted, #6b7280) 85%, var(--kit-text));
+  --kit-line: color-mix(in srgb, var(--kit-text) 14%, var(--kit-card));
+  --kit-line-soft: color-mix(in srgb, var(--kit-text) 7%, var(--kit-card));
+  --kit-tint: color-mix(in srgb, var(--kit-primary) 12%, var(--kit-card));
+  --kit-link: var(--color-link, color-mix(in srgb, var(--kit-primary) 75%, var(--kit-text)));
+  --kit-radius: 10px;
+  --kit-control: 40px;
+  /* The brand bar's height: the side menu stays in view below it. */
+  --kit-bar: 56px;
+
+  /* Status colours: the brand may set these roles too; these are the fallbacks. */
+  --status-ok: var(--color-success, #15803d);
+  --status-warning: var(--color-warning, #b45309);
+  --status-blocking: var(--color-danger, #b91c1c);
+  --kit-ok-tint: color-mix(in srgb, var(--status-ok) 9%, var(--kit-card));
+  --kit-warning-tint: color-mix(in srgb, var(--status-warning) 10%, var(--kit-card));
+  --kit-blocking-tint: color-mix(in srgb, var(--status-blocking) 8%, var(--kit-card));
+
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--kit-text);
+  background: var(--kit-card);
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -16,48 +52,584 @@ main {
   padding: 16px;
 }
 
+/* The signed-in areas lay out their own frame, edge to edge, at least as tall as the window. */
+main:has(> .console, > .admin) {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.console,
+.admin {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The brand bar: the operator's logo, or their initial and name. */
 .brand-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: 10px;
+  height: var(--kit-bar);
+  box-sizing: border-box;
+  padding: 0 24px;
   margin: -16px -16px 16px;
-  background: var(--color-primary, #4f46e5);
-  color: var(--color-primary-contrast, #ffffff);
+  background: var(--kit-card);
+  color: var(--kit-text);
+  border-bottom: 1px solid var(--kit-line);
+}
+
+main:has(> .console, > .admin) > .brand-bar {
+  margin: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .brand-bar img {
   max-height: 32px;
 }
 
-/* Status colours: the brand may set these roles too; these are the fallbacks. */
-:root {
-  --status-ok: var(--color-success, #15803d);
-  --status-warning: var(--color-warning, #b45309);
-  --status-blocking: var(--color-danger, #b91c1c);
+.brand-bar strong {
+  font-size: 16px;
+}
+
+.brand-mark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--kit-primary);
+  color: var(--kit-on-primary);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* The signed-in frame (shell/AppShell.tsx): the side menu beside the page; on a narrow screen, a Menu button that opens it
+   over the page. */
+.shell {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  /* Rows as tall as their content: the window's spare height stays below the page, never stretches the Menu bar. */
+  align-content: start;
+  background: var(--kit-ground);
+}
+
+.shell-menu-bar,
+.shell-backdrop,
+.shell-close {
+  display: none;
+}
+
+.shell-side {
+  position: sticky;
+  top: var(--kit-bar);
+  align-self: start;
+  height: calc(100vh - var(--kit-bar));
+  box-sizing: border-box;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: var(--kit-card);
+  border-right: 1px solid var(--kit-line);
+}
+
+.shell-side .admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-group-title {
+  margin: 0 0 4px;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--kit-muted);
+}
+
+.admin-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  color: var(--kit-text);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.admin-nav a:hover {
+  background: var(--kit-line-soft);
+}
+
+.admin-nav a.active {
+  background: var(--kit-tint);
+  font-weight: 600;
+}
+
+.nav-icon {
+  flex: none;
+  color: var(--kit-muted);
+}
+
+.admin-nav a.active .nav-icon {
+  color: var(--kit-primary);
+}
+
+.shell-side .switcher {
+  display: grid;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+.shell-side .switcher span {
+  font-size: 12px;
+  color: var(--kit-muted);
+}
+
+.shell-side-end {
+  margin-top: auto;
+  padding: 12px 4px 0;
+  border-top: 1px solid var(--kit-line);
+}
+
+.shell-side-end button {
+  width: 100%;
+}
+
+.shell-main {
+  min-width: 0;
+  padding: 28px 40px 56px;
+}
+
+.shell-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.shell-menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 899px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shell-menu-bar {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: var(--kit-bar);
+    z-index: 9;
+    padding: 8px 16px;
+    background: var(--kit-card);
+    border-bottom: 1px solid var(--kit-line);
+  }
+
+  .shell-side {
+    display: none;
+  }
+
+  .shell-open .shell-side {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: min(304px, 86vw);
+    z-index: 30;
+    box-shadow: 0 10px 30px rgb(17 24 39 / 0.25);
+  }
+
+  .shell-open .shell-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: rgb(17 24 39 / 0.45);
+  }
+
+  .shell-open .shell-close {
+    display: inline-flex;
+    align-self: flex-start;
+  }
+
+  .shell-main {
+    padding: 20px 16px 40px;
+  }
+}
+
+/* Text. */
+h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  margin: 28px 0 12px;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+h3 {
+  margin: 20px 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+a {
+  color: var(--kit-link);
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--kit-text);
+}
+
+table a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+table a:hover {
+  text-decoration: underline;
 }
 
 .muted {
-  color: var(--color-muted, #6b7280);
+  color: var(--kit-muted);
 }
 
 .error {
   color: var(--status-blocking);
 }
 
+:is(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--kit-primary);
+  outline-offset: 2px;
+}
+
+/* Buttons: the brand's colour; `secondary` quiet; `link` reads as a link ("Forgot your password?"). */
 button {
   font: inherit;
-  padding: 8px 16px;
-  border-radius: 6px;
+  font-weight: 600;
+  min-height: var(--kit-control);
+  padding: 0 16px;
+  border-radius: 8px;
   border: 1px solid transparent;
-  background: var(--color-primary, #4f46e5);
-  color: var(--color-primary-contrast, #ffffff);
+  background: var(--kit-primary);
+  color: var(--kit-on-primary);
   cursor: pointer;
 }
 
+button:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
 button:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: default;
+}
+
+button.secondary {
+  background: var(--kit-card);
+  color: var(--kit-text);
+  border-color: var(--kit-line);
+  font-weight: 500;
+}
+
+button.secondary[aria-pressed="true"] {
+  background: var(--kit-tint);
+  border-color: var(--kit-primary);
+  font-weight: 600;
+}
+
+button.link {
+  background: none;
+  border: none;
+  padding: 0;
+  min-height: 0;
+  color: var(--kit-link);
+  text-decoration: underline;
+  font-weight: inherit;
+}
+
+@media (pointer: coarse) {
+  button:not(.link),
+  .admin-nav a {
+    min-height: 44px;
+  }
+}
+
+/* Fields. */
+input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"]),
+select,
+textarea {
+  font: inherit;
+  color: var(--kit-text);
+  background: var(--kit-card);
+  border: 1px solid var(--kit-line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-height: var(--kit-control);
+  box-sizing: border-box;
+}
+
+:is(input, select, textarea):focus {
+  border-color: var(--kit-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kit-primary) 22%, transparent);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--kit-primary);
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* A checkbox or radio button keeps its own size beside its words, inside a field too. */
+.field input[type="checkbox"],
+.field input[type="radio"] {
+  width: auto;
+  padding: 0;
+  flex: none;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.swatch {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--kit-line);
+}
+
+fieldset {
+  border: 1px solid var(--kit-line);
+  border-radius: var(--kit-radius);
+  margin: 0 0 1rem;
+  padding: 12px 16px;
+  min-width: 0;
+}
+
+legend {
+  padding: 0 4px;
+  font-weight: 600;
+}
+
+/* Tables. */
+.table-scroll {
+  overflow-x: auto;
+  /* Holds anything positioned inside it (a screen-reader-only label), which would otherwise widen the page. */
+  position: relative;
+  margin-top: 16px;
+  background: var(--kit-card);
+  border: 1px solid var(--kit-line);
+  border-radius: var(--kit-radius);
+}
+
+table.customers,
+table.list {
+  border-collapse: collapse;
+  width: 100%;
+  background: var(--kit-card);
+}
+
+table.customers {
+  min-width: 560px;
+}
+
+/* Lists inside a page (team members, invites). */
+table.list {
+  min-width: 480px;
+}
+
+table.customers th,
+table.customers td,
+table.list th,
+table.list td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--kit-line-soft);
+  vertical-align: top;
+}
+
+table.customers thead th,
+table.list thead th {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--kit-muted);
+  background: color-mix(in srgb, var(--kit-ground) 55%, var(--kit-card));
+  border-bottom-color: var(--kit-line);
+}
+
+table.customers tbody tr:hover,
+table.list tbody tr:hover {
+  background: color-mix(in srgb, var(--kit-ground) 45%, var(--kit-card));
+}
+
+.table-scroll tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+table.list tfoot th,
+table.list tfoot td {
+  font-weight: 600;
+}
+
+/* Console → Voices: what a voice is like reads as a line, not a narrow column. */
+table.list td.about {
+  min-width: 16rem;
+}
+
+/* Cards: in the signed-in areas each part of a page with its own heading (a section inside the page's section) sits on
+   the page's ground as a card, and so do the panels below. */
+.shell-page > section > section,
+.shell-page > section > form.agent-form,
+.test-call,
+.call-work,
+.tell-agent,
+.invite-link {
+  background: var(--kit-card);
+  border: 1px solid var(--kit-line);
+  border-radius: var(--kit-radius);
+  padding: 20px 24px;
+  box-sizing: border-box;
+}
+
+.shell-page > section > section {
+  margin: 20px 0;
+}
+
+.shell-page > section > section > :first-child {
+  margin-top: 0;
+}
+
+.shell-page > section > section > :last-child {
+  margin-bottom: 0;
+}
+
+/* Facts: words on the left, values on the right; one under the other on a phone. */
+.facts {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr);
+  gap: 8px 24px;
+  margin: 0 0 16px;
+}
+
+.facts > div {
+  display: contents;
+}
+
+.facts dt {
+  color: var(--kit-muted);
+}
+
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.facts dd div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 599px) {
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .facts dd {
+    margin-bottom: 10px;
+  }
+}
+
+/* A short status word beside a name (admin/VoicePlatformPage.tsx: a late job). */
+.badge {
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.85em;
+  font-weight: 600;
+  border: 1px solid currentColor;
+}
+
+/* Notices. */
+.paused,
+.numbers-warning,
+.invoice-refunded {
+  padding: 12px 16px;
+  margin: 0 0 20px;
+  border: 1px solid color-mix(in srgb, var(--status-warning) 35%, var(--kit-card));
+  border-radius: var(--kit-radius);
+  background: var(--kit-warning-tint);
+}
+
+/* The console's "service paused" notice. */
+.paused-account_suspended {
+  border-color: color-mix(in srgb, var(--status-blocking) 35%, var(--kit-card));
+  background: var(--kit-blocking-tint);
+}
+
+/* Staff looking at a customer's console (console/ConsoleArea.tsx): never mistaken for the customer's own view. */
+.viewing-as {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  margin: 12px 16px;
+  border: 2px solid var(--status-warning, #b45309);
+  border-radius: var(--kit-radius);
+  background: var(--kit-warning-tint);
 }
 
 /* The setup wizard: the step list beside the current step, stacked on a narrow screen. */
@@ -85,15 +657,19 @@ button:disabled {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 8px;
   text-align: left;
-  background: var(--color-surface, #f6f7f9);
-  color: var(--color-text, #111827);
-  border-color: var(--color-surface, #f6f7f9);
+  font-weight: 500;
+  background: var(--kit-ground);
+  color: var(--kit-text);
+  border-color: var(--kit-ground);
 }
 
 .steps [aria-current="step"] button {
-  border-color: var(--color-primary, #4f46e5);
+  background: var(--kit-tint);
+  border-color: var(--kit-primary);
+  font-weight: 600;
 }
 
 .status-done small {
@@ -118,112 +694,22 @@ button:disabled {
 .check {
   display: grid;
   padding: 8px 12px;
-  border-left: 4px solid var(--status-ok);
-  background: var(--color-surface, #f6f7f9);
+  border: 1px solid color-mix(in srgb, var(--status-ok) 30%, var(--kit-card));
+  border-radius: 8px;
+  background: var(--kit-ok-tint);
 }
 
 .check-warning {
-  border-left-color: var(--status-warning);
+  border-color: color-mix(in srgb, var(--status-warning) 35%, var(--kit-card));
+  background: var(--kit-warning-tint);
 }
 
 .check-blocking {
-  border-left-color: var(--status-blocking);
+  border-color: color-mix(in srgb, var(--status-blocking) 35%, var(--kit-card));
+  background: var(--kit-blocking-tint);
 }
 
-.facts div {
-  display: flex;
-  gap: 8px;
-}
-
-.facts dt {
-  min-width: 120px;
-  color: var(--color-muted, #6b7280);
-}
-
-.facts dd {
-  margin: 0;
-}
-
-.field {
-  display: grid;
-  gap: 4px;
-  margin-bottom: 16px;
-}
-
-.field input,
-.field select,
-.field textarea {
-  font: inherit;
-  padding: 8px;
-  border: 1px solid var(--color-muted, #6b7280);
-  border-radius: 6px;
-  background: var(--color-background, #ffffff);
-  color: var(--color-text, #111827);
-  min-width: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* A checkbox or radio button keeps its own size beside its words, inside a field too. */
-.field input[type="checkbox"],
-.field input[type="radio"] {
-  width: auto;
-  padding: 0;
-  flex: none;
-}
-
-.input-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.swatch {
-  flex: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  border: 1px solid var(--color-muted, #6b7280);
-}
-
-button.secondary {
-  background: var(--color-surface, #f6f7f9);
-  color: var(--color-text, #111827);
-  border-color: var(--color-muted, #6b7280);
-}
-
-/* A button that reads as a link ("Forgot your password?"). */
-button.link {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--color-primary, #4f46e5);
-  text-decoration: underline;
-  font: inherit;
-  cursor: pointer;
-}
-
-/* The admin panel. */
-.admin-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 16px;
-  margin-bottom: 16px;
-}
-
-.admin-nav a {
-  color: var(--color-text, #111827);
-}
-
-.admin-nav a.active {
-  font-weight: 600;
-}
-
-.admin-nav button {
-  margin-left: auto;
-}
-
+/* Forms laid out in a row. */
 .inline-form {
   display: flex;
   flex-wrap: wrap;
@@ -237,6 +723,15 @@ button.link {
   margin-bottom: 0;
 }
 
+.form-title {
+  flex-basis: 100%;
+  margin: 16px 0 0;
+}
+
+.field-narrow {
+  flex: 0 1 160px;
+}
+
 .voice-find {
   display: flex;
   flex-wrap: wrap;
@@ -248,27 +743,6 @@ button.link {
   flex: 1 1 140px;
   width: auto;
   min-width: 0;
-}
-
-.table-scroll {
-  overflow-x: auto;
-  /* Holds anything positioned inside it (a screen-reader-only label), which would otherwise widen the page. */
-  position: relative;
-  margin-top: 16px;
-}
-
-table.customers {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 560px;
-}
-
-table.customers th,
-table.customers td {
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid var(--color-surface, #f6f7f9);
-  vertical-align: top;
 }
 
 .sync {
@@ -287,12 +761,6 @@ table.customers td {
   color: var(--status-blocking);
 }
 
-button.secondary[aria-pressed="true"] {
-  border-color: currentColor;
-  font-weight: 600;
-  box-shadow: inset 0 0 0 1px currentColor;
-}
-
 .actions {
   display: flex;
   gap: 8px;
@@ -306,59 +774,20 @@ button.secondary[aria-pressed="true"] {
   margin-top: 12px;
 }
 
-/* Lists inside a page (team members, invites). */
-table.list {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 480px;
-}
-
-table.list th,
-table.list td {
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid var(--color-surface, #f6f7f9);
-  vertical-align: top;
-}
-
-.form-title {
-  flex-basis: 100%;
-  margin: 16px 0 0;
-}
-
-.field-narrow {
-  flex: 0 1 160px;
-}
-
 .invite-link {
   margin-top: 12px;
-  padding: 12px;
-  background: var(--color-surface, #f6f7f9);
   max-width: 640px;
 }
 
 .invite-link input {
   flex: 1;
   min-width: 0;
-  font: inherit;
-  padding: 8px;
 }
 
 .switcher {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-/* The console's "service paused" notice. */
-.paused {
-  padding: 12px;
-  border-left: 4px solid var(--status-warning);
-  background: var(--color-surface, #f6f7f9);
-}
-
-.paused-account_suspended {
-  border-left-color: var(--status-blocking);
 }
 
 /* Console → Agents. */
@@ -380,8 +809,6 @@ table.list td {
 
 .test-call {
   margin-top: 24px;
-  padding: 16px;
-  background: var(--color-surface, #f6f7f9);
   max-width: 720px;
 }
 
@@ -398,7 +825,7 @@ table.list td {
   padding: 0;
   margin: 12px 0 0;
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .transcript .partial {
@@ -419,8 +846,6 @@ table.list td {
 
 .call-work {
   margin-top: 24px;
-  padding: 16px;
-  background: var(--color-surface, #f6f7f9);
   max-width: 720px;
 }
 
@@ -452,10 +877,29 @@ table.list td {
   color: var(--status-blocking);
 }
 
+/* Buttons that pick one of a few (Console → Follow-ups). */
 .tabs {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
   margin-bottom: 16px;
+  border-radius: var(--kit-radius);
+  background: var(--kit-line-soft);
+}
+
+.tabs button.secondary {
+  min-height: 34px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.tabs button.secondary[aria-pressed="true"] {
+  background: var(--kit-card);
+  border-color: var(--kit-line);
+  box-shadow: 0 1px 2px rgb(17 24 39 / 0.08);
 }
 
 .live-now,
@@ -482,8 +926,6 @@ table.list td {
 /* Telling the agent something during a live call, on the call's page. */
 .tell-agent {
   margin: 12px 0 24px;
-  padding: 16px;
-  background: var(--color-surface, #f6f7f9);
   max-width: 720px;
 }
 
@@ -505,7 +947,8 @@ audio.recording {
 
 /* Wallets and pricing. */
 .balance strong {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
 }
 
 textarea.code {
@@ -549,19 +992,6 @@ textarea.code {
   margin-bottom: 0.25rem;
 }
 
-fieldset {
-  border: 1px solid var(--color-muted, #6b7280);
-  border-radius: 6px;
-  margin: 0 0 1rem;
-  padding: 0.75rem;
-  min-width: 0;
-}
-
-/* Console → Voices: what a voice is like reads as a line, not a narrow column. */
-table.list td.about {
-  min-width: 16rem;
-}
-
 /* A bank transfer's instructions keep the operator's line breaks. */
 .instructions {
   white-space: pre-wrap;
@@ -575,8 +1005,8 @@ table.list td.about {
 /* A starter's texts before it is published (admin/StarterPublish.tsx): each in full, as written, wrapping on a phone. */
 .starter-text {
   margin: 0 0 12px;
-  padding-left: 10px;
-  border-left: 3px solid var(--color-muted, #6b7280);
+  padding-left: 12px;
+  border-left: 3px solid var(--kit-line);
 }
 
 .starter-text pre {
@@ -591,13 +1021,12 @@ form.period {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 0 16px;
+  gap: 8px 16px;
   margin-bottom: 16px;
 }
 
-table.list tfoot th,
-table.list tfoot td {
-  font-weight: 600;
+form.period .field {
+  margin-bottom: 0;
 }
 
 /* Text for screen readers only (a column whose cells are buttons). */
@@ -610,58 +1039,41 @@ table.list tfoot td {
   white-space: nowrap;
 }
 
-/* A short status word beside a name (admin/VoicePlatformPage.tsx: a late job). */
-.badge {
-  display: inline-block;
-  padding: 0 6px;
-  border-radius: 4px;
-  font-size: 0.8em;
-  border: 1px solid currentColor;
-}
-
-/* Staff looking at a customer's console (console/ConsoleArea.tsx): never mistaken for the customer's own view. */
-.viewing-as {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  margin-bottom: 12px;
-  border: 2px solid var(--status-warning, #b45309);
-  border-radius: 6px;
-}
-
 /* An email as it will be sent (admin/EmailTemplates.tsx): its HTML in a sandboxed frame, as wide as the page allows. */
 .email-preview iframe {
   display: block;
   width: 100%;
   height: 480px;
-  border: 1px solid var(--color-muted, #6b7280);
-  border-radius: 6px;
+  border: 1px solid var(--kit-line);
+  border-radius: var(--kit-radius);
   background: #ffffff;
 }
 
 /* A group of settings on the agent form (agents/AgentBehaviourFields.tsx): folded until it is wanted. */
 .settings-group {
-  border-top: 1px solid var(--color-muted, #6b7280);
+  border-top: 1px solid var(--kit-line);
   padding: 0.5rem 0;
 }
 .settings-group > summary {
   cursor: pointer;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
+  font-weight: 600;
 }
 .settings-group[open] > summary {
   margin-bottom: 0.75rem;
 }
 .settings-group > summary small {
   display: block;
+  font-weight: 400;
+  color: var(--kit-muted);
 }
 
 /* Call steps: the map keeps a usable height on a phone, with the list and forms below it. */
 .flow-canvas {
   height: 420px;
-  border: 1px solid var(--border, #d0d5dd);
-  border-radius: 8px;
+  border: 1px solid var(--kit-line);
+  border-radius: var(--kit-radius);
+  background: var(--kit-card);
   margin: 12px 0;
 }
 
@@ -704,7 +1116,7 @@ table.list tfoot td {
   padding: 0;
   list-style: none;
   overflow: hidden;
-  border-bottom: 1px solid var(--color-muted, #6b7280);
+  border-bottom: 1px solid var(--kit-line);
 }
 
 .day-bars li {
@@ -721,14 +1133,16 @@ table.list tfoot td {
   display: flex;
   align-items: flex-end;
   width: 80%;
-  background: color-mix(in srgb, var(--color-primary, #4f46e5) 30%, transparent);
-  border-radius: 2px 2px 0 0;
+  max-width: 44px;
+  background: color-mix(in srgb, var(--kit-primary) 28%, transparent);
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
 }
 
 .day-bar-answered {
   display: block;
   width: 100%;
-  background: var(--color-primary, #4f46e5);
+  background: var(--kit-primary);
 }
 
 .day-bars-ends {
@@ -750,13 +1164,6 @@ table.list tfoot td {
   margin-bottom: 0;
 }
 
-.numbers-warning {
-  padding: 4px 12px;
-  margin-bottom: 16px;
-  border-left: 4px solid var(--status-warning);
-  background: var(--color-surface, #f6f7f9);
-}
-
 /* Customers' invoices (invoices/InvoiceView.tsx, InvoiceSheet.tsx): on screen, the tools above a page-like sheet. */
 .invoice-tools {
   display: flex;
@@ -768,7 +1175,8 @@ table.list tfoot td {
 .invoice-sheet {
   max-width: 800px;
   padding: 32px;
-  border: 1px solid var(--color-surface, #f6f7f9);
+  border: 1px solid var(--kit-line);
+  border-radius: var(--kit-radius);
   background: var(--color-background, #ffffff);
 }
 
@@ -794,7 +1202,7 @@ table.list tfoot td {
 .invoice-party h2 {
   margin: 0 0 4px;
   font-size: 0.875rem;
-  color: var(--color-muted, #6b7280);
+  color: var(--kit-muted);
 }
 
 .invoice-party p {
@@ -811,7 +1219,7 @@ table.list tfoot td {
 .invoice-lines td {
   padding: 8px;
   text-align: left;
-  border-bottom: 1px solid var(--color-surface, #f6f7f9);
+  border-bottom: 1px solid var(--kit-line-soft);
 }
 
 .invoice-lines th:last-child,
@@ -826,11 +1234,6 @@ table.list tfoot td {
 .invoice-lines .invoice-total th,
 .invoice-lines .invoice-total td {
   font-weight: 700;
-}
-
-.invoice-refunded {
-  padding: 4px 12px;
-  border-left: 4px solid var(--status-warning);
 }
 
 /* Printing an invoice page: only the sheet goes on paper — no brand bar, nav, banners, way back or Print button. */
@@ -854,6 +1257,28 @@ table.list tfoot td {
   }
 }
 
+/* Printing any page of the signed-in areas: the page alone, without the side menu or the Menu bar. */
+@media print {
+  .shell-side,
+  .shell-menu-bar,
+  .shell-backdrop {
+    display: none;
+  }
+
+  .shell {
+    display: block;
+    background: none;
+  }
+
+  .shell-main {
+    padding: 0;
+  }
+
+  main:has(> .console, > .admin) > .brand-bar {
+    position: static;
+  }
+}
+
 /* An agent's logo (agents/AgentLogo.tsx), and small beside its name in the agents list (agents/Agents.tsx). */
 .agent-logo {
   display: block;
@@ -869,14 +1294,16 @@ table.list tfoot td {
   object-fit: contain;
   vertical-align: middle;
   margin-right: 8px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* The instructions as a call would get them (agents/PromptPreview.tsx). */
 .prompt-preview {
   margin-top: 8px;
-  padding: 8px 12px;
-  background: var(--color-surface, #f6f7f9);
+  padding: 10px 14px;
+  border: 1px solid var(--kit-line);
+  border-radius: 8px;
+  background: var(--kit-ground);
 }
 
 .prompt-preview pre {
