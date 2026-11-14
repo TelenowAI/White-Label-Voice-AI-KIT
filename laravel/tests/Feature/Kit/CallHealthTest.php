@@ -101,6 +101,7 @@ class CallHealthTest extends TestCase
 
     public function test_customers_see_their_own_failures_under_the_operators_names_in_the_kits_words_and_never_the_platforms(): void
     {
+        $this->freezeSecond(); // checkedAt is compared with now(): a running clock can tick between the two
         $agents = $this->agents();
         $this->answers[self::KEY] = ['getProviderHealth.hour'];
         $groups = RecordedTelenow::body('getProviderHealth.hour')['data']['groups'];

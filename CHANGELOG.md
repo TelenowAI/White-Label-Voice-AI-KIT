@@ -6,6 +6,11 @@ How each feature was built and proven is in [docs/BUILD_NOTES.md](docs/BUILD_NOT
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-14
+
+Web chat, insights and exports, caller memory, call routing, number controls, customer invoices and the operator's own
+billing at the voice platform, and more help building agents. Kit API 0.55.0 (282 operations).
+
 ### Added
 
 - **Web chat agents.** A customer turns on a chat box for any agent (its page → Web chat), lists the websites it may show
@@ -102,6 +107,17 @@ How each feature was built and proven is in [docs/BUILD_NOTES.md](docs/BUILD_NOT
 - The calls list's agent filter with something that is not an agent's id finds no call; it used to find the calls with no
   agent.
 
+### Known limits
+
+- Needs PHP 8.4.1 or later, as 0.1.0 did.
+- English only. Every word is in `laravel/lang/en` and `console/src/text.ts`, ready for a translation.
+- Updating from 0.1.0 means replacing the files and running `php artisan migrate --force` once
+  ([INSTALL](laravel/INSTALL.md)): updating from the browser is not built yet.
+- Not in the kit yet, although Telenow has them: integrations, number compliance documents and Telenow's shared voice
+  library.
+- Tested against recorded Telenow answers and a real Telenow release with a stand-in voice engine; this release's
+  testing did not include a call on a real phone line, a real AI vendor or a payment gateway's real sandbox account.
+
 ## [0.1.0] - 2026-11-07
 
 The first public release: the whole platform an operator installs on their own server and runs under their own brand,
@@ -142,5 +158,6 @@ with Telenow's voice infrastructure behind it. Kit API 0.41.0 (223 operations).
 - Tested against recorded Telenow answers and a real Telenow release with a stand-in voice engine; this release's
   testing did not include a call on a real phone line or a real AI vendor.
 
-[Unreleased]: https://github.com/TelenowAI/White-Label-Voice-AI-KIT/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/TelenowAI/White-Label-Voice-AI-KIT/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/TelenowAI/White-Label-Voice-AI-KIT/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/TelenowAI/White-Label-Voice-AI-KIT/releases/tag/v0.1.0
