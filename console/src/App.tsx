@@ -74,10 +74,19 @@ function Shell({ health, brand, reload }: { health: Health; brand: Brand; reload
   );
 }
 
+/** The operator's logo; with none, the brand's first letter in its colour, then its name. */
 function BrandBar({ brand }: { brand: Brand }) {
+  const initial = Array.from(brand.name.trim())[0]?.toUpperCase();
   return (
     <header className="brand-bar">
-      {brand.logoUrl ? <img src={brand.logoUrl} alt={brand.name} /> : <strong>{brand.name}</strong>}
+      {brand.logoUrl ? (
+        <img src={brand.logoUrl} alt={brand.name} />
+      ) : (
+        <>
+          {initial && <span className="brand-mark" aria-hidden="true">{initial}</span>}
+          <strong>{brand.name}</strong>
+        </>
+      )}
     </header>
   );
 }

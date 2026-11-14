@@ -6,6 +6,16 @@ How each feature was built and proven is in [docs/BUILD_NOTES.md](docs/BUILD_NOT
 
 ## [Unreleased]
 
+### Changed
+
+- **A new look for the console and the admin panel.** A side menu holds the pages in groups, each with an icon, beside the
+  page, and stays in view while the page scrolls: in the console Build, Conversations, Phone numbers, Compliance and
+  Billing and team; in the admin panel Prices and payments, What customers get, Sign-ups and messages, and Site and staff
+  (each staff role still sees only its pages, in the same order). On a phone the menu folds behind a Menu button. Pages
+  sit on the brand's surface colour with their parts as cards; tables, buttons, fields, notices and the label-and-value
+  lists are restyled. Every colour is still the operator's brand, the shades in between mixed from it, so text on a
+  brand tint stays readable whatever the colour. With no logo, the brand bar shows the brand's initial in its colour.
+
 ## [0.2.0] - 2026-11-14
 
 Web chat, insights and exports, caller memory, call routing, number controls, customer invoices and the operator's own
